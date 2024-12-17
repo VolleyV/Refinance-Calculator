@@ -1,9 +1,11 @@
+import AdvanceForm from "./components/AdvanceForm";
 import BasicForm from "./components/BasicForm";
 
 function App() {
   return (
     <>
-      <BasicForm />
+      {/* <BasicForm /> */}
+      <AdvanceForm/>
     </>
   );
 }
