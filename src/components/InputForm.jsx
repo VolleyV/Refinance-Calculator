@@ -1,8 +1,9 @@
 import { useState } from "react";
 import BasicForm from "./BasicForm";
 import AdvanceForm from "./AdvanceForm";
+import PropTypes from "prop-types";
 
-const InputForm = () => {
+const InputForm = ({ onSubmit }) => {
   const [activeTab, setActiveTab] = useState("basic");
 
   const switchTab = (tab) => {
@@ -32,10 +33,14 @@ const InputForm = () => {
           ข้อมูลขั้นสูง
         </button>
       </div>
-      {activeTab === "basic" && <BasicForm />}
+      {activeTab === "basic" && <BasicForm onSubmit={onSubmit} />}
       {activeTab === "advanced" && <AdvanceForm />}
     </div>
   );
+};
+
+InputForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default InputForm;

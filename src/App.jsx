@@ -1,10 +1,15 @@
-// import React from 'react';
-import AdvanceForm from "./components/AdvanceForm";
-// import BasicForm from "./components/BasicForm";
 import InputForm from "./components/InputForm";
 import Navbar from "./components/Navbar";
+import ShowBank from "./components/ShowBank";
+
+import { useState } from "react";
 
 function App() {
+  const [formData, setFormData] = useState(null);
+
+  const handleFormSubmit = (data) => {
+    setFormData(data);
+  };
   return (
     <>
       <div>
@@ -15,9 +20,8 @@ function App() {
           </div>
         </div>
       </div>
-      {/* <BasicForm /> */}
-      <InputForm />
-      {/* <AdvanceForm /> */}
+      <InputForm onSubmit={handleFormSubmit} />
+      {formData && <ShowBank data={formData} />}
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
+import PropTypes from "prop-types";
 
-const BasicForm = () => {
+const BasicForm = ({ onSubmit }) => {
   // States
   const [loanAmount, setLoanAmount] = useState("");
   const [paymentDuration, setPaymentDuration] = useState(1);
@@ -12,7 +13,6 @@ const BasicForm = () => {
   const [calculationDetails, setCalculationDetails] = useState([]);
   const [remainingMonths, setRemainingMonths] = useState(0);
 
-  // Helper functions for date calculations
   const isLeapYear = (year) =>
     (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 
@@ -55,6 +55,22 @@ const BasicForm = () => {
       const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       setMonthlyPayment(formattedValue);
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!loanAmount || !interestRate || !monthlyPayment) {
+      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+      return;
+    }
+
+    // ส่งข้อมูลกลับไปที่ App
+    onSubmit({
+      loanAmount,
+      interestRate,
+      paymentDuration,
+      monthlyPayment,
+    });
   };
 
   // Calculate refinance details
@@ -119,7 +135,7 @@ const BasicForm = () => {
     <div>
       <div className="bg-white rounded-b-lg px-6 py-4">
         <h2 className="text-xl font-bold">คำนวณแบบอัตราดอกเบี้ยเดียว</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mt-4">
             <label
               htmlFor="Loan-Amount"
@@ -220,7 +236,7 @@ const BasicForm = () => {
 
           <div className="mt-4">
             <button
-              type="button"
+              type="submit"
               onClick={calculateRefinanceDetails}
               className="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto mr-2"
             >
@@ -270,6 +286,10 @@ const BasicForm = () => {
       </div>
     </div>
   );
+};
+
+BasicForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired, // ระบุว่า onSubmit ต้องเป็นฟังก์ชันและจำเป็นต้องส่งมา
 };
 
 export default BasicForm;
