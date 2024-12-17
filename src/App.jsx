@@ -1,4 +1,6 @@
-import BasicForm from "./components/BasicForm";
+// import React from 'react';
+import AdvanceForm from "./components/AdvanceForm";
+// import BasicForm from "./components/BasicForm";
 import InputForm from "./components/InputForm";
 
 function App() {
@@ -6,6 +8,7 @@ function App() {
     <>
       {/* <BasicForm /> */}
       <InputForm />
+      {/* <AdvanceForm /> */}
     </>
   );
 }

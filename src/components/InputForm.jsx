@@ -33,7 +33,7 @@ const InputForm = () => {
         </button>
       </div>
       {activeTab === "basic" && <BasicForm />}
-      {activeTab === "advance" && <AdvanceForm />}
+      {activeTab === "advanced" && <AdvanceForm />}
     </div>
   );
 };
