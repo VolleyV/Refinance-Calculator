@@ -117,10 +117,8 @@ const BasicForm = () => {
 
   return (
     <div>
-      <div className="bg-white rounded-b-lg px-6 py-4 shadow-lg">
-        <h2 className="text-xl font-bold">
-          คำนวณรีไฟแนนซ์แบบอัตราดอกเบี้ยเดียว
-        </h2>
+      <div className="bg-white rounded-b-lg px-6 py-4">
+        <h2 className="text-xl font-bold">คำนวณแบบอัตราดอกเบี้ยเดียว</h2>
         <form>
           <div className="mt-4">
             <label
@@ -246,7 +244,7 @@ const BasicForm = () => {
             <thead>
               <tr>
                 <th>เดือน</th>
-                <th>วันที่</th>  
+                <th>วันที่</th>
                 <th>อัตราดอกเบี้ย</th>
                 <th>ผ่อนต่อเดือน</th>
                 <th>ส่วนที่จ่ายต้น</th>
