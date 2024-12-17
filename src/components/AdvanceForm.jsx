@@ -24,6 +24,11 @@ const AdvanceForm = () => {
 
   // Handle change for inputs that update state
   const handleInputChange = (setter) => (event) => setter(event.target.value);
+  
+  const handleDurationChange = (event) => {
+    setTermMonths(Number(event.target.value));
+  };
+
 
   // Handle calculation of loan details
   const calculateRefinanceDetails = (e) => {
@@ -62,7 +67,9 @@ const AdvanceForm = () => {
       }
 
       // Calculate interest and principal portions
-      const interest = (principalRemaining * interestRate * daysInCurrentMonth) / daysInCurrentYear;
+      const interest =
+        (principalRemaining * interestRate * daysInCurrentMonth) /
+        daysInCurrentYear;
       const principalPortion = Math.max(0, monthlyPaymentAmount - interest);
       principalRemaining = Math.max(0, principalRemaining - principalPortion);
 
@@ -106,14 +113,23 @@ const AdvanceForm = () => {
   return (
     <div className="bg-white rounded-b-lg px-6 py-4">
       <h2 className="text-xl font-bold">คำนวณดอกเบี้ยแบบมีหลายอัตราดอกเบี้ย</h2>
-      <form id="loan-form-advance" className="space-y-4" onSubmit={calculateRefinanceDetails}>
+      <form
+        id="loan-form-advance"
+        className="mt-4"
+        onSubmit={calculateRefinanceDetails}
+      >
         {/* Principal */}
-        <div>
-          <label htmlFor="principal-advance">จำนวนเงินที่กู้ (บาท)</label>
+        <div className="mt-4">
+          <label
+            htmlFor="principal-advance"
+            className="block text-l font-medium text-gray-700"
+          >
+            จำนวนเงินที่กู้ (บาท)
+          </label>
           <input
             type="number"
             id="principal-advance"
-            className="w-full rounded-lg border-gray-200 p-3 text-sm"
+            className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
             placeholder="จำนวนเงินที่กู้ (บาท)"
             value={principal}
             onChange={handleInputChange(setPrincipal)}
@@ -121,24 +137,34 @@ const AdvanceForm = () => {
         </div>
 
         {/* Term Months and Start Date */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
+        <div className="relative">
+              <label
+                htmlFor="payment-duration"
+                className="block text-l font-medium text-gray-700"
+              >
+                เลือกระยะเวลาในการผ่อน
+              </label>
+              <select
+                id="payment-duration"
+                name="payment-duration"
+                onChange={handleDurationChange}
+                value={termMonths}
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md"
+              >
+                {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
+                  <option key={year} value={year}>
+                    {year} ปี
+                  </option>
+                ))}
+              </select>
+            </div>
           <div>
-            <label htmlFor="installmentDuration-advance">ระยะเวลาผ่อนกี่ปี</label>
-            <input
-              type="number"
-              id="installmentDuration-advance"
-              placeholder="ระยะเวลาผ่อน (ปี)"
-              className="w-full rounded-lg border-gray-200 p-3 text-sm"
-              value={termMonths}
-              onChange={handleInputChange(setTermMonths)}
-            />
-          </div>
-          <div>
-            <label htmlFor="start-date-advance">วันที่เริ่มกู้</label>
+            <label htmlFor="start-date-advance">เลือกวันที่ (วัน/เดือน/ปี)</label>
             <input
               type="date"
               id="start-date-advance"
-              className="w-full rounded-lg border-gray-200 p-3 text-sm"
+              className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md"
               value={startDate}
               onChange={handleInputChange(setStartDate)}
             />
@@ -160,7 +186,7 @@ const AdvanceForm = () => {
                   updatedStartTerm[index] = e.target.value;
                   setStartTerm(updatedStartTerm);
                 }}
-                className="w-full rounded-lg border-gray-200 p-3 text-sm mt-2"
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
               />
             ))}
           </div>
@@ -178,7 +204,7 @@ const AdvanceForm = () => {
                   updatedEndTerm[index] = e.target.value;
                   setEndTerm(updatedEndTerm);
                 }}
-                className="w-full rounded-lg border-gray-200 p-3 text-sm mt-2"
+                    className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
               />
             ))}
           </div>
@@ -190,13 +216,13 @@ const AdvanceForm = () => {
                 key={`interestRate-${index}`}
                 type="number"
                 value={rate}
-                placeholder="อัตราดอกเบี้ย"
+                placeholder="อัตราดอกเบี้ย (%)"
                 onChange={(e) => {
                   const updatedRates = [...interestRates];
                   updatedRates[index] = e.target.value;
                   setInterestRates(updatedRates);
                 }}
-                className="w-full rounded-lg border-gray-200 p-3 text-sm mt-2"
+                  className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
               />
             ))}
           </div>
@@ -214,7 +240,7 @@ const AdvanceForm = () => {
                   updatedPayments[index] = e.target.value;
                   setMonthlyPayment(updatedPayments);
                 }}
-                className="w-full rounded-lg border-gray-200 p-3 text-sm mt-2"
+                 className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
               />
             ))}
           </div>
@@ -230,7 +256,7 @@ const AdvanceForm = () => {
           </button>
           <button
             type="button"
-            className="inline-block w-full rounded-lg bg-red-500 px-5 py-3 font-medium text-white sm:w-auto mt-2"
+            className="inline-block w-full rounded-lg bg-red-500 px-5 py-3 font-medium text-white sm:w-auto mt-2 ml-2"
             onClick={resetFields}
           >
             Reset

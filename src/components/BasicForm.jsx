@@ -141,7 +141,7 @@ const BasicForm = ({ onSubmit }) => {
               htmlFor="Loan-Amount"
               className="block text-l font-medium text-gray-700"
             >
-              ใส่จำนวนเงินที่ผ่อน
+              จำนวนเงินที่กู้ (บาท)
             </label>
             <input
               type="text"
@@ -149,7 +149,7 @@ const BasicForm = ({ onSubmit }) => {
               className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
               onChange={handleLoanAmountChange}
               value={loanAmount}
-              placeholder="ใส่จำนวนเงินกู้"
+              placeholder="จำนวนเงินที่กู้ (บาท)"
             />
           </div>
 
@@ -229,7 +229,7 @@ const BasicForm = ({ onSubmit }) => {
                 value={monthlyPayment}
                 onChange={handleMonthlyPaymentChange}
                 className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-                placeholder="ผ่อนต่อเดือน"
+                placeholder="จำนวนเงินที่จะผ่อน"
               />
             </div>
           </div>
