@@ -9,7 +9,7 @@ const AdvanceForm = () => {
             <Navbar className="bg-gray-800" />
             <div class="container mx-auto px-4">
                 <div class="flex justify-between items-center py-4">
-                    <div class="text-white text-lg font-bold">คำนวณรีไฟแนนซ์ผ่อนบ้าน</div>
+                    <div class="text-white text-lg font-bold">คำนวณดอกเบี้ย</div>
                 </div>
             </div>
         </div>
@@ -20,13 +20,13 @@ const AdvanceForm = () => {
                 className={`tab-content ${isVisible ? '' : 'hidden'}`}
             >
                 <h2 className="text-xl font-bold">
-                    คำนวณรีไฟแนนซ์แบบมีหลายอัตราดอกเบี้ย
+                    คำนวณดอกเบี้ยแบบมีหลายอัตราดอกเบี้ย
                 </h2>
                 <form id="loan-form-advance" className="space-y-4">
                     {/* Loan Amount */}
                     <div>
                         <label className="loan" htmlFor="principal-advance">
-                            จำนวณเงินที่กู้ (บาท)
+                            จำนวนเงินที่กู้ (บาท)
                         </label>
                         <input
                             name="principal-advance"
