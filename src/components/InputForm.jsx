@@ -9,7 +9,7 @@ const InputForm = () => {
     setActiveTab(tab);
   };
   return (
-    <div className="relative p-6 max-w-4xl mx-auto mt-10 rounded-lg shadow-md">
+    <div className="relative p-6 max-w-4xl mx-auto rounded-lg shadow-md">
       <div className="flex border-b mt-4">
         <button
           onClick={() => switchTab("basic")}
