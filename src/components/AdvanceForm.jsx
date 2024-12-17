@@ -7,9 +7,9 @@ const AdvanceForm = () => {
     return (
         <><div>
             <Navbar className="bg-gray-800" />
-            <div class="container mx-auto px-4">
-                <div class="flex justify-between items-center py-4">
-                    <div class="text-white text-lg font-bold">คำนวณดอกเบี้ย</div>
+            <div className="container mx-auto px-4">
+                <div className="flex justify-between items-center py-4">
+                    <div className="text-white text-lg font-bold">คำนวณดอกเบี้ย</div>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@ const AdvanceForm = () => {
                             name="principal-advance"
                             className="w-full rounded-lg border-gray-200 p-3 text-sm"
                             style={{ border: '1px solid black' }}
-                            placeholder="จำนวณเงินที่กู้ (บาท)"
+                            placeholder="จำนวนเงินที่กู้ (บาท)"
                             type="number"
                             id="principal-advance"
                             step="0.001" />
