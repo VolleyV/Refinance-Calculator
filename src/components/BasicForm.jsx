@@ -1,7 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const BasicForm = ({ onSubmit }) => {
+const BasicForm = ({ onSubmit, onReset, initialInput }) => {
   // States
   const [loanAmount, setLoanAmount] = useState("");
   const [paymentDuration, setPaymentDuration] = useState(1);
@@ -51,13 +51,14 @@ const BasicForm = ({ onSubmit }) => {
     }
 
     // ส่งข้อมูลกลับไปที่ App
-    onSubmit({
+    const data = {
       loanAmount,
       paymentDuration,
       startDate,
       interestRate,
       monthlyPayment,
-    });
+    };
+    onSubmit(data);
   };
 
   const resetFields = () => {
@@ -66,7 +67,21 @@ const BasicForm = ({ onSubmit }) => {
     setPaymentDuration(1);
     setInterestRate("");
     setStartDate(new Date().toISOString().split("T")[0]);
+    onReset();
   };
+
+  //เก็บข้อมูลที่กรอกไว้ในช่องเวลามีการเปลี่ยนหน้า
+  useEffect(() => {
+    if (initialInput) {
+      setLoanAmount(initialInput.loanAmount || "");
+      setPaymentDuration(initialInput.paymentDuration || 1);
+      setInterestRate(initialInput.interestRate || "");
+      setMonthlyPayment(initialInput.monthlyPayment || "");
+      setStartDate(
+        initialInput.startDate || new Date().toISOString().split("T")[0]
+      );
+    }
+  }, [initialInput]);
 
   return (
     <div>
@@ -183,7 +198,7 @@ const BasicForm = ({ onSubmit }) => {
               onClick={resetFields}
               className="inline-block w-full rounded-lg bg-red-500 px-5 py-3 font-medium text-white sm:w-auto"
             >
-              Reset
+              ล้างข้อมููล
             </button>
           </div>
         </form>
@@ -194,6 +209,8 @@ const BasicForm = ({ onSubmit }) => {
 
 BasicForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  onReset: PropTypes.func.isRequired,
+  initialInput: PropTypes.object,
 };
 
 export default BasicForm;
