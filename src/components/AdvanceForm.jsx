@@ -1,15 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 const AdvanceForm = () => {
   const [principal, setPrincipal] = useState(""); // Principal loan amount
   const [monthlyPayment, setMonthlyPayment] = useState(["", "", "", "", ""]); // Array for monthly payments
-  const [termMonths, setTermMonths] = useState(""); // Loan term in years
+  const [termMonths, setTermMonths] = useState(1); // Loan term in years
   const [startDate, setStartDate] = useState(""); // Loan start date
   const [interestRates, setInterestRates] = useState(["", "", "", "", ""]); // Array for interest rates
-  const [startTerm, setStartTerm] = useState(["", "", "", "", ""]); // Array for start terms
+  const [startTerm, setStartTerm] = useState([1, "", "", "", ""]); // Array for start terms
   const [endTerm, setEndTerm] = useState(["", "", "", "", ""]); // Array for end terms
   const [calculationDetails, setCalculationDetails] = useState([]); // Array to hold calculation results
   const [remainingMonths, setRemainingMonths] = useState(0); // Remaining months for loan
+
+  // Handlers
+  const handlePrincipalChange = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setPrincipal(formattedValue);
+    }
+  };
+
+  const handleTermMonthsChange = (event) => {
+    setTermMonths(Number(event.target.value));
+  };
+
+  const startDateRef = useRef(null);
+  const handleStartDateChange = (event) => {
+    setStartDate(event.target.value);
+  };
+
+  const handleStartTerm = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setStartTerm(formattedValue);
+    }
+  };
+
+  const handleEndTermm = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setEndTermm(formattedValue);
+    }
+  };
+
+  const handleMonthlyPayment = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setMonthlyPayment(formattedValue);
+    }
+  };
 
   // Check if it's a leap year
   const isLeapYear = (year) =>
@@ -24,11 +70,6 @@ const AdvanceForm = () => {
 
   // Handle change for inputs that update state
   const handleInputChange = (setter) => (event) => setter(event.target.value);
-  
-  const handleDurationChange = (event) => {
-    setTermMonths(Number(event.target.value));
-  };
-
 
   // Handle calculation of loan details
   const calculateRefinanceDetails = (e) => {
@@ -113,60 +154,73 @@ const AdvanceForm = () => {
   return (
     <div className="bg-white rounded-b-lg px-6 py-4">
       <h2 className="text-xl font-bold">คำนวณดอกเบี้ยแบบมีหลายอัตราดอกเบี้ย</h2>
+      <div className="mt-4"></div>
       <form
         id="loan-form-advance"
-        className="mt-4"
+        className="space-y-4"
         onSubmit={calculateRefinanceDetails}
       >
         {/* Principal */}
         <div className="mt-4">
           <label
-            htmlFor="principal-advance"
+            htmlFor="Loan-Amount"
             className="block text-l font-medium text-gray-700"
           >
             จำนวนเงินที่กู้ (บาท)
           </label>
           <input
-            type="number"
-            id="principal-advance"
+            type="text"
+            name="Loan-Amount"
             className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-            placeholder="จำนวนเงินที่กู้ (บาท)"
+            onChange={handlePrincipalChange}
             value={principal}
-            onChange={handleInputChange(setPrincipal)}
+            placeholder="ใส่จำนวนเงินกู้"
           />
         </div>
 
         {/* Term Months and Start Date */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
-        <div className="relative">
-              <label
-                htmlFor="payment-duration"
-                className="block text-l font-medium text-gray-700"
-              >
-                เลือกระยะเวลาในการผ่อน
-              </label>
-              <select
-                id="payment-duration"
-                name="payment-duration"
-                onChange={handleDurationChange}
-                value={termMonths}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md"
-              >
-                {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
-                  <option key={year} value={year}>
-                    {year} ปี
-                  </option>
-                ))}
-              </select>
-            </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="start-date-advance">เลือกวันที่ (วัน/เดือน/ปี)</label>
+            <label
+              htmlFor="payment-duration"
+              className="block text-l font-medium text-gray-700"
+            >
+              เลือกระยะเวลาในการผ่อน
+            </label>
+            <select
+              id="payment-duration"
+              name="payment-duration"
+              onChange={handleTermMonthsChange}
+              value={termMonths}
+              className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md"
+            >
+              {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
+                <option key={year} value={year}>
+                  {year} ปี
+                </option>
+              ))}
+            </select>
+          </div>
+          <div
+            className="cursor-pointer"
+            onClick={() =>
+              startDateRef.current && startDateRef.current.showPicker?.()
+            }
+          >
+            <label
+              htmlFor="startDate"
+              className="block text-l font-medium text-gray-700"
+            >
+              เลือกวันที่ (วัน/เดือน/ปี)
+            </label>
             <input
               type="date"
-              id="start-date-advance"
-              className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md"
+              id="startDate"
+              name="startDate"
               value={startDate}
-              onChange={handleInputChange(setStartDate)}
+              ref={startDateRef}
+              onChange={handleStartDateChange}
+              className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md"
             />
           </div>
         </div>
@@ -174,11 +228,17 @@ const AdvanceForm = () => {
         {/* Interest Rates, Start Term, End Term, and Monthly Payments */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mt-4">
           <div>
-            <label>งวดที่</label>
+            <label
+              htmlFor="startTerm"
+              className="block text-l font-medium text-gray-700"
+            >
+              งวดที่
+            </label>
             {startTerm.map((term, index) => (
               <input
                 key={`startTerm-${index}`}
                 type="number"
+                name="startTerm"
                 value={term}
                 placeholder="งวดที่เริ่ม"
                 onChange={(e) => {
@@ -186,17 +246,23 @@ const AdvanceForm = () => {
                   updatedStartTerm[index] = e.target.value;
                   setStartTerm(updatedStartTerm);
                 }}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
               />
             ))}
           </div>
 
           <div>
-            <label>ถึงงวดที่</label>
+            <label
+              htmlFor="endTerm"
+              className="block text-l font-medium text-gray-700"
+            >
+              ถึงงวดที่
+            </label>
             {endTerm.map((term, index) => (
               <input
                 key={`endTerm-${index}`}
                 type="number"
+                name="endTerm"
                 value={term}
                 placeholder="ถึงงวดที่"
                 onChange={(e) => {
@@ -204,35 +270,47 @@ const AdvanceForm = () => {
                   updatedEndTerm[index] = e.target.value;
                   setEndTerm(updatedEndTerm);
                 }}
-                    className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
               />
             ))}
           </div>
 
           <div>
-            <label>อัตราดอกเบี้ย</label>
+            <label
+              htmlFor="rate"
+              className="block text-l font-medium text-gray-700"
+            >
+              อัตราดอกเบี้ย
+            </label>
             {interestRates.map((rate, index) => (
               <input
                 key={`interestRate-${index}`}
                 type="number"
+                name="rate"
                 value={rate}
-                placeholder="อัตราดอกเบี้ย (%)"
+                placeholder="อัตราดอกเบี้ย"
                 onChange={(e) => {
                   const updatedRates = [...interestRates];
                   updatedRates[index] = e.target.value;
                   setInterestRates(updatedRates);
                 }}
-                  className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
               />
             ))}
           </div>
 
           <div>
-            <label>จำนวนเงินที่จะผ่อน</label>
+            <label
+              htmlFor="monthPay"
+              className="block text-l font-medium text-gray-700"
+            >
+              จำนวนเงินที่จะผ่อน
+            </label>
             {monthlyPayment.map((payment, index) => (
               <input
                 key={`monthlyPayment-${index}`}
                 type="number"
+                name="monthPay"
                 value={payment}
                 placeholder="จำนวนเงินที่จะผ่อน"
                 onChange={(e) => {
@@ -240,7 +318,7 @@ const AdvanceForm = () => {
                   updatedPayments[index] = e.target.value;
                   setMonthlyPayment(updatedPayments);
                 }}
-                 className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
               />
             ))}
           </div>
@@ -249,15 +327,16 @@ const AdvanceForm = () => {
         {/* Submit and Reset Buttons */}
         <div className="mt-4">
           <button
-            type="submit"
-            className="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto"
+            type="button"
+            onClick={calculateRefinanceDetails}
+            className="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto mr-2"
           >
             คำนวณ
           </button>
           <button
             type="button"
-            className="inline-block w-full rounded-lg bg-red-500 px-5 py-3 font-medium text-white sm:w-auto mt-2 ml-2"
             onClick={resetFields}
+            className="inline-block w-full rounded-lg bg-red-500 px-5 py-3 font-medium text-white sm:w-auto"
           >
             Reset
           </button>
