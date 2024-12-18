@@ -1,12 +1,18 @@
 import PropTypes from "prop-types";
-import BasicForm from "./BasicForm";
+import { useNavigate } from "react-router-dom";
 
 const ShowBank = ({ data }) => {
   const { loanAmount, interestRate, paymentDuration, monthlyPayment } = data;
 
-  if (!loanAmount || !interestRate || !paymentDuration || !monthlyPayment) {
-    return console.error();
-  }
+  const navigate = useNavigate();
+
+  const handleNavigateToTable = () => {
+    if (!loanAmount || !interestRate || !paymentDuration || !monthlyPayment) {
+      console.error("Incomplete data");
+      return;
+    }
+    navigate("/table");
+  };
 
   const testCalculate = (
     Number(monthlyPayment.replace(/,/g, "")) *
@@ -34,9 +40,12 @@ const ShowBank = ({ data }) => {
             ดอกเบี้ยที่จ่ายไป: <span id="totalInterest">-</span>
           </label>
           <br />
-          <a className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500">
+          <button
+            onClick={handleNavigateToTable}
+            className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+          >
             ดูเพิ่มเติม
-          </a>
+          </button>
         </div>
       </div>
       <div className="h-42 rounded-lg bg-gray-200 p-0 mb-4">
@@ -56,9 +65,12 @@ const ShowBank = ({ data }) => {
             ดอกเบี้ยที่จ่ายไป: <span id="totalInterest2">-</span>
           </label>
           <br />
-          <a className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500">
+          <button
+            onClick={handleNavigateToTable}
+            className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+          >
             ดูเพิ่มเติม
-          </a>
+          </button>
         </div>
       </div>
     </div>
