@@ -157,7 +157,7 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
                 htmlFor="interestRate"
                 className="block text-l font-medium text-gray-700"
               >
-                ใอัตราดอกเบี้ย (%)
+                อัตราดอกเบี้ย (%)
               </label>
               <input
                 type="number"

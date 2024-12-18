@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import InputForm from "./components/InputForm";
 import Navbar from "./components/Navbar";
 import ShowBank from "./components/ShowBank";

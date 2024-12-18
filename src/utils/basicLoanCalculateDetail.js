@@ -22,7 +22,7 @@ export const basicLoanCalculateDetail = (data) => {
   let principalRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
   let monthlyPaymentAmount = parseFloat(monthlyPayment.replace(/,/g, "")) || 0;
   const termMonthDuration = paymentDuration * 12;
-  const interestRateMonthly = interestRate / 100 / 12;
+  const interestRateMonthly = interestRate / 100;
   const initialStartDate = new Date(startDate);
   const details = [];
   let monthsElapsed = 0;
@@ -60,6 +60,7 @@ export const basicLoanCalculateDetail = (data) => {
   return details;
 };
 
+//
 export const calculateThreeYearSummary = (details) => {
   const threeYears = 3 * 12;
   const limitedDetails = details.slice(0, threeYears);
