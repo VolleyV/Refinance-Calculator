@@ -78,3 +78,22 @@ export const calculateThreeYearSummary = (details) => {
     totalInterestThreeYears,
   };
 };
+
+export const toLastSummary = (details) => {
+  const totalMonths = details.length;
+  const totalLastYears = Math.floor(totalMonths / 12);
+  const remainingMonths = totalMonths % 12;
+
+  const totalLastInterest = details.reduce(
+    (sum, item) => sum + item.interest,
+    0
+  );
+  const lastPaymentDate = details[details.length - 1].date;
+
+  return {
+    totalLastYears,
+    remainingMonths,
+    totalLastInterest,
+    lastPaymentDate,
+  };
+};

@@ -20,42 +20,85 @@ const BasicTable = ({ data }) => {
 
   // ฟังก์ชันเปลี่ยนหน้า
   const goToNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
+      });
+    }
   };
 
   const goToPreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
+      });
+    }
   };
 
   return (
-    <div className="container mx-auto mt-10">
+    <div className="container mx-auto mt-10 px-4">
       <h2 className="text-lg font-bold">ตารางการคำนวณ</h2>
       {currentItems.length > 0 ? (
-        <div>
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-700">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+            <thead className="ltr:text-left rtl:text-right">
               <tr>
-                <th className="border px-4 py-2">เดือน</th>
-                <th className="border px-4 py-2">วันที่</th>
-                <th className="border px-4 py-2">อัตราดอกเบี้ย</th>
-                <th className="border px-4 py-2">ผ่อนต่อเดือน</th>
-                <th className="border px-4 py-2">ส่วนที่จ่ายต้น</th>
-                <th className="border px-4 py-2">ดอกเบี้ย</th>
-                <th className="border px-4 py-2">ยอดคงเหลือ</th>
+                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                  งวดที่
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                  วันที่
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                  อัตราดอกเบี้ย
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                  ผ่อนต่อเดือน
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                  เงินต้น
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                  ดอกเบี้ย
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                  ยอดคงเหลือ
+                </th>
               </tr>
             </thead>
             <tbody>
               {currentItems.map((detail, index) => (
-                <tr key={index}>
-                  <td>{detail.month}</td>
-                  <td>{detail.date}</td>
-                  <td>{parseFloat(detail.interestRate).toLocaleString()}%</td>
-                  <td>{parseFloat(detail.monthlyPayment).toLocaleString()}</td>
-                  <td>
+                <tr
+                  key={index}
+                  className={`${
+                    index % 2 === 0
+                      ? "bg-gray-100 dark:bg-gray-800"
+                      : "bg-white dark:bg-gray-900"
+                  }`}
+                >
+                  <td className="border px-6 py-4 text-center">
+                    {detail.month}
+                  </td>
+                  <td className="border px-6 py-4 text-center">
+                    {detail.date}
+                  </td>
+                  <td className="border px-6 py-4 text-center">
+                    {parseFloat(detail.interestRate).toLocaleString()}%
+                  </td>
+                  <td className="border px-6 py-4 text-center">
+                    {parseFloat(detail.monthlyPayment).toLocaleString()}
+                  </td>
+                  <td className="border px-6 py-4 text-center">
                     {parseFloat(detail.principalPortion).toLocaleString()}
                   </td>
-                  <td>{parseFloat(detail.interest).toLocaleString()}</td>
-                  <td>
+                  <td className="border px-6 py-4 text-center">
+                    {parseFloat(detail.interest).toLocaleString()}
+                  </td>
+                  <td className="border px-6 py-4 text-center">
                     {parseFloat(detail.remainingPrincipal).toLocaleString()}
                   </td>
                 </tr>

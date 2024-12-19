@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import InputForm from "./components/InputForm";
 import Navbar from "./components/Navbar";
 import ShowBank from "./components/ShowBank";
@@ -6,6 +5,7 @@ import BasicTable from "./components/BasicTable";
 import {
   calculateThreeYearSummary,
   basicLoanCalculateDetail,
+  toLastSummary,
 } from "./utils/basicLoanCalculateDetail";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -29,7 +29,10 @@ function App() {
 
   useEffect(() => {
     const handleUnload = () => {
-      clearFormData();
+      if (location.pathname === "/") {
+        // ลบข้อมูลเมื่อผู้ใช้อยู่ที่หน้าแรก
+        clearFormData();
+      }
     };
 
     window.addEventListener("beforeunload", handleUnload);
@@ -38,13 +41,18 @@ function App() {
     return () => {
       window.removeEventListener("beforeunload", handleUnload);
     };
-  }, []);
+  }, [location]);
 
   const calculateSummary = () => {
     if (formData) {
       try {
         const calculationDetails = basicLoanCalculateDetail(formData);
-        return calculateThreeYearSummary(calculationDetails);
+        const threeYearSummary = calculateThreeYearSummary(calculationDetails);
+        const lastSummary = toLastSummary(calculationDetails);
+        return {
+          ...threeYearSummary,
+          ...lastSummary,
+        };
       } catch (error) {
         console.error("Error calculating summary:", error);
       }
@@ -52,7 +60,7 @@ function App() {
     return null;
   };
 
-  const threeYearSummary = calculateSummary();
+  const summary = calculateSummary();
 
   return (
     <Router>
@@ -70,7 +78,7 @@ function App() {
                 />
                 {formData && (
                   <div>
-                    <ShowBank threeYearSummary={threeYearSummary} />
+                    <ShowBank CalculateSummary={summary} />
                   </div>
                 )}
               </div>

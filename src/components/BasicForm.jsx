@@ -31,7 +31,11 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
 
   const handleInterestRateChange = (event) => {
     const { value } = event.target;
-    setInterestRate(Number(value));
+    if (value === "") {
+      setInterestRate("");
+    } else {
+      setInterestRate(Number(value)); // หากมีค่าก็แปลงเป็นตัวเลข
+    }
   };
 
   const handleMonthlyPaymentChange = (event) => {
