@@ -3,7 +3,7 @@ import BasicForm from "./BasicForm";
 import AdvanceForm from "./AdvanceForm";
 import PropTypes from "prop-types";
 
-const InputForm = ({ onSubmit }) => {
+const InputForm = ({ onSubmit, onReset, initialInput }) => {
   const [activeTab, setActiveTab] = useState("basic");
 
   const switchTab = (tab) => {
@@ -33,7 +33,13 @@ const InputForm = ({ onSubmit }) => {
           ข้อมูลขั้นสูง
         </button>
       </div>
-      {activeTab === "basic" && <BasicForm onSubmit={onSubmit} />}
+      {activeTab === "basic" && (
+        <BasicForm
+          onSubmit={onSubmit}
+          onReset={onReset}
+          initialInput={initialInput}
+        />
+      )}
       {activeTab === "advanced" && <AdvanceForm />}
     </div>
   );
@@ -41,6 +47,8 @@ const InputForm = ({ onSubmit }) => {
 
 InputForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  onReset: PropTypes.func.isRequired,
+  initialInput: PropTypes.object,
 };
 
 export default InputForm;

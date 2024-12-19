@@ -1,24 +1,21 @@
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
-const ShowBank = ({ data }) => {
-  const { loanAmount, interestRate, paymentDuration, monthlyPayment } = data;
-
+const ShowBank = ({ threeYearSummary }) => {
   const navigate = useNavigate();
 
   const handleNavigateToTable = () => {
-    if (!loanAmount || !interestRate || !paymentDuration || !monthlyPayment) {
+    if (!threeYearSummary) {
       console.error("Incomplete data");
       return;
     }
     navigate("/table");
   };
 
-  const testCalculate = (
-    Number(monthlyPayment.replace(/,/g, "")) *
-    paymentDuration *
-    12
-  ).toLocaleString();
+  const totalPrincipal =
+    threeYearSummary.principalAfterThreeYears.toLocaleString();
+  const totalInterest =
+    threeYearSummary.totalInterestThreeYears.toLocaleString();
 
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8 mt-10">
@@ -32,12 +29,13 @@ const ShowBank = ({ data }) => {
           </label>
           <br />
           <label>
-            เงินกู้คงเหลือ: {testCalculate}
+            เงินกู้คงเหลือ: {totalPrincipal}
             <span id="remainingPrincipal">-</span>
           </label>
           <br />
           <label>
-            ดอกเบี้ยที่จ่ายไป: <span id="totalInterest">-</span>
+            ดอกเบี้ยที่จ่ายไป: {totalInterest}
+            <span id="totalInterest">-</span>
           </label>
           <br />
           <button
@@ -78,13 +76,9 @@ const ShowBank = ({ data }) => {
 };
 
 ShowBank.propTypes = {
-  data: PropTypes.shape({
-    loanAmount: PropTypes.string.isRequired,
-    interestRate: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-      .isRequired,
-    paymentDuration: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-      .isRequired,
-    monthlyPayment: PropTypes.string.isRequired,
+  threeYearSummary: PropTypes.shape({
+    principalAfterThreeYears: PropTypes.number.isRequired,
+    totalInterestThreeYears: PropTypes.number.isRequired,
   }),
 };
 

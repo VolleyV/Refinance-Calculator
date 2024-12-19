@@ -33,50 +33,73 @@ const AdvanceForm = () => {
   // Handle calculation of loan details
   const calculateRefinanceDetails = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-
-    if (!principal || !termMonths || !startDate) {
+  
+    if (!principal || !startDate) {
       alert("กรุณากรอกข้อมูลให้ครบถ้วน");
       return;
     }
-
+  
     let principalRemaining = parseFloat(principal) || 0;
     const totalTermMonths = parseFloat(termMonths) * 12 || 0; // Convert years to months
     const initialStartDate = new Date(startDate);
     const details = [];
     let monthsElapsed = 0;
-
-    while (monthsElapsed < totalTermMonths && principalRemaining > 0) {
-      const currentYear = initialStartDate.getFullYear();
-      const currentMonth = initialStartDate.getMonth();
+  
+    // Initialize default values for the first term
+    let currentInterestRate = parseFloat(interestRates[0]) / 100 || 0.025; // Default 2.5%
+    let currentMonthlyPayment = parseFloat(monthlyPayment[0]) || 0;
+  
+    // Determine "ถึงงวดที่" (endTerm)
+    const maxEndTerm = totalTermMonths > 0 ? totalTermMonths : Infinity;
+    const untilTerm = parseInt(endTerm[endTerm.length - 1]) || maxEndTerm;
+  
+    if (currentMonthlyPayment === 0) {
+      alert("จำนวนเงินผ่อนรายเดือนต้องมากกว่า 0");
+      return;
+    }
+  
+    // Calculate until principalRemaining is 0 or untilTerm is reached
+    while (principalRemaining > 0 && monthsElapsed < untilTerm) {
+      const dateClone = new Date(initialStartDate);
+      dateClone.setMonth(initialStartDate.getMonth() + monthsElapsed);
+  
+      const currentYear = dateClone.getFullYear();
+      const currentMonth = dateClone.getMonth();
       const daysInCurrentMonth = daysInMonth(currentYear, currentMonth);
       const daysInCurrentYear = isLeapYear(currentYear) ? 366 : 365;
-
-      // Update interest rate and monthly payment based on terms
-      let interestRate = parseFloat(interestRates[0]) / 100 || 0.025; // Default to the first rate or 2.5%
-      let monthlyPaymentAmount = parseFloat(monthlyPayment[0]) || 0;
-
+  
+      // Update interest rate and monthly payment if within a specified range
       for (let i = 0; i < startTerm.length; i++) {
         const start = parseInt(startTerm[i]) || 0;
         const end = parseInt(endTerm[i]) || 0;
+  
+        // If current month falls within a specified range, update values
         if (monthsElapsed + 1 >= start && monthsElapsed + 1 <= end) {
-          interestRate = parseFloat(interestRates[i]) / 100 || interestRate;
-          monthlyPaymentAmount =
-            parseFloat(monthlyPayment[i]) || monthlyPaymentAmount;
+          currentInterestRate =
+            parseFloat(interestRates[i]) / 100 || currentInterestRate;
+          currentMonthlyPayment =
+            parseFloat(monthlyPayment[i]) || currentMonthlyPayment;
           break;
         }
       }
-
+  
       // Calculate interest and principal portions
       const interest =
-        (principalRemaining * interestRate * daysInCurrentMonth) /
+        (principalRemaining * currentInterestRate * daysInCurrentMonth) /
         daysInCurrentYear;
-      const principalPortion = Math.max(0, monthlyPaymentAmount - interest);
+      const principalPortion = Math.max(0, currentMonthlyPayment - interest);
+  
+      if (principalPortion <= 0) {
+        alert("จำนวนเงินผ่อนรายเดือนต่ำเกินไปสำหรับการลดเงินต้น");
+        return;
+      }
+  
       principalRemaining = Math.max(0, principalRemaining - principalPortion);
-
+  
       // Store details for the month
       details.push({
         month: monthsElapsed + 1,
-        date: initialStartDate.toLocaleDateString("th-TH", {
+        date: dateClone.toLocaleDateString("th-TH", {
           year: "numeric",
           month: "short",
           day: "2-digit",
@@ -84,19 +107,19 @@ const AdvanceForm = () => {
         interest: interest.toFixed(2),
         principalPortion: principalPortion.toFixed(2),
         remainingPrincipal: principalRemaining.toFixed(2),
-        monthlyPayment: monthlyPaymentAmount.toFixed(2),
-        interestRate: (interestRate * 100).toFixed(2),
+        monthlyPayment: currentMonthlyPayment.toFixed(2),
+        interestRate: (currentInterestRate * 100).toFixed(2),
       });
-
-      // Move to the next month
-      initialStartDate.setMonth(initialStartDate.getMonth() + 1);
+  
       monthsElapsed++;
     }
-
+  
     // Update state with calculation results
     setCalculationDetails(details);
     setRemainingMonths(monthsElapsed);
   };
+  
+  
 
   const resetFields = () => {
     setPrincipal("");

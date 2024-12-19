@@ -1,74 +1,15 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-
+import { basicLoanCalculateDetail } from "../utils/basicLoanCalculateDetail.js";
 const BasicTable = ({ data }) => {
   if (!data) {
     return <p>ไม่มีข้อมูล กรุณากลับไปกรอกแบบฟอร์มก่อน</p>;
   }
 
-  const {
-    loanAmount,
-    startDate,
-    interestRate,
-    paymentDuration,
-    monthlyPayment,
-  } = data;
-
   const itemsPerPage = 36; // จำนวนงวดต่อหน้า
   const [currentPage, setCurrentPage] = useState(1);
 
-  // คำนวณค่าตาราง
-  const calculationDetails = (() => {
-    const isLeapYear = (year) =>
-      (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-
-    const daysInYear = (year) => (isLeapYear(year) ? 366 : 365);
-
-    const daysInMonth = (year, month) => {
-      const daysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-      if (month === 1 && isLeapYear(year)) return 29;
-      return daysInMonths[month];
-    };
-
-    let principalRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
-    let monthlyPaymentAmount =
-      parseFloat(monthlyPayment.replace(/,/g, "")) || 0;
-    const termMonthDuration = paymentDuration * 12;
-    const interestRateMonthly = interestRate / 100 / 12;
-    const initialStartDate = new Date(startDate);
-    const details = [];
-    let monthsElapsed = 0;
-
-    while (monthsElapsed < termMonthDuration && principalRemaining > 0) {
-      const currentYear = initialStartDate.getFullYear();
-      const currentMonth = initialStartDate.getMonth();
-      const daysInCurrentMonth = daysInMonth(currentYear, currentMonth);
-      const daysInCurrentYear = daysInYear(currentYear);
-
-      const interest =
-        (principalRemaining * interestRateMonthly * daysInCurrentMonth) /
-        daysInCurrentYear;
-      const principalPortion = Math.max(0, monthlyPaymentAmount - interest);
-      principalRemaining = Math.max(0, principalRemaining - principalPortion);
-
-      details.push({
-        month: monthsElapsed + 1,
-        date: initialStartDate.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "2-digit",
-        }),
-        interest: interest.toFixed(2),
-        principalPortion: principalPortion.toFixed(2),
-        remainingPrincipal: principalRemaining.toFixed(2),
-        monthlyPayment: monthlyPaymentAmount.toFixed(2),
-        interestRate: interestRate.toFixed(2),
-      });
-      initialStartDate.setMonth(initialStartDate.getMonth() + 1);
-      monthsElapsed++;
-    }
-    return details;
-  })();
+  const calculationDetails = basicLoanCalculateDetail(data);
 
   // คำนวณข้อมูลสำหรับหน้า
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -108,11 +49,15 @@ const BasicTable = ({ data }) => {
                 <tr key={index}>
                   <td>{detail.month}</td>
                   <td>{detail.date}</td>
-                  <td>{detail.interestRate}%</td>
-                  <td>{detail.monthlyPayment}</td>
-                  <td>{detail.principalPortion}</td>
-                  <td>{detail.interest}</td>
-                  <td>{detail.remainingPrincipal}</td>
+                  <td>{parseFloat(detail.interestRate).toLocaleString()}%</td>
+                  <td>{parseFloat(detail.monthlyPayment).toLocaleString()}</td>
+                  <td>
+                    {parseFloat(detail.principalPortion).toLocaleString()}
+                  </td>
+                  <td>{parseFloat(detail.interest).toLocaleString()}</td>
+                  <td>
+                    {parseFloat(detail.remainingPrincipal).toLocaleString()}
+                  </td>
                 </tr>
               ))}
             </tbody>

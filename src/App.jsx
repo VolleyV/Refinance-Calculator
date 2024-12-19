@@ -1,8 +1,12 @@
+/* eslint-disable no-unused-vars */
 import InputForm from "./components/InputForm";
 import Navbar from "./components/Navbar";
 import ShowBank from "./components/ShowBank";
 import BasicTable from "./components/BasicTable";
-
+import {
+  calculateThreeYearSummary,
+  basicLoanCalculateDetail,
+} from "./utils/basicLoanCalculateDetail";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -24,12 +28,31 @@ function App() {
   };
 
   useEffect(() => {
-    // อ่านข้อมูลจาก localStorage เมื่อโหลดหน้าใหม่
-    const storedData = localStorage.getItem("formData");
-    if (storedData) {
-      setFormData(JSON.parse(storedData));
-    }
+    const handleUnload = () => {
+      clearFormData();
+    };
+
+    window.addEventListener("beforeunload", handleUnload);
+
+    // ถอด Event Listener เมื่อคอมโพเนนต์ถูกถอด
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload);
+    };
   }, []);
+
+  const calculateSummary = () => {
+    if (formData) {
+      try {
+        const calculationDetails = basicLoanCalculateDetail(formData);
+        return calculateThreeYearSummary(calculationDetails);
+      } catch (error) {
+        console.error("Error calculating summary:", error);
+      }
+    }
+    return null;
+  };
+
+  const threeYearSummary = calculateSummary();
 
   return (
     <Router>
@@ -40,16 +63,14 @@ function App() {
             path="/"
             element={
               <div className="container mx-auto px-4">
-                <InputForm onSubmit={handleFormSubmit} />
+                <InputForm
+                  onSubmit={handleFormSubmit}
+                  onReset={clearFormData}
+                  initialInput={formData}
+                />
                 {formData && (
                   <div>
-                    <ShowBank data={formData} />
-                    <button
-                      onClick={clearFormData}
-                      className="mt-4 px-4 py-2 bg-red-500 text-white rounded shadow"
-                    >
-                      ล้างข้อมูล
-                    </button>
+                    <ShowBank threeYearSummary={threeYearSummary} />
                   </div>
                 )}
               </div>
