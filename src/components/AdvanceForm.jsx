@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const AdvanceForm = () => {
-  const [principal, setPrincipal] = useState(""); // Principal loan amount
+  const [loanAmount, setLoanAmount] = useState(""); // loanAmount loan amount
   const [monthlyPayment, setMonthlyPayment] = useState(["", "", "", "", ""]); // Array for monthly payments
   const [termMonths, setTermMonths] = useState(""); // Loan term in years
   const [startDate, setStartDate] = useState(""); // Loan start date
@@ -34,12 +34,12 @@ const AdvanceForm = () => {
   const calculateRefinanceDetails = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
   
-    if (!principal || !startDate) {
+    if (!loanAmount || !startDate) {
       alert("กรุณากรอกข้อมูลให้ครบถ้วน");
       return;
     }
   
-    let principalRemaining = parseFloat(principal) || 0;
+    let loanAmountRemaining = parseFloat(loanAmount) || 0;
     const totalTermMonths = parseFloat(termMonths) * 12 || 0; // Convert years to months
     const initialStartDate = new Date(startDate);
     const details = [];
@@ -58,8 +58,8 @@ const AdvanceForm = () => {
       return;
     }
   
-    // Calculate until principalRemaining is 0 or untilTerm is reached
-    while (principalRemaining > 0 && monthsElapsed < untilTerm) {
+    // Calculate until loanAmountRemaining is 0 or untilTerm is reached
+    while (loanAmountRemaining > 0 && monthsElapsed < untilTerm) {
       const dateClone = new Date(initialStartDate);
       dateClone.setMonth(initialStartDate.getMonth() + monthsElapsed);
   
@@ -83,18 +83,18 @@ const AdvanceForm = () => {
         }
       }
   
-      // Calculate interest and principal portions
+      // Calculate interest and loanAmount portions
       const interest =
-        (principalRemaining * currentInterestRate * daysInCurrentMonth) /
+        (loanAmountRemaining * currentInterestRate * daysInCurrentMonth) /
         daysInCurrentYear;
-      const principalPortion = Math.max(0, currentMonthlyPayment - interest);
+      const loanAmountPortion = Math.max(0, currentMonthlyPayment - interest);
   
-      if (principalPortion <= 0) {
+      if (loanAmountPortion <= 0) {
         alert("จำนวนเงินผ่อนรายเดือนต่ำเกินไปสำหรับการลดเงินต้น");
         return;
       }
   
-      principalRemaining = Math.max(0, principalRemaining - principalPortion);
+      loanAmountRemaining = Math.max(0, loanAmountRemaining - loanAmountPortion);
   
       // Store details for the month
       details.push({
@@ -105,8 +105,8 @@ const AdvanceForm = () => {
           day: "2-digit",
         }),
         interest: interest.toFixed(2),
-        principalPortion: principalPortion.toFixed(2),
-        remainingPrincipal: principalRemaining.toFixed(2),
+        loanAmountPortion: loanAmountPortion.toFixed(2),
+        remainingloanAmount: loanAmountRemaining.toFixed(2),
         monthlyPayment: currentMonthlyPayment.toFixed(2),
         interestRate: (currentInterestRate * 100).toFixed(2),
       });
@@ -122,7 +122,7 @@ const AdvanceForm = () => {
   
 
   const resetFields = () => {
-    setPrincipal("");
+    setLoanAmount("");
     setMonthlyPayment(["", "", "", "", ""]);
     setTermMonths("");
     setStartDate("");
@@ -141,21 +141,21 @@ const AdvanceForm = () => {
         className="mt-4"
         onSubmit={calculateRefinanceDetails}
       >
-        {/* Principal */}
+        {/* loanAmount */}
         <div className="mt-4">
           <label
-            htmlFor="principal-advance"
+            htmlFor="loanAmount-advance"
             className="block text-l font-medium text-gray-700"
           >
             จำนวนเงินที่กู้ (บาท)
           </label>
           <input
             type="number"
-            id="principal-advance"
+            id="loanAmount-advance"
             className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
             placeholder="จำนวนเงินที่กู้ (บาท)"
-            value={principal}
-            onChange={handleInputChange(setPrincipal)}
+            value={loanAmount}
+            onChange={handleInputChange(setLoanAmount)}
           />
         </div>
 
@@ -311,8 +311,8 @@ const AdvanceForm = () => {
                   <td>{detail.month}</td>
                   <td>{detail.date}</td>
                   <td>{detail.interest}</td>
-                  <td>{detail.principalPortion}</td>
-                  <td>{detail.remainingPrincipal}</td>
+                  <td>{detail.loanAmountPortion}</td>
+                  <td>{detail.remainingloanAmount}</td>
                   <td>{detail.monthlyPayment}</td>
                   <td>{detail.interestRate}%</td>
                 </tr>
