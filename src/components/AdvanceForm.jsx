@@ -10,6 +10,8 @@ const AdvanceForm = () => {
   const [endTerm, setEndTerm] = useState(["", "", "", "", ""]); // Array for end terms
   const [calculationDetails, setCalculationDetails] = useState([]); // Array to hold calculation results
   const [remainingMonths, setRemainingMonths] = useState(0); // Remaining months for loan
+  const cleanNumber = (value) => parseFloat(value.replace(/,/g, "")) || 0;
+
 
   // Check if it's a leap year
   const isLeapYear = (year) =>
@@ -23,20 +25,75 @@ const AdvanceForm = () => {
   };
 
   // Handle change for inputs that update state
-  const handleInputChange = (setter) => (event) => setter(event.target.value);
-  
-  const handleDurationChange = (event) => {
-    setTermMonths(Number(event.target.value));
-  };
-    const handleLoanAmountChange = (event) => {
+  const handleLoanAmountChange = (event) => {
     const { value } = event.target;
-    const rawValue = value.replace(/[^0-9]/g, "");
-    if (Number(rawValue) <= 999_000_000) {
-      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      setLoanAmount(formattedValue);
+
+    // Remove all non-numeric characters except for the decimal point
+    const rawValue = value.replace(/[^0-9.]/g, "");
+
+    // Check if the value is a valid number and non-negative
+    const numericValue = parseFloat(rawValue);
+    if (!isNaN(numericValue) && numericValue >= 0) {
+      // Limit the value to 999,000,000 or less
+      if (numericValue <= 999_000_000) {
+        // Format the number with commas
+        const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        setLoanAmount(formattedValue); // Set formatted value in state
+      }
+    } else {
+      // Optionally, handle invalid input (negative or non-numeric values)
+      alert("Negative values or invalid input are not allowed.");
     }
   };
 
+  const handleStartDateChange = (setter) => (event) =>
+    setter(event.target.value);
+
+  const handleInterestRateChange = (index, value) => {
+    const rawValue = value.replace(/[^0-9.]/g, ""); // Allow only numbers and decimal point
+    const numericValue = parseFloat(rawValue);
+
+    if (!isNaN(numericValue) && numericValue >= 0) {
+      setInterestRates((prev) => {
+        const updated = [...prev];
+        updated[index] = rawValue;
+        return updated;
+      });
+    } else if (rawValue === "") {
+      setInterestRates((prev) => {
+        const updated = [...prev];
+        updated[index] = ""; // Clear input when empty
+        return updated;
+      });
+    } else {
+      alert("Invalid input. Only positive numbers are allowed.");
+    }
+  };
+
+  const handleMonthlyPaymentChange = (index, value) => {
+    const rawValue = value.replace(/[^0-9.]/g, ""); // Allow only numbers and decimal point
+    const numericValue = parseFloat(rawValue);
+
+    if (!isNaN(numericValue) && numericValue >= 0) {
+      setMonthlyPayment((prev) => {
+        const updated = [...prev];
+        updated[index] = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
+        return updated;
+      });
+    } else if (rawValue === "") {
+      setMonthlyPayment((prev) => {
+        const updated = [...prev];
+        updated[index] = ""; // Clear input when empty
+        return updated;
+      });
+    } else {
+      alert("Invalid input. Only positive numbers are allowed.");
+    }
+  };
+
+  const handleDurationChange = (event) => {
+    setTermMonths(Number(event.target.value));
+  };
 
   // Handle calculation of loan details
   const calculateRefinanceDetails = (e) => {
@@ -47,17 +104,16 @@ const AdvanceForm = () => {
       return;
     }
   
-    let loanAmountRemaining = parseFloat(loanAmount) || 0;
+    let loanAmountRemaining = cleanNumber(loanAmount); // Cleaned value
     const totalTermMonths = parseFloat(termMonths) * 12 || 0; // Convert years to months
     const initialStartDate = new Date(startDate);
     const details = [];
     let monthsElapsed = 0;
   
     // Initialize default values
-    let currentInterestRate = parseFloat(interestRates[0]) / 100 || 0.025; // Default 2.5%
-    let currentMonthlyPayment = parseFloat(monthlyPayment[0]) || 0;
+    let currentInterestRate = cleanNumber(interestRates[0]) / 100 || 0.025; // Default 2.5%
+    let currentMonthlyPayment = cleanNumber(monthlyPayment[0]);
   
-    // Determine "ถึงงวดที่" (endTerm)
     const maxEndTerm = totalTermMonths > 0 ? totalTermMonths : Infinity;
     const untilTerm = parseInt(endTerm[endTerm.length - 1]) || maxEndTerm;
   
@@ -84,9 +140,9 @@ const AdvanceForm = () => {
   
         if (monthsElapsed + 1 >= start && monthsElapsed + 1 <= end) {
           currentInterestRate =
-            parseFloat(interestRates[i]) / 100 || currentInterestRate;
+            cleanNumber(interestRates[i]) / 100 || currentInterestRate;
           currentMonthlyPayment =
-            parseFloat(monthlyPayment[i]) || currentMonthlyPayment;
+            cleanNumber(monthlyPayment[i]) || currentMonthlyPayment;
           foundRange = true;
           break; // Stop looking once a valid range is found
         }
@@ -109,7 +165,10 @@ const AdvanceForm = () => {
         return;
       }
   
-      loanAmountRemaining = Math.max(0, loanAmountRemaining - loanAmountPortion);
+      loanAmountRemaining = Math.max(
+        0,
+        loanAmountRemaining - loanAmountPortion
+      );
   
       // Store details for the month
       details.push({
@@ -133,8 +192,6 @@ const AdvanceForm = () => {
     setCalculationDetails(details);
     setRemainingMonths(monthsElapsed);
   };
-  
-  
   
 
   const resetFields = () => {
@@ -166,46 +223,48 @@ const AdvanceForm = () => {
             จำนวนเงินที่กู้ (บาท)
           </label>
           <input
-            type="number"
+            type="text"
             id="loanAmount-advance"
             className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
             placeholder="จำนวนเงินที่กู้ (บาท)"
             value={loanAmount}
-            onChange={handleInputChange(setLoanAmount)}
+            onChange={handleLoanAmountChange}
           />
         </div>
 
         {/* Term Months and Start Date */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
-        <div className="relative">
-              <label
-                htmlFor="payment-duration"
-                className="block text-l font-medium text-gray-700"
-              >
-                เลือกระยะเวลาในการผ่อน
-              </label>
-              <select
-                id="payment-duration"
-                name="payment-duration"
-                onChange={handleDurationChange}
-                value={termMonths}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md"
-              >
-                {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
-                  <option key={year} value={year}>
-                    {year} ปี
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className="relative">
+            <label
+              htmlFor="payment-duration"
+              className="block text-l font-medium text-gray-700"
+            >
+              เลือกระยะเวลาในการผ่อน
+            </label>
+            <select
+              id="payment-duration"
+              name="payment-duration"
+              onChange={handleDurationChange}
+              value={termMonths}
+              className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md"
+            >
+              {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
+                <option key={year} value={year}>
+                  {year} ปี
+                </option>
+              ))}
+            </select>
+          </div>
           <div>
-            <label htmlFor="start-date-advance">เลือกวันที่ (วัน/เดือน/ปี)</label>
+            <label htmlFor="start-date-advance">
+              เลือกวันที่ (วัน/เดือน/ปี)
+            </label>
             <input
               type="date"
               id="start-date-advance"
               className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md"
               value={startDate}
-              onChange={handleInputChange(setStartDate)}
+              onChange={handleStartDateChange(setStartDate)}
             />
           </div>
         </div>
@@ -217,7 +276,7 @@ const AdvanceForm = () => {
             {startTerm.map((term, index) => (
               <input
                 key={`startTerm-${index}`}
-                type="number"
+                type="text"
                 value={term}
                 placeholder="งวดที่เริ่ม"
                 onChange={(e) => {
@@ -235,7 +294,7 @@ const AdvanceForm = () => {
             {endTerm.map((term, index) => (
               <input
                 key={`endTerm-${index}`}
-                type="number"
+                type="text"
                 value={term}
                 placeholder="ถึงงวดที่"
                 onChange={(e) => {
@@ -243,45 +302,45 @@ const AdvanceForm = () => {
                   updatedEndTerm[index] = e.target.value;
                   setEndTerm(updatedEndTerm);
                 }}
-                    className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
               />
             ))}
           </div>
 
           <div>
             <label>อัตราดอกเบี้ย</label>
-            {interestRates.map((rate, index) => (
-              <input
-                key={`interestRate-${index}`}
-                type="number"
-                value={rate}
-                placeholder="อัตราดอกเบี้ย (%)"
-                onChange={(e) => {
-                  const updatedRates = [...interestRates];
-                  updatedRates[index] = e.target.value;
-                  setInterestRates(updatedRates);
-                }}
+            {Array(5)
+              .fill("")
+              .map((_, idx) => (
+                <input
+                  key={`interest-rate-${idx}`}
+                  type="text"
+                  value={interestRates[idx]}
+                  placeholder="อัตราดอกเบี้ย"
+                  onChange={(e) =>
+                    handleInterestRateChange(idx, e.target.value)
+                  }
                   className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
-              />
-            ))}
+                />
+              ))}
           </div>
 
           <div>
             <label>จำนวนเงินที่จะผ่อน</label>
-            {monthlyPayment.map((payment, index) => (
-              <input
-                key={`monthlyPayment-${index}`}
-                type="number"
-                value={payment}
-                placeholder="จำนวนเงินที่จะผ่อน"
-                onChange={(e) => {
-                  const updatedPayments = [...monthlyPayment];
-                  updatedPayments[index] = e.target.value;
-                  setMonthlyPayment(updatedPayments);
-                }}
-                 className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
-              />
-            ))}
+            {Array(5)
+              .fill("")
+              .map((_, idx) => (
+                <input
+                  key={`monthly-payment-${idx}`}
+                  type="text"
+                  value={monthlyPayment[idx]}
+                  placeholder="จำนวนเงินที่จะผ่อน"
+                  onChange={(e) =>
+                    handleMonthlyPaymentChange(idx, e.target.value)
+                  }
+                  className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md mt-2"
+                />
+              ))}
           </div>
         </div>
 
@@ -314,11 +373,11 @@ const AdvanceForm = () => {
               <tr>
                 <th>เดือน</th>
                 <th>วันที่</th>
+                <th>อัตราดอกเบี้ย</th>
+                <th>จำนวนเงินผ่อน</th>
                 <th>ดอกเบี้ย</th>
                 <th>ส่วนของเงินต้น</th>
                 <th>เงินต้นคงเหลือ</th>
-                <th>จำนวนเงินผ่อน</th>
-                <th>อัตราดอกเบี้ย</th>
               </tr>
             </thead>
             <tbody>
@@ -326,11 +385,11 @@ const AdvanceForm = () => {
                 <tr key={index}>
                   <td>{detail.month}</td>
                   <td>{detail.date}</td>
+                  <td>{detail.interestRate}%</td>
+                  <td>{detail.monthlyPayment}</td>
                   <td>{detail.interest}</td>
                   <td>{detail.loanAmountPortion}</td>
                   <td>{detail.remainingloanAmount}</td>
-                  <td>{detail.monthlyPayment}</td>
-                  <td>{detail.interestRate}%</td>
                 </tr>
               ))}
             </tbody>
