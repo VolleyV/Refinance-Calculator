@@ -12,19 +12,18 @@ import { useState, useEffect } from "react";
 
 function App() {
   const [formData, setFormData] = useState(() => {
-    // อ่านข้อมูลจาก localStorage เมื่อเริ่มต้น
-    const storedData = localStorage.getItem("formData");
+    const storedData = sessionStorage.getItem("formData");
     return storedData ? JSON.parse(storedData) : null;
   });
 
   const handleFormSubmit = (data) => {
     setFormData(data); // เก็บข้อมูลใน state
-    localStorage.setItem("formData", JSON.stringify(data)); // เก็บข้อมูลใน localStorage
+    sessionStorage.setItem("formData", JSON.stringify(data)); // เก็บข้อมูลใน sessionStorage
   };
 
   const clearFormData = () => {
     setFormData(null); // ลบข้อมูลใน state
-    localStorage.removeItem("formData"); // ลบข้อมูลใน localStorage
+    sessionStorage.removeItem("formData"); // ลบข้อมูลใน sessionStorage
   };
 
   useEffect(() => {
