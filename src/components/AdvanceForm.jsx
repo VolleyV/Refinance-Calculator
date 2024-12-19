@@ -28,6 +28,14 @@ const AdvanceForm = () => {
   const handleDurationChange = (event) => {
     setTermMonths(Number(event.target.value));
   };
+    const handleLoanAmountChange = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setLoanAmount(formattedValue);
+    }
+  };
 
 
   // Handle calculation of loan details
@@ -45,7 +53,7 @@ const AdvanceForm = () => {
     const details = [];
     let monthsElapsed = 0;
   
-    // Initialize default values for the first term
+    // Initialize default values
     let currentInterestRate = parseFloat(interestRates[0]) / 100 || 0.025; // Default 2.5%
     let currentMonthlyPayment = parseFloat(monthlyPayment[0]) || 0;
   
@@ -68,19 +76,26 @@ const AdvanceForm = () => {
       const daysInCurrentMonth = daysInMonth(currentYear, currentMonth);
       const daysInCurrentYear = isLeapYear(currentYear) ? 366 : 365;
   
-      // Update interest rate and monthly payment if within a specified range
+      // Update interest rate and monthly payment for the current term
+      let foundRange = false;
       for (let i = 0; i < startTerm.length; i++) {
         const start = parseInt(startTerm[i]) || 0;
         const end = parseInt(endTerm[i]) || 0;
   
-        // If current month falls within a specified range, update values
         if (monthsElapsed + 1 >= start && monthsElapsed + 1 <= end) {
           currentInterestRate =
             parseFloat(interestRates[i]) / 100 || currentInterestRate;
           currentMonthlyPayment =
             parseFloat(monthlyPayment[i]) || currentMonthlyPayment;
-          break;
+          foundRange = true;
+          break; // Stop looking once a valid range is found
         }
+      }
+  
+      // If no range is found, retain the previous values
+      if (!foundRange) {
+        currentInterestRate = currentInterestRate; // Retain the previous interest rate
+        currentMonthlyPayment = currentMonthlyPayment; // Retain the previous payment
       }
   
       // Calculate interest and loanAmount portions
@@ -118,6 +133,7 @@ const AdvanceForm = () => {
     setCalculationDetails(details);
     setRemainingMonths(monthsElapsed);
   };
+  
   
   
 
