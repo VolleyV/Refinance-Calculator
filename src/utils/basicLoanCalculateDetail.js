@@ -41,7 +41,7 @@ export const basicLoanCalculateDetail = (data) => {
 
     details.push({
       month: monthsElapsed + 1,
-      date: initialStartDate.toLocaleDateString("en-US", {
+      date: initialStartDate.toLocaleDateString("th-TH", {
         year: "numeric",
         month: "short",
         day: "2-digit",

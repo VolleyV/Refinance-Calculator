@@ -1,12 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BasicForm from "./BasicForm";
 import AdvanceForm from "./AdvanceForm";
 import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 
-const InputForm = ({ onSubmit, onReset, initialInput }) => {
-  const [activeTab, setActiveTab] = useState("basic");
+const InputForm = ({
+  onSubmit,
+  onReset,
+  initialInput,
+  onAdvanceSubmit,
+  onAdvanceReset,
+  advanceInitialInput,
+}) => {
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(() => {
+    const tabFromSession = sessionStorage.getItem("activeTab");
+    return location.state?.activeTab || tabFromSession || "basic";
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem("activeTab", activeTab);
+  }, [activeTab]);
+  console.log(location.state);
 
   const switchTab = (tab) => {
+    if (tab === "basic" && activeTab !== "basic") {
+      onAdvanceReset();
+    } else if (tab === "advanced" && activeTab !== "advanced") {
+      onReset();
+    }
     setActiveTab(tab);
   };
   return (
@@ -40,7 +62,13 @@ const InputForm = ({ onSubmit, onReset, initialInput }) => {
           initialInput={initialInput}
         />
       )}
-      {activeTab === "advanced" && <AdvanceForm />}
+      {activeTab === "advanced" && (
+        <AdvanceForm
+          onAdvanceSubmit={onAdvanceSubmit}
+          onAdvanceReset={onAdvanceReset}
+          advanceInitialInput={advanceInitialInput}
+        />
+      )}
     </div>
   );
 };
@@ -49,6 +77,9 @@ InputForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onReset: PropTypes.func.isRequired,
   initialInput: PropTypes.object,
+  onAdvanceSubmit: PropTypes.func.isRequired,
+  onAdvanceReset: PropTypes.func.isRequired,
+  advanceInitialInput: PropTypes.func.isRequired,
 };
 
 export default InputForm;

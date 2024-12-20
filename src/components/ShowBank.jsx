@@ -5,11 +5,7 @@ const ShowBank = ({ CalculateSummary }) => {
   const navigate = useNavigate();
 
   const handleNavigateToTable = () => {
-    if (!CalculateSummary) {
-      console.error("Incomplete data");
-      return;
-    }
-    navigate("/table");
+    navigate("/basicTab", { state: { activeTab: "basic" } });
   };
 
   const totalPrincipal =
