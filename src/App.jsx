@@ -7,30 +7,52 @@ import {
   basicLoanCalculateDetail,
   toLastSummary,
 } from "./utils/basicLoanCalculateDetail";
+
+//Advanced
+import ShowBankAdvance from "./components/ShowBankAdvance";
+import AdvanceTable from "./components/AdvanceTable";
+import { advanceLoanCalculateDetail } from "./utils/advanceLoanCalculateDetail";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 function App() {
-  const [formData, setFormData] = useState(() => {
+  const [basicFormData, setBasicFormData] = useState(() => {
     const storedData = sessionStorage.getItem("formData");
     return storedData ? JSON.parse(storedData) : null;
   });
 
+  const [advanceFormData, setAdvanceFormData] = useState(() => {
+    const storedData = sessionStorage.getItem("advanceFormData");
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
   const handleFormSubmit = (data) => {
-    setFormData(data); // เก็บข้อมูลใน state
-    sessionStorage.setItem("formData", JSON.stringify(data)); // เก็บข้อมูลใน sessionStorage
+    console.log("Basic form submitted:", data);
+    setBasicFormData(data);
+    sessionStorage.setItem("formData", JSON.stringify(data));
+  };
+
+  const handleAdvanceFormSubmit = (advanceData) => {
+    setAdvanceFormData(advanceData);
+    sessionStorage.setItem("advanceFormData", JSON.stringify(advanceData));
   };
 
   const clearFormData = () => {
-    setFormData(null); // ลบข้อมูลใน state
-    sessionStorage.removeItem("formData"); // ลบข้อมูลใน sessionStorage
+    setBasicFormData(null);
+    sessionStorage.removeItem("formData");
+  };
+
+  const clearAdvanceFormData = () => {
+    setAdvanceFormData(null);
+    sessionStorage.removeItem("advanceFormData");
   };
 
   useEffect(() => {
     const handleUnload = () => {
       if (location.pathname === "/") {
-        // ลบข้อมูลเมื่อผู้ใช้อยู่ที่หน้าแรก
         clearFormData();
+        clearAdvanceFormData();
       }
     };
 
@@ -42,10 +64,10 @@ function App() {
     };
   }, [location]);
 
-  const calculateSummary = () => {
-    if (formData) {
+  const calculateBasicSummary = () => {
+    if (basicFormData) {
       try {
-        const calculationDetails = basicLoanCalculateDetail(formData);
+        const calculationDetails = basicLoanCalculateDetail(basicFormData);
         const threeYearSummary = calculateThreeYearSummary(calculationDetails);
         const lastSummary = toLastSummary(calculationDetails);
         return {
@@ -53,13 +75,25 @@ function App() {
           ...lastSummary,
         };
       } catch (error) {
-        console.error("Error calculating summary:", error);
+        console.error("Error calculating basic summary:", error);
       }
     }
     return null;
   };
 
-  const summary = calculateSummary();
+  const calculateAdvanceDetails = () => {
+    if (advanceFormData) {
+      try {
+        return advanceLoanCalculateDetail(advanceFormData);
+      } catch (error) {
+        console.error("Error calculating advance details:", error);
+      }
+    }
+    return null;
+  };
+
+  const basicSummary = calculateBasicSummary();
+  const advanceDetails = calculateAdvanceDetails();
 
   return (
     <Router>
@@ -73,17 +107,32 @@ function App() {
                 <InputForm
                   onSubmit={handleFormSubmit}
                   onReset={clearFormData}
-                  initialInput={formData}
+                  initialInput={basicFormData}
+                  onAdvanceSubmit={handleAdvanceFormSubmit}
+                  onAdvanceReset={clearAdvanceFormData}
+                  advanceInitialInput={advanceFormData}
                 />
-                {formData && (
+                {basicFormData && (
                   <div>
-                    <ShowBank CalculateSummary={summary} />
+                    <ShowBank CalculateSummary={basicSummary} />
+                  </div>
+                )}
+                {advanceFormData && (
+                  <div>
+                    <ShowBankAdvance />
                   </div>
                 )}
               </div>
             }
           />
-          <Route path="/table" element={<BasicTable data={formData} />} />
+          <Route
+            path="/basicTab"
+            element={<BasicTable data={basicFormData} />}
+          />
+          <Route
+            path="/advanceTable"
+            element={<AdvanceTable advanceData={advanceFormData} />}
+          />
         </Routes>
       </div>
     </Router>

@@ -1,15 +1,15 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { basicLoanCalculateDetail } from "../utils/basicLoanCalculateDetail.js";
-const BasicTable = ({ data }) => {
-  if (!data) {
+import { advanceLoanCalculateDetail } from "../utils/advanceLoanCalculateDetail";
+const AdvanceTable = ({ advanceData }) => {
+  if (!advanceData) {
     return <p>ไม่มีข้อมูล กรุณากลับไปกรอกแบบฟอร์มก่อน</p>;
   }
 
   const itemsPerPage = 36; // จำนวนงวดต่อหน้า
   const [currentPage, setCurrentPage] = useState(1);
 
-  const calculationDetails = basicLoanCalculateDetail(data);
+  const calculationDetails = advanceLoanCalculateDetail(advanceData);
 
   // คำนวณข้อมูลสำหรับหน้า
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -134,14 +134,18 @@ const BasicTable = ({ data }) => {
   );
 };
 
-BasicTable.propTypes = {
-  data: PropTypes.shape({
-    loanAmount: PropTypes.string.isRequired,
-    startDate: PropTypes.string.isRequired,
-    paymentDuration: PropTypes.number.isRequired,
-    interestRate: PropTypes.number.isRequired,
-    monthlyPayment: PropTypes.string.isRequired,
-  }).isRequired,
+AdvanceTable.propTypes = {
+  advanceData: PropTypes.arrayOf(
+    PropTypes.shape({
+      month: PropTypes.number.isRequired,
+      date: PropTypes.string.isRequired,
+      interestRate: PropTypes.string.isRequired,
+      monthlyPayment: PropTypes.string.isRequired,
+      principalPortion: PropTypes.string.isRequired,
+      interest: PropTypes.string.isRequired,
+      remainingPrincipal: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
-export default BasicTable;
+export default AdvanceTable;

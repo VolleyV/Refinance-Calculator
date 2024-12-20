@@ -24,7 +24,7 @@ const BasicTable = ({ data }) => {
       setCurrentPage(currentPage + 1);
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
       });
     }
   };
@@ -34,7 +34,7 @@ const BasicTable = ({ data }) => {
       setCurrentPage(currentPage - 1);
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
       });
     }
   };

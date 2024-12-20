@@ -5,11 +5,7 @@ const ShowBank = ({ CalculateSummary }) => {
   const navigate = useNavigate();
 
   const handleNavigateToTable = () => {
-    if (!CalculateSummary) {
-      console.error("Incomplete data");
-      return;
-    }
-    navigate("/table");
+    navigate("/basicTab", { state: { activeTab: "basic" } });
   };
 
   const totalPrincipal =
@@ -35,12 +31,8 @@ const ShowBank = ({ CalculateSummary }) => {
           <p>
             <b>3ปีแรก</b>
           </p>
-          <p>
-            เงินกู้คงเหลือ: <b>{totalPrincipal}</b> บาท
-          </p>
-          <p>
-            ดอกเบี้ยที่จ่ายไป: <b>{totalInterest}</b> บาท
-          </p>
+          <p>เงินกู้คงเหลือ: {totalPrincipal} บาท</p>
+          <p>ดอกเบี้ยที่จ่ายไป: {totalInterest} บาท</p>
           <button
             onClick={handleNavigateToTable}
             className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
@@ -58,15 +50,10 @@ const ShowBank = ({ CalculateSummary }) => {
             <b>จนผ่อนจบ</b>
           </p>
           <p>
-            จำนวนปีที่ต้องผ่อนจนหมด: <b>{totalLastYears}</b> ปี{" "}
-            <b>{remainingMonths}</b> เดือน
+            จำนวนปีที่ผ่อน: {totalLastYears} ปี {remainingMonths} เดือน
           </p>
-          <p>
-            จำนวนดอกเบี้ยที่จ่ายไป: <b>{totalLastInterest}</b> บาท
-          </p>
-          <p>
-            วันที่ผ่อนหมด: <b>{lastPaymentDate}</b>
-          </p>
+          <p>ดอกเบี้ยที่จ่ายไป: {totalLastInterest} บาท</p>
+          <p>วันที่ผ่อนหมด: {lastPaymentDate}</p>
         </div>
       </div>
     </div>
