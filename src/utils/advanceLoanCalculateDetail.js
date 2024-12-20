@@ -5,8 +5,8 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     termMonths,
     startDate,
     interestRates,
-    startTerm,
-    endTerm,
+    startTerm = ["1"],
+    endTerm = ["12"],
   } = advanceData;
 
   if (!advanceData || !advanceData.loanAmount || !advanceData.startDate) {
@@ -29,7 +29,7 @@ export const advanceLoanCalculateDetail = (advanceData) => {
   };
 
   let loanAmountRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
-  const totalTermMonths = parseFloat(termMonths) * 12 || 0; // Convert years to months
+  const totalTermMonths = parseFloat(termMonths) * 12 || 12; // Convert years to months
   const initialStartDate = new Date(startDate);
   const details = [];
   let monthsElapsed = 0;
@@ -102,4 +102,20 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     monthsElapsed++;
   }
   return details;
+};
+
+export const advanceThreeYearsSummary = (detail) => {
+  const threeYears = 3 * 12;
+  const limitedDetails = detail.slice(0, threeYears);
+  const loanAmountAfterThreeYears =
+    limitedDetails[limitedDetails.length - 1]?.remainingLoanAmount || 0;
+  const totalInterestThreeYears = limitedDetails.reduce(
+    (sum, item) => sum + item.interest,
+    0
+  );
+
+  return {
+    loanAmountAfterThreeYears,
+    totalInterestThreeYears,
+  };
 };
