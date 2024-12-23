@@ -6,12 +6,16 @@ import {
   calculateThreeYearSummary,
   basicLoanCalculateDetail,
   toLastSummary,
+  remainingToLast,
 } from "./utils/basicLoanCalculateDetail";
 
 //Advanced
 import ShowBankAdvance from "./components/ShowBankAdvance";
 import AdvanceTable from "./components/AdvanceTable";
-import { advanceLoanCalculateDetail } from "./utils/advanceLoanCalculateDetail";
+import {
+  advanceLoanCalculateDetail,
+  advanceThreeYearsSummary,
+} from "./utils/advanceLoanCalculateDetail";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -70,9 +74,11 @@ function App() {
         const calculationDetails = basicLoanCalculateDetail(basicFormData);
         const threeYearSummary = calculateThreeYearSummary(calculationDetails);
         const lastSummary = toLastSummary(calculationDetails);
+        const remainSummary = remainingToLast(calculationDetails);
         return {
           ...threeYearSummary,
           ...lastSummary,
+          ...remainSummary,
         };
       } catch (error) {
         console.error("Error calculating basic summary:", error);
@@ -84,7 +90,12 @@ function App() {
   const calculateAdvanceDetails = () => {
     if (advanceFormData) {
       try {
-        return advanceLoanCalculateDetail(advanceFormData);
+        const advanceCalculateDetails =
+          advanceLoanCalculateDetail(advanceFormData);
+        const threeYearSummary = advanceThreeYearsSummary(
+          advanceCalculateDetails
+        );
+        return { ...threeYearSummary };
       } catch (error) {
         console.error("Error calculating advance details:", error);
       }
@@ -93,7 +104,7 @@ function App() {
   };
 
   const basicSummary = calculateBasicSummary();
-  const advanceDetails = calculateAdvanceDetails();
+  const advanceSummary = calculateAdvanceDetails();
 
   return (
     <Router>
@@ -114,12 +125,12 @@ function App() {
                 />
                 {basicFormData && (
                   <div>
-                    <ShowBank CalculateSummary={basicSummary} />
+                    <ShowBank basicCalculateSummary={basicSummary} />
                   </div>
                 )}
                 {advanceFormData && (
                   <div>
-                    <ShowBankAdvance />
+                    <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
                   </div>
                 )}
               </div>

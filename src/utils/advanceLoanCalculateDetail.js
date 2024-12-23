@@ -7,7 +7,7 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     startDate,
     interestRates,
     startTerm = ["1"],
-    endTerm = [12],
+    endTerm = ["12"],
   } = advanceData;
   console.log(
     loanAmount,
@@ -127,4 +127,20 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     console.log("Loan fully paid off");
   }
   return details;
+};
+
+export const advanceThreeYearsSummary = (detail) => {
+  const threeYears = 3 * 12;
+  const limitedDetails = detail.slice(0, threeYears);
+  const loanAmountAfterThreeYears =
+    limitedDetails[limitedDetails.length - 1]?.remainingLoanAmount || 0;
+  const totalInterestThreeYears = limitedDetails.reduce(
+    (sum, item) => sum + item.interest,
+    0
+  );
+
+  return {
+    loanAmountAfterThreeYears,
+    totalInterestThreeYears,
+  };
 };
