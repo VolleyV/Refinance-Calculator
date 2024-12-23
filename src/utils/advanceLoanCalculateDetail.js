@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export const advanceLoanCalculateDetail = (advanceData) => {
   const {
     loanAmount,
@@ -8,7 +9,15 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     startTerm = ["1"],
     endTerm,
   } = advanceData;
-
+  console.log(
+    loanAmount,
+    monthlyPayment,
+    termMonths,
+    startDate,
+    interestRates,
+    startTerm,
+    endTerm
+  );
   if (!advanceData || !advanceData.loanAmount || !advanceData.startDate) {
     console.error(
       "Missing required data in advanceLoanCalculateDetail:",
@@ -29,10 +38,20 @@ export const advanceLoanCalculateDetail = (advanceData) => {
   };
 
   let loanAmountRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
+  if (isNaN(loanAmountRemaining) || loanAmountRemaining <= 0) {
+    console.error("Invalid loanAmount:", loanAmount);
+    return [];
+  }
   const totalTermMonths = parseFloat(termMonths) * 12 || 12; // Convert years to months
   const initialStartDate = new Date(startDate);
   const details = [];
   let monthsElapsed = 0;
+
+  // Automatically set last term to total loan term if not already specified
+  const adjustedEndTerm = endTerm.map((term, index) => {
+    const parsedTerm = parseInt(term) || 0;
+    return parsedTerm > 0 ? parsedTerm : totalTermMonths;
+  });
 
   // Initialize default values
   let currentInterestRate =
@@ -41,12 +60,15 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     parseFloat(monthlyPayment[0]?.replace(/,/g, "")) || 0;
 
   const maxEndTerm = totalTermMonths > 0 ? totalTermMonths : Infinity;
-  const untilTerm = parseInt(endTerm[endTerm.length - 1]) || maxEndTerm;
+  const untilTerm =
+    parseInt(adjustedEndTerm[adjustedEndTerm.length - 1]) || maxEndTerm;
+    const endTermInputs = termMonths*12;
 
   if (currentMonthlyPayment === 0) {
     alert("จำนวนเงินผ่อนรายเดือนต้องมากกว่า 0");
     return [];
   }
+
 
   // Calculate until loanAmountRemaining is 0 or untilTerm is reached
   while (loanAmountRemaining > 0 && monthsElapsed < untilTerm) {
@@ -60,7 +82,7 @@ export const advanceLoanCalculateDetail = (advanceData) => {
 
     for (let i = 0; i < startTerm.length; i++) {
       const start = parseInt(startTerm[i]) || 0;
-      const end = parseInt(endTerm[i]) || 0;
+      const end = parseInt(adjustedEndTerm[i]) || Infinity; // Use adjusted end term
 
       if (monthsElapsed + 1 >= start && monthsElapsed + 1 <= end) {
         currentInterestRate =
@@ -73,14 +95,23 @@ export const advanceLoanCalculateDetail = (advanceData) => {
       }
     }
 
+    if (isNaN(currentMonthlyPayment) || currentMonthlyPayment <= 0) {
+      alert("Invalid monthly payment value.");
+      return [];
+    }
+
     const interest =
       (loanAmountRemaining * currentInterestRate * daysInCurrentMonth) /
       daysInCurrentYear;
     const loanAmountPortion = Math.max(0, currentMonthlyPayment - interest);
 
-    if (loanAmountPortion <= 0) {
-      alert("จำนวนเงินผ่อนรายเดือนต่ำเกินไปสำหรับการลดเงินต้น");
-      return [];
+    if (currentMonthlyPayment <= interest) {
+      alert(
+        `จำนวนเงินผ่อนรายเดือน (${currentMonthlyPayment}) ต่ำเกินไปที่จะครอบคลุมดอกเบี้ย (${interest.toFixed(
+          2
+        )}).`
+      );
+      return []; // Exit the function entirely
     }
 
     loanAmountRemaining = Math.max(0, loanAmountRemaining - loanAmountPortion);
@@ -114,6 +145,9 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     });
 
     monthsElapsed++;
+  }
+  if (loanAmountRemaining <= 0) {
+    console.log("Loan fully paid off");
   }
   return details;
 };

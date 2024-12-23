@@ -7,7 +7,6 @@ const AdvanceForm = ({
   advanceInitialInput,
 }) => {
   const [loanAmount, setLoanAmount] = useState("");
-
   const [termMonths, setTermMonths] = useState("");
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
