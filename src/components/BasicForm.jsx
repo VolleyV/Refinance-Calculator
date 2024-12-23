@@ -141,7 +141,7 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
                 htmlFor="startDate"
                 className="block text-l font-medium text-gray-700"
               >
-                เลือกวันที่ (วัน/เดือน/ปี)
+                เลือกวันที่ (MM/DD/YYYY)
               </label>
               <input
                 type="date"

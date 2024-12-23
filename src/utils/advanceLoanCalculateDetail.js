@@ -47,6 +47,12 @@ export const advanceLoanCalculateDetail = (advanceData) => {
   const details = [];
   let monthsElapsed = 0;
 
+  // Automatically set last term to total loan term if not already specified
+  const adjustedEndTerm = endTerm.map((term, index) => {
+    const parsedTerm = parseInt(term) || 0;
+    return parsedTerm > 0 ? parsedTerm : totalTermMonths;
+  });
+
   // Initialize default values
   let currentInterestRate =
     parseFloat(interestRates[0]?.replace(/,/g, "")) / 100 || 0.025; // Default 2.5%
@@ -54,12 +60,15 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     parseFloat(monthlyPayment[0]?.replace(/,/g, "")) || 0;
 
   const maxEndTerm = totalTermMonths > 0 ? totalTermMonths : Infinity;
-  const untilTerm = parseInt(endTerm[endTerm.length - 1]) || maxEndTerm;
+  const untilTerm =
+    parseInt(adjustedEndTerm[adjustedEndTerm.length - 1]) || maxEndTerm;
+    const endTermInputs = termMonths*12;
 
   if (currentMonthlyPayment === 0) {
     alert("จำนวนเงินผ่อนรายเดือนต้องมากกว่า 0");
     return [];
   }
+
 
   // Calculate until loanAmountRemaining is 0 or untilTerm is reached
   while (loanAmountRemaining > 0 && monthsElapsed < untilTerm) {
@@ -73,7 +82,7 @@ export const advanceLoanCalculateDetail = (advanceData) => {
 
     for (let i = 0; i < startTerm.length; i++) {
       const start = parseInt(startTerm[i]) || 0;
-      const end = parseInt(endTerm[i]) || 0;
+      const end = parseInt(adjustedEndTerm[i]) || Infinity; // Use adjusted end term
 
       if (monthsElapsed + 1 >= start && monthsElapsed + 1 <= end) {
         currentInterestRate =
