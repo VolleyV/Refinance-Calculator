@@ -6,6 +6,36 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
 
   const totalLoanRemaining = advanceCalculateSummary.loanAmountAfterThreeYears;
   const totalInterestPaid = advanceCalculateSummary.totalInterestThreeYears;
+  const {
+    fullyPaid,
+    totalYears,
+    totalMonths,
+    remainingDate,
+    remainingInterest,
+    lastDayOfPaying,
+  } = advanceCalculateSummary;
+
+  const remainingDateText = fullyPaid
+    ? `คุณได้ผ่อนหมดแล้ว ใช้เวลาทั้งหมด ${totalYears} ปี ${totalMonths} เดือน`
+    : `คุณผ่อนไปแล้ว ${totalYears - remainingDate.years} ปี ${
+        totalMonths - remainingDate.months
+      } เดือน และยังเหลืออีก ${remainingDate.years} ปี ${
+        remainingDate.months
+      } เดือน`;
+
+  const remainingInterestText = fullyPaid
+    ? "ไม่มีดอกเบี้ยค้าง"
+    : `ดอกเบี้ยที่ต้องจ่ายอีก ${parseFloat(remainingInterest).toLocaleString(
+        "en-US",
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }
+      )} บาท`;
+
+  const lastPaymentText = fullyPaid
+    ? `คุณได้ผ่อนหมดแล้วในวันที่ ${lastDayOfPaying}`
+    : `คุณจะผ่อนหมดในวันที่ ${lastDayOfPaying}`;
 
   const handleNavigateToTable = () => {
     navigate("/advanceTable", { state: { activeTab: "advanced" } });
@@ -38,9 +68,12 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
           <p>
             <b>จนผ่อนจบ</b>
           </p>
-          <p>จำนวนปีที่ผ่อน: - ปี - เดือน</p>
+          {/* <p>จำนวนปีที่ผ่อน: - ปี - เดือน</p>
           <p>ดอกเบี้ยที่จ่ายไป: - บาท</p>
-          <p>วันที่ผ่อนหมด: -</p>
+          <p>วันที่ผ่อนหมด: -</p> */}
+          <p>{remainingDateText}</p>
+          <p>{remainingInterestText.toLocaleString()}</p>
+          <p>{lastPaymentText}</p>
         </div>
       </div>
     </div>
@@ -51,6 +84,15 @@ ShowBankAdvance.propTypes = {
   advanceCalculateSummary: PropTypes.shape({
     loanAmountAfterThreeYears: PropTypes.number.isRequired,
     totalInterestThreeYears: PropTypes.number.isRequired,
+    fullyPaid: PropTypes.bool.isRequired,
+    totalYears: PropTypes.number.isRequired,
+    totalMonths: PropTypes.number.isRequired,
+    remainingDate: PropTypes.shape({
+      years: PropTypes.number.isRequired,
+      months: PropTypes.number.isRequired,
+    }),
+    remainingInterest: PropTypes.number.isRequired,
+    lastDayOfPaying: PropTypes.string.isRequired,
   }).isRequired,
 };
 
