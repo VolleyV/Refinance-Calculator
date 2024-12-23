@@ -62,13 +62,12 @@ export const advanceLoanCalculateDetail = (advanceData) => {
   const maxEndTerm = totalTermMonths > 0 ? totalTermMonths : Infinity;
   const untilTerm =
     parseInt(adjustedEndTerm[adjustedEndTerm.length - 1]) || maxEndTerm;
-    const endTermInputs = termMonths*12;
+  const endTermInputs = termMonths * 12;
 
   if (currentMonthlyPayment === 0) {
     alert("จำนวนเงินผ่อนรายเดือนต้องมากกว่า 0");
     return [];
   }
-
 
   // Calculate until loanAmountRemaining is 0 or untilTerm is reached
   while (loanAmountRemaining > 0 && monthsElapsed < untilTerm) {
@@ -168,5 +167,68 @@ export const advanceThreeYearsSummary = (detail) => {
   return {
     loanAmountAfterThreeYears,
     totalInterestThreeYears,
+  };
+};
+
+export const advanceRemainingToLast = (details) => {
+  const lastDetail = details[details.length - 1];
+  let remainingLoanAmount = lastDetail.remainingLoanAmount;
+  const monthlyPayment = lastDetail.monthlyPayment;
+  const interestRate = lastDetail.interestRate;
+  let lastDate;
+
+  const fixRemain = remainingLoanAmount;
+
+  try {
+    lastDate = new Date(lastDetail.date.replace(/-/g, "/"));
+    if (isNaN(lastDate)) {
+      throw new Error("Invalid Date Format");
+    }
+  } catch (error) {
+    console.error("Error parsing date:", error, lastDetail.date);
+    lastDate = new Date();
+  }
+
+  let remainingInterest = 0;
+  let monthsRemaining = 0;
+
+  while (remainingLoanAmount > 0) {
+    const monthlyInterest = (remainingLoanAmount * (interestRate / 100)) / 12;
+    const principalPortion = Math.max(0, monthlyPayment - monthlyInterest);
+
+    if (principalPortion <= 0) {
+      console.error("ยอดชำระรายเดือนต่ำเกินไปจนดอกเบี้ยไม่ลด ยุติการลูป", {
+        remainingLoanAmount,
+        monthlyPayment,
+        monthlyInterest,
+      });
+      break;
+    }
+
+    remainingInterest += monthlyInterest;
+    remainingLoanAmount = Math.max(0, remainingLoanAmount - principalPortion);
+
+    monthsRemaining++;
+    lastDate.setMonth(lastDate.getMonth() + 1);
+  }
+
+  const yearsRemaining = Math.floor(monthsRemaining / 12);
+  const remainingMonths = monthsRemaining % 12;
+
+  const totalMonths = details.length + monthsRemaining;
+  const totalYears = Math.floor(totalMonths / 12);
+  const totalMonthsRemainder = totalMonths % 12;
+
+  return {
+    fullyPaid: fixRemain === 0, // Check if it’s fully paid
+    totalYears,
+    totalMonths: totalMonthsRemainder,
+    remainingDate: { years: yearsRemaining, months: remainingMonths },
+    remainingInterest: remainingInterest.toFixed(2),
+    lastDayOfPaying: lastDate.toLocaleDateString("en-EN", {
+      year: "numeric",
+      month: "long",
+      day: "2-digit",
+    }),
   };
 };

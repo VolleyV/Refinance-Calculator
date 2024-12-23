@@ -14,6 +14,7 @@ import AdvanceTable from "./components/AdvanceTable";
 import {
   advanceLoanCalculateDetail,
   advanceThreeYearsSummary,
+  advanceRemainingToLast,
 } from "./utils/advanceLoanCalculateDetail";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -92,7 +93,10 @@ function App() {
         const threeYearSummary = advanceThreeYearsSummary(
           advanceCalculateDetails
         );
-        return { ...threeYearSummary };
+        const advanceRemainSummary = advanceRemainingToLast(
+          advanceCalculateDetails
+        );
+        return { ...threeYearSummary, ...advanceRemainSummary };
       } catch (error) {
         console.error("Error calculating advance details:", error);
       }
