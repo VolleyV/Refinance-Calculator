@@ -37,6 +37,12 @@ export const basicLoanCalculateDetail = (data) => {
       (principalRemaining * interestRateMonthly * daysInCurrentMonth) /
       daysInCurrentYear;
     const principalPortion = Math.max(0, monthlyPaymentAmount - interest);
+
+    if (principalPortion <= 0) {
+      console.error("Monthly payment is too low to reduce principal.");
+      break;
+    }
+
     principalRemaining = Math.max(0, principalRemaining - principalPortion);
 
     details.push({
@@ -95,7 +101,7 @@ export const remainingToLast = (details) => {
     }
   } catch (error) {
     console.error("Error parsing date:", error, lastDetail.date);
-    lastDate = new Date(); // Default to current date
+    lastDate = new Date();
   }
 
   let remainingInterest = 0;

@@ -93,13 +93,13 @@ const AdvanceTable = ({ advanceData }) => {
                     {parseFloat(detail.monthlyPayment).toLocaleString()}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.principalPortion).toLocaleString()}
+                    {parseFloat(detail.loanAmountPortion).toLocaleString()}
                   </td>
                   <td className="border px-6 py-4 text-center">
                     {parseFloat(detail.interest).toLocaleString()}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.remainingPrincipal).toLocaleString()}
+                    {parseFloat(detail.remainingLoanAmount).toLocaleString()}
                   </td>
                 </tr>
               ))}
