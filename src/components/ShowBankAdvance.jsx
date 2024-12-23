@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 const ShowBankAdvance = ({ advanceCalculateSummary }) => {
   const navigate = useNavigate();
 
-  const totalLoan = advanceCalculateSummary.loanAmountAfterThreeYears;
-  const totalInterest = advanceCalculateSummary.totalInterestThreeYears;
+  const totalLoanRemaining = advanceCalculateSummary.loanAmountAfterThreeYears;
+  const totalInterestPaid = advanceCalculateSummary.totalInterestThreeYears;
 
   const handleNavigateToTable = () => {
     navigate("/advanceTable", { state: { activeTab: "advanced" } });
@@ -20,8 +20,8 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
           <p>
             <b>3ปีแรก</b>
           </p>
-          <p>เงินกู้คงเหลือ: {totalLoan} บาท</p>
-          <p>ดอกเบี้ยที่จ่ายไป: {totalInterest} บาท</p>
+          <p>เงินกู้คงเหลือ: {totalLoanRemaining.toLocaleString()} บาท</p>
+          <p>ดอกเบี้ยที่จ่ายไป: {totalInterestPaid.toLocaleString()} บาท</p>
           <button
             onClick={handleNavigateToTable}
             className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"

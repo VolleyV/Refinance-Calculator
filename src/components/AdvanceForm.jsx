@@ -7,14 +7,14 @@ const AdvanceForm = ({
   advanceInitialInput,
 }) => {
   const [loanAmount, setLoanAmount] = useState("");
-  const [monthlyPayment, setMonthlyPayment] = useState(["", "", "", "", ""]);
   const [termMonths, setTermMonths] = useState("");
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
-  const [interestRates, setInterestRates] = useState(["", "", "", "", ""]);
   const [startTerm, setStartTerm] = useState(["", "", "", "", ""]);
   const [endTerm, setEndTerm] = useState(["", "", "", "", ""]);
+  const [interestRates, setInterestRates] = useState(["", "", "", "", ""]);
+  const [monthlyPayment, setMonthlyPayment] = useState(["", "", "", "", ""]);
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
@@ -92,12 +92,12 @@ const AdvanceForm = ({
 
     const advanceData = {
       loanAmount,
-      monthlyPayment,
       termMonths,
       startDate,
-      interestRates,
       startTerm,
       endTerm,
+      interestRates,
+      monthlyPayment,
     };
 
     onAdvanceSubmit(advanceData);

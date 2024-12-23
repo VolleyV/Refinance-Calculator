@@ -125,6 +125,7 @@ function App() {
                     <ShowBank basicCalculateSummary={basicSummary} />
                   </div>
                 )}
+
                 {advanceFormData && (
                   <div>
                     <ShowBankAdvance advanceCalculateSummary={advanceSummary} />

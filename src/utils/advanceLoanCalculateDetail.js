@@ -7,7 +7,7 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     startDate,
     interestRates,
     startTerm = ["1"],
-    endTerm = ["12"],
+    endTerm,
   } = advanceData;
   console.log(
     loanAmount,
@@ -116,6 +116,20 @@ export const advanceLoanCalculateDetail = (advanceData) => {
 
     loanAmountRemaining = Math.max(0, loanAmountRemaining - loanAmountPortion);
 
+    console.log("Details Entry:", {
+      month: monthsElapsed + 1,
+      date: dateClone.toLocaleDateString("th-TH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      }),
+      interest: interest.toFixed(2),
+      loanAmountPortion: loanAmountPortion.toFixed(2),
+      remainingLoanAmount: loanAmountRemaining.toFixed(2),
+      monthlyPayment: currentMonthlyPayment.toFixed(2),
+      interestRate: (currentInterestRate * 100).toFixed(2),
+    });
+
     details.push({
       month: monthsElapsed + 1,
       date: dateClone.toLocaleDateString("th-TH", {
@@ -142,9 +156,12 @@ export const advanceThreeYearsSummary = (detail) => {
   const threeYears = 3 * 12;
   const limitedDetails = detail.slice(0, threeYears);
   const loanAmountAfterThreeYears =
-    limitedDetails[limitedDetails.length - 1]?.remainingLoanAmount || 0;
+    parseFloat(
+      limitedDetails[limitedDetails.length - 1]?.remainingLoanAmount
+    ) || 0;
+
   const totalInterestThreeYears = limitedDetails.reduce(
-    (sum, item) => sum + item.interest,
+    (sum, item) => sum + parseFloat(item.interest || 0),
     0
   );
 
