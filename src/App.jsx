@@ -5,7 +5,6 @@ import BasicTable from "./components/BasicTable";
 import {
   calculateThreeYearSummary,
   basicLoanCalculateDetail,
-  toLastSummary,
   remainingToLast,
 } from "./utils/basicLoanCalculateDetail";
 
@@ -73,11 +72,9 @@ function App() {
       try {
         const calculationDetails = basicLoanCalculateDetail(basicFormData);
         const threeYearSummary = calculateThreeYearSummary(calculationDetails);
-        const lastSummary = toLastSummary(calculationDetails);
         const remainSummary = remainingToLast(calculationDetails);
         return {
           ...threeYearSummary,
-          ...lastSummary,
           ...remainSummary,
         };
       } catch (error) {
