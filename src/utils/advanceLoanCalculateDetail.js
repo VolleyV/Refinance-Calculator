@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export const advanceLoanCalculateDetail = (advanceData) => {
   const {
     loanAmount,
@@ -5,10 +6,18 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     termMonths,
     startDate,
     interestRates,
-    startTerm,
-    endTerm,
+    startTerm = ["1"],
+    endTerm = [12],
   } = advanceData;
-
+  console.log(
+    loanAmount,
+    monthlyPayment,
+    termMonths,
+    startDate,
+    interestRates,
+    startTerm,
+    endTerm
+  );
   if (!advanceData || !advanceData.loanAmount || !advanceData.startDate) {
     console.error(
       "Missing required data in advanceLoanCalculateDetail:",
@@ -29,7 +38,11 @@ export const advanceLoanCalculateDetail = (advanceData) => {
   };
 
   let loanAmountRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
-  const totalTermMonths = parseFloat(termMonths) * 12 || 0; // Convert years to months
+  if (isNaN(loanAmountRemaining) || loanAmountRemaining <= 0) {
+    console.error("Invalid loanAmount:", loanAmount);
+    return [];
+  }
+  const totalTermMonths = parseFloat(termMonths) * 12 || 12; // Convert years to months
   const initialStartDate = new Date(startDate);
   const details = [];
   let monthsElapsed = 0;
@@ -73,14 +86,23 @@ export const advanceLoanCalculateDetail = (advanceData) => {
       }
     }
 
+    if (isNaN(currentMonthlyPayment) || currentMonthlyPayment <= 0) {
+      alert("Invalid monthly payment value.");
+      return [];
+    }
+
     const interest =
       (loanAmountRemaining * currentInterestRate * daysInCurrentMonth) /
       daysInCurrentYear;
     const loanAmountPortion = Math.max(0, currentMonthlyPayment - interest);
 
-    if (loanAmountPortion <= 0) {
-      alert("จำนวนเงินผ่อนรายเดือนต่ำเกินไปสำหรับการลดเงินต้น");
-      return [];
+    if (currentMonthlyPayment <= interest) {
+      alert(
+        `จำนวนเงินผ่อนรายเดือน (${currentMonthlyPayment}) ต่ำเกินไปที่จะครอบคลุมดอกเบี้ย (${interest.toFixed(
+          2
+        )}).`
+      );
+      return []; // Exit the function entirely
     }
 
     loanAmountRemaining = Math.max(0, loanAmountRemaining - loanAmountPortion);
@@ -100,6 +122,9 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     });
 
     monthsElapsed++;
+  }
+  if (loanAmountRemaining <= 0) {
+    console.log("Loan fully paid off");
   }
   return details;
 };

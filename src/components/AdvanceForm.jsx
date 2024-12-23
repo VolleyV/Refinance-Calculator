@@ -8,12 +8,12 @@ const AdvanceForm = ({
 }) => {
   const [loanAmount, setLoanAmount] = useState("");
   const [monthlyPayment, setMonthlyPayment] = useState(["", "", "", "", ""]);
-  const [termMonths, setTermMonths] = useState(""); 
+  const [termMonths, setTermMonths] = useState("");
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
   const [interestRates, setInterestRates] = useState(["", "", "", "", ""]);
-  const [startTerm, setStartTerm] = useState(["", "", "", "", ""]); 
+  const [startTerm, setStartTerm] = useState(["", "", "", "", ""]);
   const [endTerm, setEndTerm] = useState(["", "", "", "", ""]);
 
   const handleLoanAmountChange = (event) => {
