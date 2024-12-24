@@ -7,10 +7,10 @@ import { useLocation } from "react-router-dom";
 const InputForm = ({
   onSubmit,
   onReset,
-  initialInput,
+  initialInput = null,
   onAdvanceSubmit,
   onAdvanceReset,
-  advanceInitialInput,
+  advanceInitialInput = null,
 }) => {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState(() => {
@@ -79,7 +79,6 @@ InputForm.propTypes = {
   initialInput: PropTypes.object,
   onAdvanceSubmit: PropTypes.func.isRequired,
   onAdvanceReset: PropTypes.func.isRequired,
-  advanceInitialInput: PropTypes.func.isRequired,
+  advanceInitialInput: PropTypes.object,
 };
-
 export default InputForm;

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { basicLoanCalculateDetail } from "../utils/basicLoanCalculateDetail.js";
 const BasicTable = ({ data }) => {
   if (!data) {
-    return <p>ไม่มีข้อมูล กรุณากลับไปกรอกแบบฟอร์มก่อน</p>;
+    return <div>ไม่มีข้อมูลที่จะแสดง</div>;
   }
 
   const itemsPerPage = 36; // จำนวนงวดต่อหน้า
@@ -137,7 +137,7 @@ const BasicTable = ({ data }) => {
 BasicTable.propTypes = {
   data: PropTypes.shape({
     loanAmount: PropTypes.string.isRequired,
-    startDate: PropTypes.string.isRequired,
+    startDate: PropTypes.string,
     paymentDuration: PropTypes.number.isRequired,
     interestRate: PropTypes.number.isRequired,
     monthlyPayment: PropTypes.string.isRequired,

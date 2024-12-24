@@ -104,7 +104,13 @@ export const remainingToLast = (details) => {
   }
 
   let remainingInterest = 0;
+  let totalInterestPaid = 0;
   let monthsRemaining = 0;
+
+  totalInterestPaid = details.reduce(
+    (sum, item) => sum + parseFloat(item.interest || 0),
+    0
+  );
 
   while (remainingPrincipal > 0) {
     const monthlyInterest = (remainingPrincipal * (interestRate / 100)) / 12;
@@ -120,6 +126,7 @@ export const remainingToLast = (details) => {
     }
 
     remainingInterest += monthlyInterest;
+    totalInterestPaid += monthlyInterest;
     remainingPrincipal = Math.max(0, remainingPrincipal - principalPortion);
 
     monthsRemaining++;
@@ -139,6 +146,7 @@ export const remainingToLast = (details) => {
     totalMonths: totalMonthsRemainder,
     remainingDate: { years: yearsRemaining, months: remainingMonths },
     remainingInterest: remainingInterest.toFixed(2),
+    totalInterestPaid: totalInterestPaid.toFixed(2),
     lastDayOfPaying: lastDate.toLocaleDateString("en-EN", {
       year: "numeric",
       month: "long",

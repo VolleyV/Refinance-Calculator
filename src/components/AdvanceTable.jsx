@@ -134,18 +134,32 @@ const AdvanceTable = ({ advanceData }) => {
   );
 };
 
+// AdvanceTable.propTypes = {
+//   advanceData: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       month: PropTypes.number.isRequired,
+//       date: PropTypes.string.isRequired,
+//       interestRate: PropTypes.string.isRequired,
+//       monthlyPayment: PropTypes.string.isRequired,
+//       principalPortion: PropTypes.string.isRequired,
+//       interest: PropTypes.string.isRequired,
+//       remainingPrincipal: PropTypes.string.isRequired,
+//     })
+//   ).isRequired,
+// };
+
 AdvanceTable.propTypes = {
   advanceData: PropTypes.arrayOf(
     PropTypes.shape({
       month: PropTypes.number.isRequired,
       date: PropTypes.string.isRequired,
-      interestRate: PropTypes.string.isRequired,
-      monthlyPayment: PropTypes.string.isRequired,
-      principalPortion: PropTypes.string.isRequired,
-      interest: PropTypes.string.isRequired,
-      remainingPrincipal: PropTypes.string.isRequired,
+      interestRate: PropTypes.number.isRequired, // แก้เป็น number
+      monthlyPayment: PropTypes.number.isRequired, // แก้เป็น number
+      loanAmountPortion: PropTypes.number.isRequired, // แก้ชื่อให้ตรง
+      interest: PropTypes.number.isRequired, // แก้เป็น number
+      remainingLoanAmount: PropTypes.number.isRequired, // แก้ชื่อให้ตรง
     })
-  ).isRequired,
+  ),
 };
 
 export default AdvanceTable;
