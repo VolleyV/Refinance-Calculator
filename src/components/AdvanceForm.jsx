@@ -34,7 +34,7 @@ const AdvanceForm = () => {
         const { value } = event.target;
         const rawValue = value.replace(/[^0-9]/g, "");
         if (Number(rawValue) <= 999_000_000) {
-            const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");  
             setStartTerm(formattedValue);
         }
     };
@@ -359,4 +359,4 @@ const AdvanceForm = () => {
     );
 };
 
-export default AdvanceForm;
+export default AdvanceForm;     

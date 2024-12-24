@@ -3,6 +3,7 @@ import AdvanceForm from "./components/AdvanceForm";
 // import BasicForm from "./components/BasicForm";
 import InputForm from "./components/InputForm";
 import Navbar from "./components/Navbar";
+import Showtable from "./pages/Showtable";
 
 function App() {
   return (
@@ -16,8 +17,9 @@ function App() {
         </div>
       </div>
       {/* <BasicForm /> */}
-      <InputForm />
+      {/* <InputForm /> */}
       {/* <AdvanceForm /> */}
+      <Showtable/>
     </>
   );
 }
