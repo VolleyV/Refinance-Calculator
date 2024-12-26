@@ -7,7 +7,13 @@ import {
   basicLoanCalculateDetail,
   remainingToLast,
 } from "./utils/basicLoanCalculateDetail";
-
+import ShowBankBasicYear from "./components/ShowBankBasicYear";
+import BasicYearTable from "./components/BasicYearTable";
+import {
+  basicYearLoanCalculateDetail,
+  calculateBasicYearThreeYearSummary,
+  remainingBasicYearToLast,
+} from "./utils/basicYearLoanCalculateDetail";
 //Advanced
 import ShowBankAdvance from "./components/ShowBankAdvance";
 import AdvanceTable from "./components/AdvanceTable";
@@ -26,15 +32,27 @@ function App() {
     return storedData ? JSON.parse(storedData) : null;
   });
 
+  const [basicFormYearData, setBasicFormYearData] = useState(() => {
+    const storedData = sessionStorage.getItem("formData");
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
   const [advanceFormData, setAdvanceFormData] = useState(() => {
     const storedData = sessionStorage.getItem("advanceFormData");
     return storedData ? JSON.parse(storedData) : null;
   });
 
+  //submit
   const handleFormSubmit = (data) => {
     console.log("Basic form submitted:", data);
     setBasicFormData(data);
     sessionStorage.setItem("formData", JSON.stringify(data));
+  };
+
+  const handleBasicFormYearSubmit = (basicYearData) => {
+    console.log("Basic form submitted:", basicYearData);
+    setBasicFormYearData(basicYearData);
+    sessionStorage.setItem("formData", JSON.stringify(basicYearData));
   };
 
   const handleAdvanceFormSubmit = (advanceData) => {
@@ -42,8 +60,14 @@ function App() {
     sessionStorage.setItem("advanceFormData", JSON.stringify(advanceData));
   };
 
+  //Clear
   const clearFormData = () => {
     setBasicFormData(null);
+    sessionStorage.removeItem("formData");
+  };
+
+  const clearBasicFormYearData = () => {
+    setBasicFormYearData(null);
     sessionStorage.removeItem("formData");
   };
 
@@ -56,13 +80,13 @@ function App() {
     const handleUnload = () => {
       if (location.pathname === "/") {
         clearFormData();
+        clearBasicFormYearData();
         clearAdvanceFormData();
       }
     };
 
     window.addEventListener("beforeunload", handleUnload);
 
-    // ถอด Event Listener เมื่อคอมโพเนนต์ถูกถอด
     return () => {
       window.removeEventListener("beforeunload", handleUnload);
     };
@@ -74,6 +98,28 @@ function App() {
         const calculationDetails = basicLoanCalculateDetail(basicFormData);
         const threeYearSummary = calculateThreeYearSummary(calculationDetails);
         const remainSummary = remainingToLast(calculationDetails);
+        return {
+          ...threeYearSummary,
+          ...remainSummary,
+        };
+      } catch (error) {
+        console.error("Error calculating basic summary:", error);
+      }
+    }
+    return null;
+  };
+
+  const calculateBasicYearSummary = () => {
+    if (basicFormYearData) {
+      try {
+        const basicYearCalculationDetails =
+          basicYearLoanCalculateDetail(basicFormYearData);
+        const threeYearSummary = calculateBasicYearThreeYearSummary(
+          basicYearCalculationDetails
+        );
+        const remainSummary = remainingBasicYearToLast(
+          basicYearCalculationDetails
+        );
         return {
           ...threeYearSummary,
           ...remainSummary,
@@ -105,6 +151,7 @@ function App() {
   };
 
   const basicSummary = calculateBasicSummary();
+  const basicYearSummary = calculateBasicYearSummary();
   const advanceSummary = calculateAdvanceDetails();
 
   return (
@@ -120,6 +167,9 @@ function App() {
                   onSubmit={handleFormSubmit}
                   onReset={clearFormData}
                   initialInput={basicFormData}
+                  onSubmitBasicYear={handleBasicFormYearSubmit}
+                  onResetBasicYear={clearBasicFormYearData}
+                  basicYearInitialInput={basicFormYearData}
                   onAdvanceSubmit={handleAdvanceFormSubmit}
                   onAdvanceReset={clearAdvanceFormData}
                   advanceInitialInput={advanceFormData}
@@ -127,6 +177,13 @@ function App() {
                 {basicFormData && (
                   <div>
                     <ShowBank basicCalculateSummary={basicSummary} />
+                  </div>
+                )}
+                {basicFormYearData && (
+                  <div>
+                    <ShowBankBasicYear
+                      basicYearCalculateSummary={basicYearSummary}
+                    />
                   </div>
                 )}
 
@@ -141,6 +198,10 @@ function App() {
           <Route
             path="/basicTab"
             element={<BasicTable data={basicFormData || {}} />}
+          />
+          <Route
+            path="/basicYearTable"
+            element={<BasicYearTable basicYearData={basicFormYearData || {}} />}
           />
           <Route
             path="/advanceTable"

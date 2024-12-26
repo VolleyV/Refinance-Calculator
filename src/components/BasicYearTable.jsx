@@ -1,15 +1,12 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { basicLoanCalculateDetail } from "../utils/basicLoanCalculateDetail.js";
-const BasicTable = ({ data }) => {
-  if (!data) {
-    return <div>ไม่มีข้อมูลที่จะแสดง</div>;
-  }
+import { basicYearLoanCalculateDetail } from "../utils/basicYearLoanCalculateDetail";
 
+const BasicYearTable = ({ basicYearData }) => {
   const itemsPerPage = 36; // จำนวนงวดต่อหน้า
   const [currentPage, setCurrentPage] = useState(1);
 
-  const calculationDetails = basicLoanCalculateDetail(data);
+  const calculationDetails = basicYearLoanCalculateDetail(basicYearData);
 
   // คำนวณข้อมูลสำหรับหน้า
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -49,7 +46,6 @@ const BasicTable = ({ data }) => {
       behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
     });
   };
-
   return (
     <div className="container mx-auto mt-10 px-4">
       <h2 className="text-lg font-bold">ตารางการคำนวณ</h2>
@@ -159,14 +155,13 @@ const BasicTable = ({ data }) => {
   );
 };
 
-BasicTable.propTypes = {
-  data: PropTypes.shape({
+BasicYearTable.propTypes = {
+  basicYearData: PropTypes.shape({
     loanAmount: PropTypes.string.isRequired,
     startDate: PropTypes.string,
-    // paymentDuration: PropTypes.number.isRequired,
+    paymentDuration: PropTypes.number.isRequired,
     interestRate: PropTypes.number.isRequired,
-    monthlyPayment: PropTypes.string.isRequired,
   }).isRequired,
 };
 
-export default BasicTable;
+export default BasicYearTable;
