@@ -22,21 +22,32 @@ const AdvanceTable = ({ advanceData }) => {
   const goToNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
-      });
+      scrollToTop();
     }
   };
 
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
-      });
+      scrollToTop();
     }
+  };
+
+  const goToFirstPage = () => {
+    setCurrentPage(1);
+    scrollToTop();
+  };
+
+  const goToLastPage = () => {
+    setCurrentPage(totalPages);
+    scrollToTop();
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
+    });
   };
 
   return (
@@ -109,6 +120,13 @@ const AdvanceTable = ({ advanceData }) => {
           {/* ปุ่มเปลี่ยนหน้า */}
           <div className="flex justify-between mt-4">
             <button
+              onClick={goToFirstPage}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+            >
+              หน้าแรก
+            </button>
+            <button
               onClick={goToPreviousPage}
               disabled={currentPage === 1}
               className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
@@ -125,6 +143,13 @@ const AdvanceTable = ({ advanceData }) => {
             >
               หน้าถัดไป
             </button>
+            <button
+              onClick={goToLastPage}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+            >
+              หน้าสุดท้าย
+            </button>
           </div>
         </div>
       ) : (
@@ -133,20 +158,6 @@ const AdvanceTable = ({ advanceData }) => {
     </div>
   );
 };
-
-// AdvanceTable.propTypes = {
-//   advanceData: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       month: PropTypes.number.isRequired,
-//       date: PropTypes.string.isRequired,
-//       interestRate: PropTypes.string.isRequired,
-//       monthlyPayment: PropTypes.string.isRequired,
-//       principalPortion: PropTypes.string.isRequired,
-//       interest: PropTypes.string.isRequired,
-//       remainingPrincipal: PropTypes.string.isRequired,
-//     })
-//   ).isRequired,
-// };
 
 AdvanceTable.propTypes = {
   advanceData: PropTypes.arrayOf(
