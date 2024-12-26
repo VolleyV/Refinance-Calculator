@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import BasicForm from "./BasicForm";
 import AdvanceForm from "./AdvanceForm";
+import BasicFormYear from "./BasicFormYear";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
-import BasicFormYear from "./BasicFormYear";
 
 const InputForm = ({
   onSubmit,
@@ -12,30 +12,47 @@ const InputForm = ({
   onAdvanceSubmit,
   onAdvanceReset,
   advanceInitialInput = null,
+  onSubmitBasicYear,
+  onResetBasicYear,
+  basicYearInitialInput = null,
 }) => {
   const location = useLocation();
+
+  // Active tab state, fallback to session storage or default
   const [activeTab, setActiveTab] = useState(() => {
     const tabFromSession = sessionStorage.getItem("activeTab");
     return location.state?.activeTab || tabFromSession || "basic";
   });
 
+  // Persist activeTab in session storage
   useEffect(() => {
     sessionStorage.setItem("activeTab", activeTab);
   }, [activeTab]);
-  console.log(location.state);
 
+  // Switch tabs and reset data if necessary
   const switchTab = (tab) => {
-    if (tab === "basic" && activeTab !== "basic") {
-      onAdvanceReset();
-    } else if (tab === "advanced" && activeTab !== "advanced") {
-      onReset();
-    } else if (tab === "basicYear" && activeTab !== "basicYear") {
-      onReset();
+    if (tab === activeTab) return;
+
+    switch (activeTab) {
+      case "basic":
+        onReset();
+        break;
+      case "basicYear":
+        onResetBasicYear();
+        break;
+      case "advanced":
+        onAdvanceReset();
+        break;
+      default:
+        break;
     }
-    setActiveTab(tab);
+
+    setActiveTab(tab); // Update active tab
   };
+
   return (
     <div className="relative p-6 max-w-4xl mx-auto rounded-lg shadow-md">
+      {/* Tab navigation */}
       <div className="flex border-b mt-4">
         <button
           onClick={() => switchTab("basic")}
@@ -68,25 +85,30 @@ const InputForm = ({
           ข้อมูลขั้นสูง
         </button>
       </div>
+
+      {/* Render content for the active tab */}
       {activeTab === "basic" && (
-        <BasicForm
-          onSubmit={onSubmit}
-          onReset={onReset}
-          initialInput={initialInput}
+        <BasicForm onSubmit={onSubmit} onReset={onReset} initialInput={initialInput} />
+      )}
+      {activeTab === "basicYear" && (
+        <BasicFormYear
+          onSubmit={onSubmitBasicYear}
+          onReset={onResetBasicYear}
+          initialInput={basicYearInitialInput}
         />
       )}
-      {activeTab === "basicYear" && <BasicFormYear />}
       {activeTab === "advanced" && (
         <AdvanceForm
-          onAdvanceSubmit={onAdvanceSubmit}
-          onAdvanceReset={onAdvanceReset}
-          advanceInitialInput={advanceInitialInput}
+          onSubmit={onAdvanceSubmit}
+          onReset={onAdvanceReset}
+          initialInput={advanceInitialInput}
         />
       )}
     </div>
   );
 };
 
+// PropType Definitions
 InputForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onReset: PropTypes.func.isRequired,
@@ -94,5 +116,9 @@ InputForm.propTypes = {
   onAdvanceSubmit: PropTypes.func.isRequired,
   onAdvanceReset: PropTypes.func.isRequired,
   advanceInitialInput: PropTypes.object,
+  onSubmitBasicYear: PropTypes.func.isRequired,
+  onResetBasicYear: PropTypes.func.isRequired,
+  basicYearInitialInput: PropTypes.object,
 };
+
 export default InputForm;
