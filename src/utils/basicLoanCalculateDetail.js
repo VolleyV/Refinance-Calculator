@@ -31,10 +31,6 @@ export const basicLoanCalculateDetail = (data) => {
       daysInCurrentYear;
     const principalPortion = Math.max(0, monthlyPaymentAmount - interest);
 
-    if (principalPortion <= 0) {
-      console.error("Monthly payment is too low to reduce principal.");
-    }
-
     principalRemaining = Math.max(0, principalRemaining - principalPortion);
 
     details.push({

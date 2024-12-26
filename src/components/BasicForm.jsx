@@ -49,6 +49,18 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
       return;
     }
 
+    const loanAmountNum = parseFloat(loanAmount.replace(/,/g, ""));
+    const monthlyPaymentNum = parseFloat(monthlyPayment.replace(/,/g, ""));
+    const interestRateNum = interestRate / 100;
+    const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
+
+    if (monthlyPaymentNum <= monthlyInterestOnly) {
+      alert(
+        "จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน"
+      );
+      return;
+    }
+
     // ส่งข้อมูลกลับไปที่ App
     const data = {
       loanAmount,
