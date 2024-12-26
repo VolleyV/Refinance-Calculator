@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const BasicForm = ({
+const BasicFormYear = ({
   onSubmitBasicYear,
   onResetBasicYear,
-  BasicYearInitialInput,
+  basicYearInitialInput,
 }) => {
   // States
   const [loanAmount, setLoanAmount] = useState("");
@@ -65,16 +65,16 @@ const BasicForm = ({
   };
 
   useEffect(() => {
-    if (BasicYearInitialInput) {
-      setLoanAmount(BasicYearInitialInput.loanAmount || "");
-      setPaymentDuration(BasicYearInitialInput.paymentDuration || 1);
-      setInterestRate(BasicYearInitialInput.interestRate || "");
+    if (basicYearInitialInput) {
+      setLoanAmount(basicYearInitialInput.loanAmount || "");
+      setPaymentDuration(basicYearInitialInput.paymentDuration || 1);
+      setInterestRate(basicYearInitialInput.interestRate || "");
       setStartDate(
-        BasicYearInitialInput.startDate ||
+        basicYearInitialInput.startDate ||
           new Date().toISOString().split("T")[0]
       );
     }
-  }, [BasicYearInitialInput]);
+  }, [basicYearInitialInput]);
 
   return (
     <div>
@@ -160,22 +160,6 @@ const BasicForm = ({
                 ))}
               </select>
             </div>
-            {/* <div className="relative">
-              <label
-                htmlFor="monthly-payment"
-                className="block text-l font-medium text-gray-700"
-              >
-                จำนวนเงินผ่อนต่อเดือน
-              </label>
-              <input
-                type="text"
-                name="monthly-payment"
-                value={monthlyPayment}
-                onChange={handleMonthlyPaymentChange}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-                placeholder="ผ่อนต่อเดือน"
-              />
-            </div> */}
           </div>
 
           <div className="mt-4">
@@ -199,10 +183,10 @@ const BasicForm = ({
   );
 };
 
-BasicForm.propTypes = {
+BasicFormYear.propTypes = {
   onSubmitBasicYear: PropTypes.func.isRequired,
   onResetBasicYear: PropTypes.func.isRequired,
-  BasicYearInitialInput: PropTypes.object,
+  basicYearInitialInput: PropTypes.object,
 };
 
-export default BasicForm;
+export default BasicFormYear;

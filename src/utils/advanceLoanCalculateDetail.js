@@ -155,9 +155,9 @@ export const advanceLoanCalculateDetail = (advanceData) => {
   return details;
 };
 
-export const advanceThreeYearsSummary = (detail) => {
+export const advanceThreeYearsSummary = (details) => {
   const threeYears = 3 * 12;
-  const limitedDetails = detail.slice(0, threeYears);
+  const limitedDetails = details.slice(0, threeYears);
   const loanAmountAfterThreeYears =
     parseFloat(
       limitedDetails[limitedDetails.length - 1]?.remainingLoanAmount

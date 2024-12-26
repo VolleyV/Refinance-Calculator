@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const ShowBankAdvance = ({ advanceCalculateSummary }) => {
+const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
   const navigate = useNavigate();
 
-  const totalLoanRemaining = advanceCalculateSummary.loanAmountAfterThreeYears;
-  const totalInterestThreeYears =
-    advanceCalculateSummary.totalInterestThreeYears;
+  const handleNavigateToTable = () => {
+    navigate("/BasicYearTable", { state: { activeTab: "basicYear" } });
+  };
+
   const {
+    principalAfterThreeYears,
+    totalInterestThreeYears,
     fullyPaid,
     totalYears,
     totalMonths,
@@ -15,7 +18,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
     remainingInterest,
     totalInterestPaid,
     lastDayOfPaying,
-  } = advanceCalculateSummary;
+  } = basicYearCalculateSummary;
 
   const remainingDateText = fullyPaid
     ? `ผ่อนดอกเบี้ยจนหมด ใช้เวลาทั้งหมด ${totalYears} ปี ${totalMonths} เดือน`
@@ -43,9 +46,6 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
     ? `ผ่อนหมดในวันที่ ${lastDayOfPaying}`
     : `จะผ่อนดอกเบี้ยจนหมดในวันที่ ${lastDayOfPaying}`;
 
-  const handleNavigateToTable = () => {
-    navigate("/advanceTable", { state: { activeTab: "advanced" } });
-  };
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8 mt-10 shadow-lg p-5">
       <div className="h-42 rounded-lg bg-gray-200 p-0 mb-4">
@@ -54,9 +54,10 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
         </div>
         <div className="p-3">
           <p>
-            <b>3ปีแรก</b>
+            <b>ผ่อน 3 ปีแรก</b>
           </p>
-          <p>เงินกู้คงเหลือ: {totalLoanRemaining.toLocaleString()} บาท</p>
+
+          <p>เงินกู้คงเหลือ: {principalAfterThreeYears.toLocaleString()} บาท</p>
           <p>
             ดอกเบี้ยที่จ่ายไป: {totalInterestThreeYears.toLocaleString()} บาท
           </p>
@@ -85,9 +86,9 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
   );
 };
 
-ShowBankAdvance.propTypes = {
-  advanceCalculateSummary: PropTypes.shape({
-    loanAmountAfterThreeYears: PropTypes.number.isRequired,
+ShowBankBasicYear.propTypes = {
+  basicYearCalculateSummary: PropTypes.shape({
+    principalAfterThreeYears: PropTypes.number.isRequired,
     totalInterestThreeYears: PropTypes.number.isRequired,
     fullyPaid: PropTypes.bool.isRequired,
     totalYears: PropTypes.number.isRequired,
@@ -102,4 +103,4 @@ ShowBankAdvance.propTypes = {
   }).isRequired,
 };
 
-export default ShowBankAdvance;
+export default ShowBankBasicYear;

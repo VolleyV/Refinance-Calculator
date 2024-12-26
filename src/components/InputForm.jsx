@@ -9,6 +9,9 @@ const InputForm = ({
   onSubmit,
   onReset,
   initialInput = null,
+  onSubmitBasicYear,
+  onResetBasicYear,
+  basicYearInitialInput = null,
   onAdvanceSubmit,
   onAdvanceReset,
   advanceInitialInput = null,
@@ -31,20 +34,15 @@ const InputForm = ({
 
   // Switch tabs and reset data if necessary
   const switchTab = (tab) => {
-    if (tab === activeTab) return;
-
-    switch (activeTab) {
-      case "basic":
-        onReset();
-        break;
-      case "basicYear":
-        onResetBasicYear();
-        break;
-      case "advanced":
-        onAdvanceReset();
-        break;
-      default:
-        break;
+    if (tab === "basic" && activeTab !== "basic") {
+      onAdvanceReset();
+      onResetBasicYear();
+    } else if (tab === "advanced" && activeTab !== "advanced") {
+      onReset();
+      onResetBasicYear();
+    } else if (tab === "basicYear" && activeTab !== "basicYear") {
+      onReset();
+      onAdvanceReset();
     }
 
     setActiveTab(tab); // Update active tab
@@ -97,6 +95,13 @@ const InputForm = ({
           initialInput={basicYearInitialInput}
         />
       )}
+      {activeTab === "basicYear" && (
+        <BasicFormYear
+          onSubmitBasicYear={onSubmitBasicYear}
+          onResetBasicYear={onResetBasicYear}
+          basicYearInitialInput={basicYearInitialInput}
+        />
+      )}
       {activeTab === "advanced" && (
         <AdvanceForm
           onSubmit={onAdvanceSubmit}
@@ -113,6 +118,9 @@ InputForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onReset: PropTypes.func.isRequired,
   initialInput: PropTypes.object,
+  onSubmitBasicYear: PropTypes.func.isRequired,
+  onResetBasicYear: PropTypes.func.isRequired,
+  basicYearInitialInput: PropTypes.object,
   onAdvanceSubmit: PropTypes.func.isRequired,
   onAdvanceReset: PropTypes.func.isRequired,
   advanceInitialInput: PropTypes.object,
