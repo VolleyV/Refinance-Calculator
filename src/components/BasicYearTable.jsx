@@ -1,15 +1,12 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { advanceLoanCalculateDetail } from "../utils/advanceLoanCalculateDetail";
-const AdvanceTable = ({ advanceData }) => {
-  if (!advanceData) {
-    return <p>ไม่มีข้อมูล กรุณากลับไปกรอกแบบฟอร์มก่อน</p>;
-  }
+import { basicYearLoanCalculateDetail } from "../utils/basicYearLoanCalculateDetail";
 
+const BasicYearTable = ({ basicYearData }) => {
   const itemsPerPage = 36; // จำนวนงวดต่อหน้า
   const [currentPage, setCurrentPage] = useState(1);
 
-  const calculationDetails = advanceLoanCalculateDetail(advanceData);
+  const calculationDetails = basicYearLoanCalculateDetail(basicYearData);
 
   // คำนวณข้อมูลสำหรับหน้า
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -49,7 +46,6 @@ const AdvanceTable = ({ advanceData }) => {
       behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
     });
   };
-
   return (
     <div className="container mx-auto mt-10 px-4">
       <h2 className="text-lg font-bold">ตารางการคำนวณ</h2>
@@ -104,13 +100,13 @@ const AdvanceTable = ({ advanceData }) => {
                     {parseFloat(detail.monthlyPayment).toLocaleString()}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.loanAmountPortion).toLocaleString()}
+                    {parseFloat(detail.principalPortion).toLocaleString()}
                   </td>
                   <td className="border px-6 py-4 text-center">
                     {parseFloat(detail.interest).toLocaleString()}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.remainingLoanAmount).toLocaleString()}
+                    {parseFloat(detail.remainingPrincipal).toLocaleString()}
                   </td>
                 </tr>
               ))}
@@ -159,18 +155,13 @@ const AdvanceTable = ({ advanceData }) => {
   );
 };
 
-AdvanceTable.propTypes = {
-  advanceData: PropTypes.arrayOf(
-    PropTypes.shape({
-      month: PropTypes.number.isRequired,
-      date: PropTypes.string.isRequired,
-      interestRate: PropTypes.number.isRequired, // แก้เป็น number
-      monthlyPayment: PropTypes.number.isRequired, // แก้เป็น number
-      loanAmountPortion: PropTypes.number.isRequired, // แก้ชื่อให้ตรง
-      interest: PropTypes.number.isRequired, // แก้เป็น number
-      remainingLoanAmount: PropTypes.number.isRequired, // แก้ชื่อให้ตรง
-    })
-  ),
+BasicYearTable.propTypes = {
+  basicYearData: PropTypes.shape({
+    loanAmount: PropTypes.string.isRequired,
+    startDate: PropTypes.string,
+    paymentDuration: PropTypes.number.isRequired,
+    interestRate: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
-export default AdvanceTable;
+export default BasicYearTable;
