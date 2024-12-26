@@ -11,6 +11,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
   const {
     principalAfterThreeYears,
     totalInterestThreeYears,
+    monthlyPayment,
     fullyPaid,
     totalYears,
     totalMonths,
@@ -54,7 +55,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
         </div>
         <div className="p-3">
           <p>
-            <b>ผ่อน 3 ปีแรก</b>
+            <b>ผ่อน 3 ปีแรก (ผ่อนเดือนละ {monthlyPayment} บาท)</b>
           </p>
 
           <p>เงินกู้คงเหลือ: {principalAfterThreeYears.toLocaleString()} บาท</p>
@@ -75,7 +76,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
         </div>
         <div className="p-3">
           <p>
-            <b>จนผ่อนจบ</b>
+            <b>จนผ่อนจบ (ผ่อนเดือนละ {monthlyPayment} บาท)</b>
           </p>
           <p>{remainingDateText}</p>
           <p>{remainingInterestText.toLocaleString()}</p>
@@ -90,6 +91,7 @@ ShowBankBasicYear.propTypes = {
   basicYearCalculateSummary: PropTypes.shape({
     principalAfterThreeYears: PropTypes.number.isRequired,
     totalInterestThreeYears: PropTypes.number.isRequired,
+    monthlyPayment: PropTypes.number.isRequired,
     fullyPaid: PropTypes.bool.isRequired,
     totalYears: PropTypes.number.isRequired,
     totalMonths: PropTypes.number.isRequired,

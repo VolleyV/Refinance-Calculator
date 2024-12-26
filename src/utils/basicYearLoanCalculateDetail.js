@@ -159,7 +159,8 @@ export const remainingBasicYearToLast = (details) => {
   const totalMonthsRemainder = totalMonths % 12;
 
   return {
-    fullyPaid: fixRemain === 0, // Check if it’s fully paid
+    fullyPaid: fixRemain === 0,
+    monthlyPayment: monthlyPayment.toFixed(2),
     totalYears,
     totalMonths: totalMonthsRemainder,
     remainingDate: { years: yearsRemaining, months: remainingMonths },
