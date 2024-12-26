@@ -1,10 +1,18 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { basicLoanCalculateDetail } from "../utils/basicLoanCalculateDetail.js";
+import { useNavigate } from "react-router-dom";
+
 const BasicTable = ({ data }) => {
   if (!data) {
     return <div>ไม่มีข้อมูลที่จะแสดง</div>;
   }
+
+  const navigate = useNavigate(); // Hook สำหรับนำทางไปยังหน้าอื่น
+
+  const goBack = () => {
+    navigate(-1); // นำทางกลับไปหน้าก่อนหน้า
+  };
 
   const itemsPerPage = 36; // จำนวนงวดต่อหน้า
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,7 +60,16 @@ const BasicTable = ({ data }) => {
 
   return (
     <div className="container mx-auto mt-10 px-4">
-      <h2 className="text-lg font-bold">ตารางการคำนวณ</h2>
+      <div className="relative flex items-center mb-5">
+        <button
+          onClick={goBack}
+          className="absolute left-0 mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          ย้อนกลับ
+        </button>
+        <h2 className="text-lg font-bold mx-auto">ตารางการคำนวณ</h2>
+      </div>
+
       {currentItems.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">

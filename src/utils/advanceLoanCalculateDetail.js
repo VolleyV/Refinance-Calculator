@@ -18,13 +18,7 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     startTerm,
     endTerm
   );
-  // if (!advanceData || !advanceData.loanAmount || !advanceData.startDate) {
-  //   console.error(
-  //     "Missing required data in advanceLoanCalculateDetail:",
-  //     advanceData
-  //   );
-  //   return [];
-  // }
+
   if (!advanceData || typeof advanceData !== "object") {
     console.error("Invalid advanceData:", advanceData);
     return [];
@@ -108,14 +102,14 @@ export const advanceLoanCalculateDetail = (advanceData) => {
       daysInCurrentYear;
     const loanAmountPortion = Math.max(0, currentMonthlyPayment - interest);
 
-    if (currentMonthlyPayment <= interest) {
-      alert(
-        `จำนวนเงินผ่อนรายเดือน (${currentMonthlyPayment}) ต่ำเกินไปที่จะครอบคลุมดอกเบี้ย (${interest.toFixed(
-          2
-        )}).`
-      );
-      return []; // Exit the function entirely
-    }
+    // if (currentMonthlyPayment <= interest) {
+    //   alert(
+    //     `จำนวนเงินผ่อนรายเดือน (${currentMonthlyPayment}) ต่ำเกินไปที่จะครอบคลุมดอกเบี้ย (${interest.toFixed(
+    //       2
+    //     )}).`
+    //   );
+    //   return [];
+    // }
 
     loanAmountRemaining = Math.max(0, loanAmountRemaining - loanAmountPortion);
 

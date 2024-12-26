@@ -51,7 +51,7 @@ const InputForm = ({
               : "shrink-0 border border-transparent p-3 text-sm font-medium text-gray-500 hover:text-gray-700"
           }`}
         >
-          ข้อมูลพื้นฐานแบบเดือน
+          Basic (ผ่อนต่อเดือน)
         </button>
         <button
           onClick={() => switchTab("basicYear")}
@@ -61,7 +61,7 @@ const InputForm = ({
               : "shrink-0 border border-transparent p-3 text-sm font-medium text-gray-500 hover:text-gray-700"
           }`}
         >
-          ข้อมูลพื้นฐานแบบปี
+          Basic (เลือกระยะเวลา)
         </button>
         <button
           onClick={() => switchTab("advanced")}
