@@ -5,37 +5,43 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
   const navigate = useNavigate();
 
   const totalLoanRemaining = advanceCalculateSummary.loanAmountAfterThreeYears;
-  const totalInterestPaid = advanceCalculateSummary.totalInterestThreeYears;
+  const totalInterestThreeYears =
+    advanceCalculateSummary.totalInterestThreeYears;
   const {
     fullyPaid,
     totalYears,
     totalMonths,
     remainingDate,
     remainingInterest,
+    totalInterestPaid,
     lastDayOfPaying,
   } = advanceCalculateSummary;
 
   const remainingDateText = fullyPaid
-    ? `คุณได้ผ่อนหมดแล้ว ใช้เวลาทั้งหมด ${totalYears} ปี ${totalMonths} เดือน`
-    : `คุณผ่อนไปแล้ว ${totalYears - remainingDate.years} ปี ${
+    ? `ผ่อนดอกเบี้ยจนหมด ใช้เวลาทั้งหมด ${totalYears} ปี ${totalMonths} เดือน`
+    : `ผ่อนไปแล้ว ${totalYears - remainingDate.years} ปี ${
         totalMonths - remainingDate.months
       } เดือน และยังเหลืออีก ${remainingDate.years} ปี ${
         remainingDate.months
       } เดือน`;
 
   const remainingInterestText = fullyPaid
-    ? "ไม่มีดอกเบี้ยค้าง"
-    : `ดอกเบี้ยที่ต้องจ่ายอีก ${parseFloat(remainingInterest).toLocaleString(
-        "en-US",
-        {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }
-      )} บาท`;
+    ? `ผ่อนดอกเบี้ยทั้งหมดแล้วเป็นจำนวนเงิน ${parseFloat(
+        totalInterestPaid
+      ).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })} บาท`
+    : `ดอกเบี้ยที่ต้องจ่ายเพิ่มอีกจนกว่าจะครบ ${parseFloat(
+        remainingInterest
+      ).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })} บาท`;
 
   const lastPaymentText = fullyPaid
-    ? `คุณได้ผ่อนหมดแล้วในวันที่ ${lastDayOfPaying}`
-    : `คุณจะผ่อนหมดในวันที่ ${lastDayOfPaying}`;
+    ? `ผ่อนหมดในวันที่ ${lastDayOfPaying}`
+    : `จะผ่อนดอกเบี้ยจนหมดในวันที่ ${lastDayOfPaying}`;
 
   const handleNavigateToTable = () => {
     navigate("/advanceTable", { state: { activeTab: "advanced" } });
@@ -51,7 +57,9 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
             <b>3ปีแรก</b>
           </p>
           <p>เงินกู้คงเหลือ: {totalLoanRemaining.toLocaleString()} บาท</p>
-          <p>ดอกเบี้ยที่จ่ายไป: {totalInterestPaid.toLocaleString()} บาท</p>
+          <p>
+            ดอกเบี้ยที่จ่ายไป: {totalInterestThreeYears.toLocaleString()} บาท
+          </p>
           <button
             onClick={handleNavigateToTable}
             className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
@@ -92,6 +100,7 @@ ShowBankAdvance.propTypes = {
       months: PropTypes.number.isRequired,
     }),
     remainingInterest: PropTypes.number.isRequired,
+    totalInterestPaid: PropTypes.number.isRequired,
     lastDayOfPaying: PropTypes.string.isRequired,
   }).isRequired,
 };

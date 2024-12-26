@@ -140,11 +140,11 @@ function App() {
           />
           <Route
             path="/basicTab"
-            element={<BasicTable data={basicFormData} />}
+            element={<BasicTable data={basicFormData || {}} />}
           />
           <Route
             path="/advanceTable"
-            element={<AdvanceTable advanceData={advanceFormData} />}
+            element={<AdvanceTable advanceData={advanceFormData || {}} />}
           />
         </Routes>
       </div>

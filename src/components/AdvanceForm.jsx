@@ -170,14 +170,20 @@ const AdvanceForm = ({
               ))}
             </select>
           </div>
-          <div>
+          <div
+            className="relative cursor-pointer"
+            onClick={() =>
+              startDateRef.current && startDateRef.current.showPicker?.()
+            }
+          >
             <label htmlFor="start-date-advance">
               เลือกวันที่ (วัน/เดือน/ปี)
             </label>
             <input
               type="date"
+              name="start-date-advance"
               id="start-date-advance"
-              className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
+              className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md cursor-pointer"
               value={startDate}
               ref={startDateRef}
               onChange={handleStartDateChange(setStartDate)}

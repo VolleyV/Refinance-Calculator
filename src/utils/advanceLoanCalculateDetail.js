@@ -18,11 +18,15 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     startTerm,
     endTerm
   );
-  if (!advanceData || !advanceData.loanAmount || !advanceData.startDate) {
-    console.error(
-      "Missing required data in advanceLoanCalculateDetail:",
-      advanceData
-    );
+  // if (!advanceData || !advanceData.loanAmount || !advanceData.startDate) {
+  //   console.error(
+  //     "Missing required data in advanceLoanCalculateDetail:",
+  //     advanceData
+  //   );
+  //   return [];
+  // }
+  if (!advanceData || typeof advanceData !== "object") {
+    console.error("Invalid advanceData:", advanceData);
     return [];
   }
 
@@ -190,7 +194,13 @@ export const advanceRemainingToLast = (details) => {
   }
 
   let remainingInterest = 0;
+  let totalInterestPaid = 0;
   let monthsRemaining = 0;
+
+  totalInterestPaid = details.reduce(
+    (sum, item) => sum + parseFloat(item.interest || 0),
+    0
+  );
 
   while (remainingLoanAmount > 0) {
     const monthlyInterest = (remainingLoanAmount * (interestRate / 100)) / 12;
@@ -206,6 +216,7 @@ export const advanceRemainingToLast = (details) => {
     }
 
     remainingInterest += monthlyInterest;
+    totalInterestPaid += monthlyInterest;
     remainingLoanAmount = Math.max(0, remainingLoanAmount - principalPortion);
 
     monthsRemaining++;
@@ -225,6 +236,7 @@ export const advanceRemainingToLast = (details) => {
     totalMonths: totalMonthsRemainder,
     remainingDate: { years: yearsRemaining, months: remainingMonths },
     remainingInterest: remainingInterest.toFixed(2),
+    totalInterestPaid: totalInterestPaid.toFixed(2),
     lastDayOfPaying: lastDate.toLocaleDateString("en-EN", {
       year: "numeric",
       month: "long",

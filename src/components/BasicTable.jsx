@@ -3,7 +3,7 @@ import { useState } from "react";
 import { basicLoanCalculateDetail } from "../utils/basicLoanCalculateDetail.js";
 const BasicTable = ({ data }) => {
   if (!data) {
-    return <p>ไม่มีข้อมูล กรุณากลับไปกรอกแบบฟอร์มก่อน</p>;
+    return <div>ไม่มีข้อมูลที่จะแสดง</div>;
   }
 
   const itemsPerPage = 36; // จำนวนงวดต่อหน้า
@@ -22,21 +22,32 @@ const BasicTable = ({ data }) => {
   const goToNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
-      });
+      scrollToTop();
     }
   };
 
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
-      });
+      scrollToTop();
     }
+  };
+
+  const goToFirstPage = () => {
+    setCurrentPage(1);
+    scrollToTop();
+  };
+
+  const goToLastPage = () => {
+    setCurrentPage(totalPages);
+    scrollToTop();
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
+    });
   };
 
   return (
@@ -109,6 +120,13 @@ const BasicTable = ({ data }) => {
           {/* ปุ่มเปลี่ยนหน้า */}
           <div className="flex justify-between mt-4">
             <button
+              onClick={goToFirstPage}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+            >
+              หน้าแรก
+            </button>
+            <button
               onClick={goToPreviousPage}
               disabled={currentPage === 1}
               className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
@@ -125,6 +143,13 @@ const BasicTable = ({ data }) => {
             >
               หน้าถัดไป
             </button>
+            <button
+              onClick={goToLastPage}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+            >
+              หน้าสุดท้าย
+            </button>
           </div>
         </div>
       ) : (
@@ -137,7 +162,7 @@ const BasicTable = ({ data }) => {
 BasicTable.propTypes = {
   data: PropTypes.shape({
     loanAmount: PropTypes.string.isRequired,
-    startDate: PropTypes.string.isRequired,
+    startDate: PropTypes.string,
     paymentDuration: PropTypes.number.isRequired,
     interestRate: PropTypes.number.isRequired,
     monthlyPayment: PropTypes.string.isRequired,
