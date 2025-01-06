@@ -102,15 +102,6 @@ export const advanceLoanCalculateDetail = (advanceData) => {
       daysInCurrentYear;
     const loanAmountPortion = Math.max(0, currentMonthlyPayment - interest);
 
-    // if (currentMonthlyPayment <= interest) {
-    //   alert(
-    //     `จำนวนเงินผ่อนรายเดือน (${currentMonthlyPayment}) ต่ำเกินไปที่จะครอบคลุมดอกเบี้ย (${interest.toFixed(
-    //       2
-    //     )}).`
-    //   );
-    //   return [];
-    // }
-
     loanAmountRemaining = Math.max(0, loanAmountRemaining - loanAmountPortion);
 
     console.log("Details Entry:", {
