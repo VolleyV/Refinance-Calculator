@@ -1,6 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import PropTypes from "prop-types";
 
-const BasicForm = () => {
+const BasicForm = ({ onSubmit, onReset, initialInput }) => {
   // States
   const [loanAmount, setLoanAmount] = useState("");
   const [paymentDuration, setPaymentDuration] = useState(1);
@@ -9,22 +10,7 @@ const BasicForm = () => {
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
-  const [calculationDetails, setCalculationDetails] = useState([]);
-  const [remainingMonths, setRemainingMonths] = useState(0);
 
-  // Helper functions for date calculations
-  const isLeapYear = (year) =>
-    (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-
-  const daysInYear = (year) => (isLeapYear(year) ? 366 : 365);
-
-  const daysInMonth = (year, month) => {
-    const daysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    if (month === 1 && isLeapYear(year)) return 29;
-    return daysInMonths[month];
-  };
-
-  // Handlers
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
     const rawValue = value.replace(/[^0-9]/g, "");
@@ -45,7 +31,11 @@ const BasicForm = () => {
 
   const handleInterestRateChange = (event) => {
     const { value } = event.target;
-    setInterestRate(Number(value));
+    if (value === "") {
+      setInterestRate("");
+    } else {
+      setInterestRate(Number(value)); // หากมีค่าก็แปลงเป็นตัวเลข
+    }
   };
 
   const handleMonthlyPaymentChange = (event) => {
@@ -57,52 +47,22 @@ const BasicForm = () => {
     }
   };
 
-  // Calculate refinance details
-  const calculateRefinanceDetails = () => {
-    let principalRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
-    let monthlyPaymentAmount =
-      parseFloat(monthlyPayment.replace(/,/g, "")) || 0;
-    const interestRateMonthly = interestRate / 100 / 12;
-    const totalTermMonths = paymentDuration * 12;
-    const initialStartDate = new Date(startDate);
-    const details = [];
-    let monthsElapsed = 0;
-
-    while (monthsElapsed < totalTermMonths && principalRemaining > 0) {
-      const currentYear = initialStartDate.getFullYear();
-      const currentMonth = initialStartDate.getMonth();
-      const daysInCurrentMonth = daysInMonth(currentYear, currentMonth);
-      const daysInCurrentYear = daysInYear(currentYear);
-
-      // Calculate interest and principal portions
-      const interest =
-        (principalRemaining * interestRateMonthly * daysInCurrentMonth) /
-        daysInCurrentYear;
-      const principalPortion = Math.max(0, monthlyPaymentAmount - interest);
-      principalRemaining = Math.max(0, principalRemaining - principalPortion);
-
-      // Store details
-      details.push({
-        month: monthsElapsed + 1,
-        date: initialStartDate.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "2-digit",
-        }),
-        interest: interest.toFixed(2),
-        principalPortion: principalPortion.toFixed(2),
-        remainingPrincipal: principalRemaining.toFixed(2),
-        monthlyPayment: monthlyPaymentAmount.toFixed(2),
-        interestRate: interestRate.toFixed(2),
-      });
-
-      // Advance to the next month
-      initialStartDate.setMonth(initialStartDate.getMonth() + 1);
-      monthsElapsed++;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!loanAmount || !interestRate || !monthlyPayment) {
+      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+      return;
     }
 
-    setCalculationDetails(details);
-    setRemainingMonths(monthsElapsed);
+    // ส่งข้อมูลกลับไปที่ App
+    const data = {
+      loanAmount,
+      paymentDuration,
+      startDate,
+      interestRate,
+      monthlyPayment,
+    };
+    onSubmit(data);
   };
 
   const resetFields = () => {
@@ -111,15 +71,27 @@ const BasicForm = () => {
     setPaymentDuration(1);
     setInterestRate("");
     setStartDate(new Date().toISOString().split("T")[0]);
-    setCalculationDetails([]);
-    setRemainingMonths(0);
+    onReset();
   };
+
+  //เก็บข้อมูลที่กรอกไว้ในช่องเวลามีการเปลี่ยนหน้า
+  useEffect(() => {
+    if (initialInput) {
+      setLoanAmount(initialInput.loanAmount || "");
+      setPaymentDuration(initialInput.paymentDuration || 1);
+      setInterestRate(initialInput.interestRate || "");
+      setMonthlyPayment(initialInput.monthlyPayment || "");
+      setStartDate(
+        initialInput.startDate || new Date().toISOString().split("T")[0]
+      );
+    }
+  }, [initialInput]);
 
   return (
     <div>
       <div className="bg-white rounded-b-lg px-6 py-4">
         <h2 className="text-xl font-bold">คำนวณแบบอัตราดอกเบี้ยเดียว</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mt-4">
             <label
               htmlFor="Loan-Amount"
@@ -169,7 +141,7 @@ const BasicForm = () => {
                 htmlFor="startDate"
                 className="block text-l font-medium text-gray-700"
               >
-                เลือกวันที่ (วัน/เดือน/ปี)
+                เลือกวันที่ (MM/DD/YYYY)
               </label>
               <input
                 type="date"
@@ -189,7 +161,7 @@ const BasicForm = () => {
                 htmlFor="interestRate"
                 className="block text-l font-medium text-gray-700"
               >
-                ใอัตราดอกเบี้ย (%)
+                อัตราดอกเบี้ย (%)
               </label>
               <input
                 type="number"
@@ -220,8 +192,7 @@ const BasicForm = () => {
 
           <div className="mt-4">
             <button
-              type="button"
-              onClick={calculateRefinanceDetails}
+              type="submit"
               className="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto mr-2"
             >
               คำนวณ
@@ -231,45 +202,19 @@ const BasicForm = () => {
               onClick={resetFields}
               className="inline-block w-full rounded-lg bg-red-500 px-5 py-3 font-medium text-white sm:w-auto"
             >
-              Reset
+              ล้างข้อมููล
             </button>
           </div>
         </form>
       </div>
-
-      {/* Displaying results */}
-      <div className="mt-8">
-        {calculationDetails.length > 0 && (
-          <table className="min-w-full table-auto">
-            <thead>
-              <tr>
-                <th>เดือน</th>
-                <th>วันที่</th>
-                <th>อัตราดอกเบี้ย</th>
-                <th>ผ่อนต่อเดือน</th>
-                <th>ส่วนที่จ่ายต้น</th>
-                <th>ดอกเบี้ย</th>
-                <th>ยอดคงเหลือ</th>
-              </tr>
-            </thead>
-            <tbody>
-              {calculationDetails.map((detail, index) => (
-                <tr key={index}>
-                  <td>{detail.month}</td>
-                  <td>{detail.date}</td>
-                  <td>{detail.interestRate}%</td>
-                  <td>{detail.monthlyPayment}</td>
-                  <td>{detail.principalPortion}</td>
-                  <td>{detail.interest}</td>
-                  <td>{detail.remainingPrincipal}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
     </div>
   );
+};
+
+BasicForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  onReset: PropTypes.func.isRequired,
+  initialInput: PropTypes.object,
 };
 
 export default BasicForm;
