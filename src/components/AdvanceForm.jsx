@@ -18,17 +18,10 @@ const AdvanceForm = ({
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
-
-    const rawValue = value.replace(/[^0-9.]/g, "");
-
-    const numericValue = parseFloat(rawValue);
-    if (!isNaN(numericValue) && numericValue >= 0) {
-      if (numericValue <= 999_000_000) {
-        const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        setLoanAmount(formattedValue);
-      }
-    } else {
-      alert("Negative values or invalid input are not allowed.");
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setLoanAmount(formattedValue);
     }
   };
 
