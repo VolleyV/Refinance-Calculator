@@ -1,23 +1,12 @@
-/* eslint-disable no-unused-vars */
 export const advanceLoanCalculateDetail = (advanceData) => {
   const {
     loanAmount,
     monthlyPayment,
-    termMonths,
     startDate,
     interestRates,
     startTerm = ["1"],
     endTerm,
   } = advanceData;
-  console.log(
-    loanAmount,
-    monthlyPayment,
-    termMonths,
-    startDate,
-    interestRates,
-    startTerm,
-    endTerm
-  );
 
   if (!advanceData || typeof advanceData !== "object") {
     console.error("Invalid advanceData:", advanceData);
@@ -40,35 +29,23 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     console.error("Invalid loanAmount:", loanAmount);
     return [];
   }
-  const totalTermMonths = parseFloat(termMonths) * 12 || 12; // Convert years to months
+
   const initialStartDate = new Date(startDate);
   const details = [];
   let monthsElapsed = 0;
 
-  // Automatically set last term to total loan term if not already specified
-  const adjustedEndTerm = endTerm.map((term, index) => {
-    const parsedTerm = parseInt(term) || 0;
-    return parsedTerm > 0 ? parsedTerm : totalTermMonths;
-  });
-
-  // Initialize default values
   let currentInterestRate =
     parseFloat(interestRates[0]?.replace(/,/g, "")) / 100 || 0.025; // Default 2.5%
   let currentMonthlyPayment =
     parseFloat(monthlyPayment[0]?.replace(/,/g, "")) || 0;
 
-  const maxEndTerm = totalTermMonths > 0 ? totalTermMonths : Infinity;
-  const untilTerm =
-    parseInt(adjustedEndTerm[adjustedEndTerm.length - 1]) || maxEndTerm;
-  const endTermInputs = termMonths * 12;
-
   if (currentMonthlyPayment === 0) {
-    alert("จำนวนเงินผ่อนรายเดือนต้องมากกว่า 0");
+    alert("Monthly payment must be greater than 0.");
     return [];
   }
 
-  // Calculate until loanAmountRemaining is 0 or untilTerm is reached
-  while (loanAmountRemaining > 0 && monthsElapsed < untilTerm) {
+  // Calculate until loanAmountRemaining is 0
+  while (loanAmountRemaining > 0) {
     const dateClone = new Date(initialStartDate);
     dateClone.setMonth(initialStartDate.getMonth() + monthsElapsed);
 
@@ -79,7 +56,7 @@ export const advanceLoanCalculateDetail = (advanceData) => {
 
     for (let i = 0; i < startTerm.length; i++) {
       const start = parseInt(startTerm[i]) || 0;
-      const end = parseInt(adjustedEndTerm[i]) || Infinity; // Use adjusted end term
+      const end = parseInt(endTerm[i]) || Infinity;
 
       if (monthsElapsed + 1 >= start && monthsElapsed + 1 <= end) {
         currentInterestRate =
@@ -100,23 +77,23 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     const interest =
       (loanAmountRemaining * currentInterestRate * daysInCurrentMonth) /
       daysInCurrentYear;
+
+    // Add validation to exit if the monthly payment is too low
+    if (currentMonthlyPayment <= interest) {
+      alert(
+        `Monthly payment (${currentMonthlyPayment.toFixed(
+          2
+        )}) is too low to cover the interest (${interest.toFixed(
+          2
+        )}). Consider increasing the monthly payment.`
+      );
+      return details; // Return accumulated details before stopping.
+    }
+
     const loanAmountPortion = Math.max(0, currentMonthlyPayment - interest);
 
+    // Update the remaining loan balance
     loanAmountRemaining = Math.max(0, loanAmountRemaining - loanAmountPortion);
-
-    console.log("Details Entry:", {
-      month: monthsElapsed + 1,
-      date: dateClone.toLocaleDateString("th-TH", {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-      }),
-      interest: interest.toFixed(2),
-      loanAmountPortion: loanAmountPortion.toFixed(2),
-      remainingLoanAmount: loanAmountRemaining.toFixed(2),
-      monthlyPayment: currentMonthlyPayment.toFixed(2),
-      interestRate: (currentInterestRate * 100).toFixed(2),
-    });
 
     details.push({
       month: monthsElapsed + 1,
@@ -134,9 +111,8 @@ export const advanceLoanCalculateDetail = (advanceData) => {
 
     monthsElapsed++;
   }
-  if (loanAmountRemaining <= 0) {
-    console.log("Loan fully paid off");
-  }
+
+  console.log("Loan fully paid off after", monthsElapsed, "months.");
   return details;
 };
 

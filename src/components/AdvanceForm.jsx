@@ -7,7 +7,6 @@ const AdvanceForm = ({
   advanceInitialInput,
 }) => {
   const [loanAmount, setLoanAmount] = useState("");
-  const [termMonths, setTermMonths] = useState("");
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
@@ -29,24 +28,38 @@ const AdvanceForm = ({
   const handleStartDateChange = (setter) => (event) =>
     setter(event.target.value);
 
+  // const handleInterestRateChange = (index, value) => {
+  //   const rawValue = value.replace(/[^0-9.]/g, "");
+  //   const numericValue = parseFloat(rawValue);
+
+  //   if (!isNaN(numericValue) && numericValue >= 0) {
+  //     setInterestRates((prev) => {
+  //       const updated = [...prev];
+  //       updated[index] = rawValue;
+  //       return updated;
+  //     });
+  //   } else if (rawValue === "") {
+  //     setInterestRates((prev) => {
+  //       const updated = [...prev];
+  //       updated[index] = "";
+  //       return updated;
+  //     });
+  //   } else {
+  //     alert("Invalid input. Only positive numbers are allowed.");
+  //   }
+  // };
+
   const handleInterestRateChange = (index, value) => {
-    const rawValue = value.replace(/[^0-9.]/g, "");
+    const rawValue = value.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
     const numericValue = parseFloat(rawValue);
 
-    if (!isNaN(numericValue) && numericValue >= 0) {
+    if (rawValue === "" || (numericValue >= 0 && numericValue <= 10)) {
+      // Valid input: update the specific index
       setInterestRates((prev) => {
         const updated = [...prev];
-        updated[index] = rawValue;
+        updated[index] = rawValue; // Keep raw value to allow partial decimals like "1."
         return updated;
       });
-    } else if (rawValue === "") {
-      setInterestRates((prev) => {
-        const updated = [...prev];
-        updated[index] = "";
-        return updated;
-      });
-    } else {
-      alert("Invalid input. Only positive numbers are allowed.");
     }
   };
 
@@ -69,10 +82,6 @@ const AdvanceForm = ({
     } else {
       alert("Invalid input. Only positive numbers are allowed.");
     }
-  };
-
-  const handleDurationChange = (event) => {
-    setTermMonths(Number(event.target.value));
   };
 
   const handleEndTermChange = (index, value) => {
@@ -135,7 +144,6 @@ const AdvanceForm = ({
 
     const advanceData = {
       loanAmount,
-      termMonths,
       startDate,
       startTerm,
       endTerm,
@@ -149,7 +157,6 @@ const AdvanceForm = ({
   const resetFields = () => {
     setLoanAmount("");
     setMonthlyPayment(["", "", "", "", ""]);
-    setTermMonths("");
     setStartDate("");
     setInterestRates(["", "", "", "", ""]);
     setStartTerm(["1", "", "", "", ""]);
@@ -161,7 +168,6 @@ const AdvanceForm = ({
     if (advanceInitialInput) {
       setLoanAmount(advanceInitialInput.loanAmount || 0);
       setMonthlyPayment(advanceInitialInput.monthlyPayment || 0);
-      setTermMonths(advanceInitialInput.termMonths || 0);
       setStartDate(advanceInitialInput.startDate || 0);
       setInterestRates(advanceInitialInput.interestRates || 0);
       setStartTerm(advanceInitialInput.startTerm || 0);
@@ -173,45 +179,23 @@ const AdvanceForm = ({
     <div className="bg-white rounded-b-lg px-6 py-4">
       <h2 className="text-xl font-bold">คำนวณดอกเบี้ยแบบมีหลายอัตราดอกเบี้ย</h2>
       <form id="loan-form-advance" className="mt-4" onSubmit={handleSubmit}>
-        <div className="mt-4">
-          <label
-            htmlFor="loanAmount-advance"
-            className="block text-l font-medium text-gray-700"
-          >
-            จำนวนเงินที่กู้ (บาท)
-          </label>
-          <input
-            type="text"
-            id="loanAmount-advance"
-            className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-            placeholder="จำนวนเงินที่กู้ (บาท)"
-            value={loanAmount}
-            onChange={handleLoanAmountChange}
-          />
-        </div>
-
         {/* Term Months and Start Date */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
           <div className="relative">
             <label
-              htmlFor="payment-duration"
+              htmlFor="loanAmount-advance"
               className="block text-l font-medium text-gray-700"
             >
-              เลือกระยะเวลาในการผ่อน
+              จำนวนเงินที่กู้ (บาท)
             </label>
-            <select
-              id="payment-duration"
-              name="payment-duration"
-              onChange={handleDurationChange}
-              value={termMonths}
+            <input
+              type="text"
+              id="loanAmount-advance"
               className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-            >
-              {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
-                <option key={year} value={year}>
-                  {year} ปี
-                </option>
-              ))}
-            </select>
+              placeholder="จำนวนเงินที่กู้ (บาท)"
+              value={loanAmount}
+              onChange={handleLoanAmountChange}
+            />
           </div>
           <div
             className="relative cursor-pointer"
