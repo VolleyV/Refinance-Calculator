@@ -26,10 +26,22 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
 
   const handleInterestRateChange = (event) => {
     const { value } = event.target;
+
+    // Allow empty input for clearing the field
     if (value === "") {
       setInterestRate("");
-    } else {
-      setInterestRate(Number(value)); // หากมีค่าก็แปลงเป็นตัวเลข
+      return;
+    }
+
+    // Validate decimal numbers and ensure value is <= 10
+    const decimalRegex = /^\d*\.?\d*$/; // Allows digits and one optional decimal point
+    const numericValue = parseFloat(value);
+
+    if (
+      decimalRegex.test(value) &&
+      (numericValue <= 10 || isNaN(numericValue))
+    ) {
+      setInterestRate(value);
     }
   };
 
