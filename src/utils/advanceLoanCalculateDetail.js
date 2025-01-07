@@ -1,3 +1,14 @@
+const isLeapYear = (year) =>
+  (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+
+const daysInYear = (year) => (isLeapYear(year) ? 366 : 365);
+
+const daysInMonth = (year, month) => {
+  const daysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (month === 1 && isLeapYear(year)) return 29;
+  return daysInMonths[month];
+};
+
 export const advanceLoanCalculateDetail = (advanceData) => {
   const {
     loanAmount,
@@ -12,17 +23,6 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     console.error("Invalid advanceData:", advanceData);
     return [];
   }
-
-  const isLeapYear = (year) =>
-    (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-
-  const daysInYear = (year) => (isLeapYear(year) ? 366 : 365);
-
-  const daysInMonth = (year, month) => {
-    const daysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    if (month === 1 && isLeapYear(year)) return 29;
-    return daysInMonths[month];
-  };
 
   let loanAmountRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
   if (isNaN(loanAmountRemaining) || loanAmountRemaining <= 0) {
@@ -84,11 +84,7 @@ export const advanceLoanCalculateDetail = (advanceData) => {
 
     details.push({
       month: monthsElapsed + 1,
-      date: dateClone.toLocaleDateString("th-TH", {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-      }),
+      date: dateClone.toISOString(),
       interest: interest.toFixed(2),
       loanAmountPortion: loanAmountPortion.toFixed(2),
       remainingLoanAmount: loanAmountRemaining.toFixed(2),
@@ -124,46 +120,32 @@ export const advanceThreeYearsSummary = (details) => {
 
 export const advanceRemainingToLast = (details) => {
   const lastDetail = details[details.length - 1];
-  let remainingLoanAmount = lastDetail.remainingLoanAmount;
-  const monthlyPayment = lastDetail.monthlyPayment;
-  const interestRate = lastDetail.interestRate;
+  let remainingLoanAmount = parseFloat(lastDetail.remainingLoanAmount) || 0;
+  const monthlyPayment = parseFloat(lastDetail.monthlyPayment) || 0;
+  const interestRate = parseFloat(lastDetail.interestRate) || 0;
+
   let lastDate;
-
-  const fixRemain = remainingLoanAmount;
-
-  try {
-    lastDate = new Date(lastDetail.date.replace(/-/g, "/"));
-    if (isNaN(lastDate)) {
-      throw new Error("Invalid Date Format");
+  if (lastDetail?.date) {
+    lastDate = new Date(lastDetail.date);
+    if (isNaN(lastDate.getTime())) {
+      console.error("Invalid date format:", lastDetail.date);
+      lastDate = new Date(Date.now()); // fallback ในกรณีผิดพลาด
     }
-  } catch (error) {
-    console.error("Error parsing date:", error, lastDetail.date);
-    lastDate = new Date();
+  } else {
+    console.error("Missing date in lastDetail.");
+    lastDate = new Date(Date.now());
   }
 
-  let remainingInterest = 0;
-  let totalInterestPaid = 0;
-  let monthsRemaining = 0;
-
-  totalInterestPaid = details.reduce(
+  let totalInterestPaid = details.reduce(
     (sum, item) => sum + parseFloat(item.interest || 0),
     0
   );
+  let monthsRemaining = 0;
 
   while (remainingLoanAmount > 0) {
     const monthlyInterest = (remainingLoanAmount * (interestRate / 100)) / 12;
     const principalPortion = Math.max(0, monthlyPayment - monthlyInterest);
 
-    if (principalPortion <= 0) {
-      console.error("ยอดชำระรายเดือนต่ำเกินไปจนดอกเบี้ยไม่ลด ยุติการลูป", {
-        remainingLoanAmount,
-        monthlyPayment,
-        monthlyInterest,
-      });
-      break;
-    }
-
-    remainingInterest += monthlyInterest;
     totalInterestPaid += monthlyInterest;
     remainingLoanAmount = Math.max(0, remainingLoanAmount - principalPortion);
 
@@ -171,19 +153,13 @@ export const advanceRemainingToLast = (details) => {
     lastDate.setMonth(lastDate.getMonth() + 1);
   }
 
-  const yearsRemaining = Math.floor(monthsRemaining / 12);
-  const remainingMonths = monthsRemaining % 12;
-
   const totalMonths = details.length + monthsRemaining;
   const totalYears = Math.floor(totalMonths / 12);
   const totalMonthsRemainder = totalMonths % 12;
 
   return {
-    fullyPaid: fixRemain === 0, // Check if it’s fully paid
     totalYears,
     totalMonths: totalMonthsRemainder,
-    remainingDate: { years: yearsRemaining, months: remainingMonths },
-    remainingInterest: remainingInterest.toFixed(2),
     totalInterestPaid: totalInterestPaid.toFixed(2),
     lastDayOfPaying: lastDate.toLocaleDateString("en-EN", {
       year: "numeric",

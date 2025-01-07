@@ -64,11 +64,7 @@ export const basicYearLoanCalculateDetail = (basicYearData) => {
     // Push the current month's details
     details.push({
       month: monthsElapsed + 1,
-      date: initialStartDate.toLocaleDateString("en-EN", {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-      }),
+      date: initialStartDate.toISOString(),
       interest: parseFloat(monthlyInterest.toFixed(2)),
       principalPortion: parseFloat(principalPortion.toFixed(2)),
       remainingPrincipal: parseFloat(principalRemaining.toFixed(2)),
@@ -108,18 +104,18 @@ export const remainingBasicYearToLast = (details) => {
   const monthlyPayment = lastDetail.monthlyPayment;
   const interestRate = lastDetail.interestRate;
   let lastDate;
+  if (lastDetail?.date) {
+    lastDate = new Date(lastDetail.date);
+    if (isNaN(lastDate.getTime())) {
+      console.error("Invalid date format:", lastDetail.date);
+      lastDate = new Date(Date.now()); // fallback ในกรณีผิดพลาด
+    }
+  } else {
+    console.error("Missing date in lastDetail.");
+    lastDate = new Date(Date.now());
+  }
 
   const fixRemain = remainingPrincipal;
-
-  try {
-    lastDate = new Date(lastDetail.date.replace(/-/g, "/"));
-    if (isNaN(lastDate)) {
-      throw new Error("Invalid Date Format");
-    }
-  } catch (error) {
-    console.error("Error parsing date:", error, lastDetail.date);
-    lastDate = new Date();
-  }
 
   let remainingInterest = 0;
   let totalInterestPaid = 0;

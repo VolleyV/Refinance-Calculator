@@ -35,11 +35,7 @@ export const basicLoanCalculateDetail = (data) => {
 
     details.push({
       month: monthsElapsed + 1,
-      date: initialStartDate.toLocaleDateString("en-EN", {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-      }),
+      date: initialStartDate.toISOString(),
       interest: parseFloat(interest.toFixed(2)),
       principalPortion: parseFloat(principalPortion.toFixed(2)),
       remainingPrincipal: parseFloat(principalRemaining.toFixed(2)),
@@ -79,42 +75,27 @@ export const remainingToLast = (details) => {
   const monthlyPayment = lastDetail.monthlyPayment;
   const interestRate = lastDetail.interestRate;
   let lastDate;
-
-  const fixRemain = remainingPrincipal;
-
-  try {
-    lastDate = new Date(lastDetail.date.replace(/-/g, "/"));
-    if (isNaN(lastDate)) {
-      throw new Error("Invalid Date Format");
+  if (lastDetail?.date) {
+    lastDate = new Date(lastDetail.date);
+    if (isNaN(lastDate.getTime())) {
+      console.error("Invalid date format:", lastDetail.date);
+      lastDate = new Date(Date.now()); // fallback ในกรณีผิดพลาด
     }
-  } catch (error) {
-    console.error("Error parsing date:", error, lastDetail.date);
-    lastDate = new Date();
+  } else {
+    console.error("Missing date in lastDetail.");
+    lastDate = new Date(Date.now());
   }
 
-  let remainingInterest = 0;
-  let totalInterestPaid = 0;
-  let monthsRemaining = 0;
-
-  totalInterestPaid = details.reduce(
+  let totalInterestPaid = details.reduce(
     (sum, item) => sum + parseFloat(item.interest || 0),
     0
   );
+  let monthsRemaining = 0;
 
   while (remainingPrincipal > 0) {
     const monthlyInterest = (remainingPrincipal * (interestRate / 100)) / 12;
     const principalPortion = Math.max(0, monthlyPayment - monthlyInterest);
 
-    if (principalPortion <= 0) {
-      console.error("ยอดชำระรายเดือนต่ำเกินไปจนดอกเบี้ยไม่ลด ยุติการลูป", {
-        remainingPrincipal,
-        monthlyPayment,
-        monthlyInterest,
-      });
-      break;
-    }
-
-    remainingInterest += monthlyInterest;
     totalInterestPaid += monthlyInterest;
     remainingPrincipal = Math.max(0, remainingPrincipal - principalPortion);
 
@@ -122,19 +103,13 @@ export const remainingToLast = (details) => {
     lastDate.setMonth(lastDate.getMonth() + 1);
   }
 
-  const yearsRemaining = Math.floor(monthsRemaining / 12);
-  const remainingMonths = monthsRemaining % 12;
-
   const totalMonths = details.length + monthsRemaining;
   const totalYears = Math.floor(totalMonths / 12);
   const totalMonthsRemainder = totalMonths % 12;
 
   return {
-    fullyPaid: fixRemain === 0, // Check if it’s fully paid
     totalYears,
     totalMonths: totalMonthsRemainder,
-    remainingDate: { years: yearsRemaining, months: remainingMonths },
-    remainingInterest: remainingInterest.toFixed(2),
     totalInterestPaid: totalInterestPaid.toFixed(2),
     lastDayOfPaying: lastDate.toLocaleDateString("en-EN", {
       year: "numeric",
