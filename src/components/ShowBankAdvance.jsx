@@ -7,8 +7,13 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
   const totalLoanRemaining = advanceCalculateSummary.loanAmountAfterThreeYears;
   const totalInterestThreeYears =
     advanceCalculateSummary.totalInterestThreeYears;
-  const { totalYears, totalMonths, totalInterestPaid, lastDayOfPaying } =
-    advanceCalculateSummary;
+  const {
+    principalPortionAfterThreeYears,
+    totalYears,
+    totalMonths,
+    totalInterestPaid,
+    lastDayOfPaying,
+  } = advanceCalculateSummary;
 
   const remainingDateText = `ผ่อนดอกเบี้ยจนหมด ใช้เวลาทั้งหมด ${totalYears} ปี ${totalMonths} เดือน`;
 
@@ -47,6 +52,10 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
           <p>
             ดอกเบี้ยที่จ่ายไป: {totalInterestThreeYears.toLocaleString()} บาท
           </p>
+          <p>
+            เงินต้นทั้งหมด: {principalPortionAfterThreeYears.toLocaleString()}{" "}
+            บาท
+          </p>
           <button
             onClick={handleNavigateToTable}
             className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
@@ -76,6 +85,7 @@ ShowBankAdvance.propTypes = {
   advanceCalculateSummary: PropTypes.shape({
     loanAmountAfterThreeYears: PropTypes.number.isRequired,
     totalInterestThreeYears: PropTypes.number.isRequired,
+    principalPortionAfterThreeYears: PropTypes.number.isRequired,
     totalYears: PropTypes.number.isRequired,
     totalMonths: PropTypes.number.isRequired,
     totalInterestPaid: PropTypes.number.isRequired,
