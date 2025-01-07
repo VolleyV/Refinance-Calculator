@@ -1,11 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const BasicForm = ({ onSubmit, onReset, initialInput }) => {
+const BasicFormYear = ({
+  onSubmitBasicYear,
+  onResetBasicYear,
+  basicYearInitialInput,
+}) => {
   // States
   const [loanAmount, setLoanAmount] = useState("");
+  const [paymentDuration, setPaymentDuration] = useState(1);
   const [interestRate, setInterestRate] = useState("");
-  const [monthlyPayment, setMonthlyPayment] = useState("");
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
@@ -19,6 +23,10 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
     }
   };
 
+  const handleDurationChange = (event) => {
+    setPaymentDuration(Number(event.target.value));
+  };
+
   const startDateRef = useRef(null);
   const handleStartDateChange = (event) => {
     setStartDate(event.target.value);
@@ -26,81 +34,47 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
 
   const handleInterestRateChange = (event) => {
     const { value } = event.target;
-
-    // Allow empty input for clearing the field
     if (value === "") {
       setInterestRate("");
-      return;
-    }
-
-    // Validate decimal numbers and ensure value is <= 10
-    const decimalRegex = /^\d*\.?\d*$/; // Allows digits and one optional decimal point
-    const numericValue = parseFloat(value);
-
-    if (
-      decimalRegex.test(value) &&
-      (numericValue <= 10 || isNaN(numericValue))
-    ) {
-      setInterestRate(value);
-    }
-  };
-
-  const handleMonthlyPaymentChange = (event) => {
-    const { value } = event.target;
-    const rawValue = value.replace(/[^0-9]/g, "");
-    if (Number(rawValue) <= 999_000_000) {
-      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      setMonthlyPayment(formattedValue);
+    } else {
+      setInterestRate(Number(value));
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!loanAmount || !interestRate || !monthlyPayment) {
+    if (!loanAmount || !interestRate) {
       alert("กรุณากรอกข้อมูลให้ครบถ้วน");
       return;
     }
-
-    const loanAmountNum = parseFloat(loanAmount.replace(/,/g, ""));
-    const monthlyPaymentNum = parseFloat(monthlyPayment.replace(/,/g, ""));
-    const interestRateNum = interestRate / 100;
-    const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
-
-    if (monthlyPaymentNum <= monthlyInterestOnly) {
-      alert(
-        "จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน"
-      );
-      return;
-    }
-
-    // ส่งข้อมูลกลับไปที่ App
     const data = {
       loanAmount,
+      paymentDuration,
       startDate,
       interestRate,
-      monthlyPayment,
     };
-    onSubmit(data);
+    onSubmitBasicYear(data);
   };
 
   const resetFields = () => {
     setLoanAmount("");
-    setMonthlyPayment("");
+    setPaymentDuration(1);
     setInterestRate("");
     setStartDate(new Date().toISOString().split("T")[0]);
-    onReset();
+    onResetBasicYear();
   };
 
   useEffect(() => {
-    if (initialInput) {
-      setLoanAmount(initialInput.loanAmount || "");
-      setInterestRate(initialInput.interestRate || "");
-      setMonthlyPayment(initialInput.monthlyPayment || "");
+    if (basicYearInitialInput) {
+      setLoanAmount(basicYearInitialInput.loanAmount || "");
+      setPaymentDuration(basicYearInitialInput.paymentDuration || 1);
+      setInterestRate(basicYearInitialInput.interestRate || "");
       setStartDate(
-        initialInput.startDate || new Date().toISOString().split("T")[0]
+        basicYearInitialInput.startDate ||
+          new Date().toISOString().split("T")[0]
       );
     }
-  }, [initialInput]);
+  }, [basicYearInitialInput]);
 
   return (
     <div>
@@ -167,19 +141,24 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
             </div>
             <div className="relative">
               <label
-                htmlFor="monthly-payment"
+                htmlFor="payment-duration"
                 className="block text-l font-medium text-gray-700"
               >
-                จำนวนเงินผ่อนต่อเดือน
+                เลือกระยะเวลาในการผ่อน
               </label>
-              <input
-                type="text"
-                name="monthly-payment"
-                value={monthlyPayment}
-                onChange={handleMonthlyPaymentChange}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-                placeholder="ผ่อนต่อเดือน"
-              />
+              <select
+                id="payment-duration"
+                name="payment-duration"
+                onChange={handleDurationChange}
+                value={paymentDuration}
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md"
+              >
+                {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
+                  <option key={year} value={year}>
+                    {year} ปี
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -204,10 +183,10 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
   );
 };
 
-BasicForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  onReset: PropTypes.func.isRequired,
-  initialInput: PropTypes.object,
+BasicFormYear.propTypes = {
+  onSubmitBasicYear: PropTypes.func.isRequired,
+  onResetBasicYear: PropTypes.func.isRequired,
+  basicYearInitialInput: PropTypes.object,
 };
 
-export default BasicForm;
+export default BasicFormYear;

@@ -1,17 +1,16 @@
-import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
-const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
+const ShowBank = ({ basicCalculateSummary }) => {
   const navigate = useNavigate();
 
   const handleNavigateToTable = () => {
-    navigate("/BasicYearTable", { state: { activeTab: "basicYear" } });
+    navigate("/basicTab", { state: { activeTab: "basic" } });
   };
 
   const {
     principalAfterThreeYears,
     totalInterestThreeYears,
-    monthlyPayment,
     fullyPaid,
     totalYears,
     totalMonths,
@@ -19,7 +18,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
     remainingInterest,
     totalInterestPaid,
     lastDayOfPaying,
-  } = basicYearCalculateSummary;
+  } = basicCalculateSummary;
 
   const remainingDateText = fullyPaid
     ? `ผ่อนดอกเบี้ยจนหมด ใช้เวลาทั้งหมด ${totalYears} ปี ${totalMonths} เดือน`
@@ -55,7 +54,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
         </div>
         <div className="p-3">
           <p>
-            <b>ผ่อน 3 ปีแรก (ผ่อนเดือนละ {monthlyPayment} บาท)</b>
+            <b>ผ่อน 3 ปีแรก</b>
           </p>
 
           <p>เงินกู้คงเหลือ: {principalAfterThreeYears.toLocaleString()} บาท</p>
@@ -76,7 +75,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
         </div>
         <div className="p-3">
           <p>
-            <b>จนผ่อนจบ (ผ่อนเดือนละ {monthlyPayment} บาท)</b>
+            <b>จนผ่อนจบ</b>
           </p>
           <p>{remainingDateText}</p>
           <p>{remainingInterestText.toLocaleString()}</p>
@@ -87,11 +86,10 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
   );
 };
 
-ShowBankBasicYear.propTypes = {
-  basicYearCalculateSummary: PropTypes.shape({
+ShowBank.propTypes = {
+  basicCalculateSummary: PropTypes.shape({
     principalAfterThreeYears: PropTypes.number.isRequired,
     totalInterestThreeYears: PropTypes.number.isRequired,
-    monthlyPayment: PropTypes.number.isRequired,
     fullyPaid: PropTypes.bool.isRequired,
     totalYears: PropTypes.number.isRequired,
     totalMonths: PropTypes.number.isRequired,
@@ -105,4 +103,4 @@ ShowBankBasicYear.propTypes = {
   }).isRequired,
 };
 
-export default ShowBankBasicYear;
+export default ShowBank;
