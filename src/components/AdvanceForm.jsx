@@ -124,22 +124,33 @@ const AdvanceForm = ({
     }
 
     const loanAmountNum = parseFloat(loanAmount.replace(/,/g, ""));
-    const monthlyPaymentNum = parseFloat(monthlyPayment[0]?.replace(/,/g, "")); // ใช้ monthlyPayment[0]
-    const interestRateNum = parseFloat(interestRates[0] || 0) / 100; // ใช้ interestRates[0]
+    for (let i = 0; i < monthlyPayment.length; i++) {
+      const monthlyPaymentRaw = monthlyPayment[i]?.replace(/,/g, "");
+      const interestRateRaw = interestRates[i]?.trim();
 
-    if (!monthlyPaymentNum || isNaN(monthlyPaymentNum)) {
-      alert("กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้อง");
-      return;
-    }
-
-    const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
-
-    // ตรวจสอบว่าค่า monthlyPayment น้อยกว่าดอกเบี้ยต่อเดือน
-    if (monthlyPaymentNum <= monthlyInterestOnly) {
-      alert(
-        "จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน"
+      // Skip validation if both interestRate and monthlyPayment are empty
+      if (!monthlyPaymentRaw && !interestRateRaw) {
+        continue;
+      }
+      const monthlyPaymentNum = parseFloat(
+        monthlyPayment[i]?.replace(/,/g, "")
       );
-      return;
+      const interestRateNum = parseFloat(interestRates[i] || 0) / 100;
+      const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
+
+      if (!monthlyPaymentNum || isNaN(monthlyPaymentNum)) {
+        alert(`กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้องในแถวที่ ${i + 1}`);
+        return;
+      }
+
+      if (monthlyPaymentNum <= monthlyInterestOnly) {
+        alert(
+          `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
+            i + 1
+          } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`
+        );
+        return;
+      }
     }
 
     const advanceData = {

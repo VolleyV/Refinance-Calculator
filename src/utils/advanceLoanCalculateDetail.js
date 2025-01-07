@@ -77,19 +77,6 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     const interest =
       (loanAmountRemaining * currentInterestRate * daysInCurrentMonth) /
       daysInCurrentYear;
-
-    // Add validation to exit if the monthly payment is too low
-    if (currentMonthlyPayment <= interest) {
-      alert(
-        `Monthly payment (${currentMonthlyPayment.toFixed(
-          2
-        )}) is too low to cover the interest (${interest.toFixed(
-          2
-        )}). Consider increasing the monthly payment.`
-      );
-      return; // Return accumulated details before stopping.
-    }
-
     const loanAmountPortion = Math.max(0, currentMonthlyPayment - interest);
 
     // Update the remaining loan balance
