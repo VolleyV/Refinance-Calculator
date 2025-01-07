@@ -112,7 +112,11 @@ const BasicTable = ({ data }) => {
                     {detail.month}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {detail.date}
+                    {new Date(detail.date).toLocaleDateString("th-TH", {
+                      year: "numeric",
+                      month: "short",
+                      day: "2-digit",
+                    }) || "Invalid Date"}
                   </td>
                   <td className="border px-6 py-4 text-center">
                     {parseFloat(detail.interestRate).toLocaleString()}%
