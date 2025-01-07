@@ -28,27 +28,6 @@ const AdvanceForm = ({
   const handleStartDateChange = (setter) => (event) =>
     setter(event.target.value);
 
-  // const handleInterestRateChange = (index, value) => {
-  //   const rawValue = value.replace(/[^0-9.]/g, "");
-  //   const numericValue = parseFloat(rawValue);
-
-  //   if (!isNaN(numericValue) && numericValue >= 0) {
-  //     setInterestRates((prev) => {
-  //       const updated = [...prev];
-  //       updated[index] = rawValue;
-  //       return updated;
-  //     });
-  //   } else if (rawValue === "") {
-  //     setInterestRates((prev) => {
-  //       const updated = [...prev];
-  //       updated[index] = "";
-  //       return updated;
-  //     });
-  //   } else {
-  //     alert("Invalid input. Only positive numbers are allowed.");
-  //   }
-  // };
-
   const handleInterestRateChange = (index, value) => {
     const rawValue = value.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
     const numericValue = parseFloat(rawValue);
