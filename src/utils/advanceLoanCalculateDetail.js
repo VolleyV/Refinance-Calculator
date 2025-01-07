@@ -112,9 +112,15 @@ export const advanceThreeYearsSummary = (details) => {
     0
   );
 
+  const principalPortionAfterThreeYears = limitedDetails.reduce(
+    (sum, item) => sum + parseFloat(item.loanAmountPortion || 0),
+    0
+  );
+
   return {
     loanAmountAfterThreeYears,
     totalInterestThreeYears,
+    principalPortionAfterThreeYears,
   };
 };
 

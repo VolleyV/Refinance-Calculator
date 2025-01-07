@@ -11,6 +11,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
   const {
     principalAfterThreeYears,
     totalInterestThreeYears,
+    principalPortionAfterThreeYears,
     totalYears,
     totalMonths,
     totalInterestPaid,
@@ -43,6 +44,10 @@ const ShowBank = ({ basicCalculateSummary }) => {
           <p>
             ดอกเบี้ยที่จ่ายไป: {totalInterestThreeYears.toLocaleString()} บาท
           </p>
+          <p>
+            เงินต้นที่จ่ายไป: {principalPortionAfterThreeYears.toLocaleString()}{" "}
+            บาท
+          </p>
           <button
             onClick={handleNavigateToTable}
             className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
@@ -72,6 +77,7 @@ ShowBank.propTypes = {
   basicCalculateSummary: PropTypes.shape({
     principalAfterThreeYears: PropTypes.number.isRequired,
     totalInterestThreeYears: PropTypes.number.isRequired,
+    principalPortionAfterThreeYears: PropTypes.number.isRequired,
     totalYears: PropTypes.number.isRequired,
     totalMonths: PropTypes.number.isRequired,
     totalInterestPaid: PropTypes.number.isRequired,
