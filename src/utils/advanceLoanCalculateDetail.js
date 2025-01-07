@@ -87,11 +87,7 @@ export const advanceLoanCalculateDetail = (advanceData) => {
           2
         )}). Consider increasing the monthly payment.`
       );
-<<<<<<< HEAD
       return; // Return accumulated details before stopping.
-=======
-      return details; // Return accumulated details before stopping.
->>>>>>> 853ad97a0e823056141028e4d2d518da46b762e6
     }
 
     const loanAmountPortion = Math.max(0, currentMonthlyPayment - interest);
