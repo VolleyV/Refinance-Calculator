@@ -288,88 +288,85 @@ const AdvanceForm = ({
           </div>
         </div>
 
-        <div className="flex flex-col space-y-4 mt-4">
-          {/* กลุ่มของทั้งปุ่มที่ 1 และปุ่มที่ 2 */}
-          <div className="flex items-center space-x-8">
-            {/* ปุ่มที่ 1 */}
-            <div className="flex items-center space-x-4">
-              <input
-                type="checkbox"
-                id="custom-checkbox"
-                onClick={() => toggleCheck("check")}
-                checked={check}
-                className="hidden peer"
-              />
-              <label
-                htmlFor="custom-checkbox"
-                className="w-4 h-4 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:shadow-md peer-checked:shadow-blue-500 transition-all duration-300"
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+          {/* ปุ่มที่ 1 */}
+          <div className="flex items-center space-x-4">
+            <input
+              type="checkbox"
+              id="custom-checkbox"
+              onClick={() => toggleCheck("check")}
+              checked={check}
+              className="hidden peer"
+            />
+            <label
+              htmlFor="custom-checkbox"
+              className="w-4 h-4 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:shadow-md peer-checked:shadow-blue-500 transition-all duration-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 text-white hidden peer-checked:block"
+                viewBox="0 0 20 20"
+                fill="currentColor"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-white hidden peer-checked:block"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 00-1.414-1.414L7 12.586 4.707 10.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l9-9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </label>
-              <span>มีค่าประกันหรือไม่</span>
-
-              {check && (
-                <input
-                  type="text"
-                  id="additional-input"
-                  placeholder="กรอกจำนวนเงิน"
-                  value={additionalInput}
-                  onChange={(e) => setAdditionalInput(e.target.value)}
-                  className="w-40 rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 00-1.414-1.414L7 12.586 4.707 10.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l9-9z"
+                  clipRule="evenodd"
                 />
-              )}
-            </div>
+              </svg>
+            </label>
+            <span>มีค่าประกันหรือไม่</span>
 
-            {/* ปุ่มที่ 2 */}
-            <div className="flex items-center space-x-4">
+            {check && (
               <input
-                type="checkbox"
-                id="custom-checkbox2"
-                onClick={() => toggleCheck("check2")}
-                checked={check2}
-                className="hidden peer"
+                type="text"
+                id="additional-input"
+                placeholder="กรอกจำนวนเงิน"
+                value={additionalInput}
+                onChange={(e) => setAdditionalInput(e.target.value)}
+                className="w-40 rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
               />
-              <label
-                htmlFor="custom-checkbox2"
-                className="w-4 h-4 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:shadow-md peer-checked:shadow-blue-500 transition-all duration-300"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-white hidden peer-checked:block"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 00-1.414-1.414L7 12.586 4.707 10.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l9-9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </label>
-              <span>มีค่าจดจำนองหรือไม่</span>
+            )}
+          </div>
 
-              {check2 && (
-                <input
-                  type="text"
-                  id="additional-input2"
-                  placeholder="กรอกจำนวนเงิน"
-                  value={additionalInput2}
-                  onChange={(e) => setAdditionalInput2(e.target.value)}
-                  className="w-40 rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
+          {/* ปุ่มที่ 2 */}
+          <div className="flex items-center space-x-4">
+            <input
+              type="checkbox"
+              id="custom-checkbox2"
+              onClick={() => toggleCheck("check2")}
+              checked={check2}
+              className="hidden peer"
+            />
+            <label
+              htmlFor="custom-checkbox2"
+              className="w-4 h-4 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:shadow-md peer-checked:shadow-blue-500 transition-all duration-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 text-white hidden peer-checked:block"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 00-1.414-1.414L7 12.586 4.707 10.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l9-9z"
+                  clipRule="evenodd"
                 />
-              )}
-            </div>
+              </svg>
+            </label>
+            <span>มีค่าจดจำนองหรือไม่</span>
+
+            {check2 && (
+              <input
+                type="text"
+                id="additional-input2"
+                placeholder="กรอกจำนวนเงิน"
+                value={additionalInput2}
+                onChange={(e) => setAdditionalInput2(e.target.value)}
+                className="w-40 rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
+              />
+            )}
           </div>
         </div>
 

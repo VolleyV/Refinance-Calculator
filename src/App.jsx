@@ -42,22 +42,34 @@ function App() {
     return storedData ? JSON.parse(storedData) : null;
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   //submit
   const handleFormSubmit = (data) => {
-    console.log("Basic form submitted:", data);
-    setBasicFormData(data);
-    sessionStorage.setItem("formData", JSON.stringify(data));
+    setIsLoading(true);
+    setTimeout(() => {
+      setBasicFormData(data);
+      sessionStorage.setItem("formData", JSON.stringify(data));
+      setIsLoading(false);
+    }, 500);
   };
 
   const handleBasicFormYearSubmit = (basicYearData) => {
-    console.log("Basic form submitted:", basicYearData);
-    setBasicFormYearData(basicYearData);
-    sessionStorage.setItem("formData", JSON.stringify(basicYearData));
+    setIsLoading(true);
+    setTimeout(() => {
+      setBasicFormYearData(basicYearData);
+      sessionStorage.setItem("formData", JSON.stringify(basicYearData));
+      setIsLoading(false);
+    }, 500);
   };
 
   const handleAdvanceFormSubmit = (advanceData) => {
-    setAdvanceFormData(advanceData);
-    sessionStorage.setItem("advanceFormData", JSON.stringify(advanceData));
+    setIsLoading(true);
+    setTimeout(() => {
+      setAdvanceFormData(advanceData);
+      sessionStorage.setItem("advanceFormData", JSON.stringify(advanceData));
+      setIsLoading(false);
+    }, 500);
   };
 
   //Clear
@@ -174,20 +186,25 @@ function App() {
                   onAdvanceReset={clearAdvanceFormData}
                   advanceInitialInput={advanceFormData}
                 />
-                {basicFormData && (
+                {isLoading && (
+                  <div className="text-center my-4">
+                    <div className="loader mx-auto"></div>
+                    <p>กำลังคำนวณ...</p>
+                  </div>
+                )}
+                {!isLoading && basicFormData && (
                   <div>
                     <ShowBank basicCalculateSummary={basicSummary} />
                   </div>
                 )}
-                {basicFormYearData && (
+                {!isLoading && basicFormYearData && (
                   <div>
                     <ShowBankBasicYear
                       basicYearCalculateSummary={basicYearSummary}
                     />
                   </div>
                 )}
-
-                {advanceFormData && (
+                {!isLoading && advanceFormData && (
                   <div>
                     <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
                   </div>
