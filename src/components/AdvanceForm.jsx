@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
+import { ToastContainer, toast, Bounce } from "react-toastify";
 
 const AdvanceForm = ({
   onAdvanceSubmit,
@@ -118,7 +119,18 @@ const AdvanceForm = ({
     e.preventDefault();
 
     if (!loanAmount || !startDate) {
-      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+      toast.error("กรุณากรอกข้อมูลให้ครบถ้วน", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
       return;
     }
 
@@ -127,7 +139,17 @@ const AdvanceForm = ({
     const interestRateNum = parseFloat(interestRates[0] || 0) / 100; // ใช้ interestRates[0]
 
     if (!monthlyPaymentNum || isNaN(monthlyPaymentNum)) {
-      alert("กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้อง");
+      toast.error("กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้อง", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       return;
     }
 
@@ -135,9 +157,17 @@ const AdvanceForm = ({
 
     // ตรวจสอบว่าค่า monthlyPayment น้อยกว่าดอกเบี้ยต่อเดือน
     if (monthlyPaymentNum <= monthlyInterestOnly) {
-      alert(
-        "จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน"
-      );
+      toast.error("จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       return;
     }
 
@@ -156,7 +186,6 @@ const AdvanceForm = ({
   const resetFields = () => {
     setLoanAmount("");
     setMonthlyPayment(["", "", "", "", ""]);
-    setStartDate("");
     setInterestRates(["", "", "", "", ""]);
     setStartTerm(["1", "", "", "", ""]);
     setEndTerm(["", "", "", "", ""]);
@@ -288,34 +317,36 @@ const AdvanceForm = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           {/* ปุ่มที่ 1 */}
           <div className="flex items-center space-x-4">
-            <input
-              type="checkbox"
-              id="custom-checkbox"
-              onClick={() => toggleCheck("check")}
-              checked={check}
-              className="hidden peer"
-            />
-            <label
-              htmlFor="custom-checkbox"
-              className="w-4 h-4 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:shadow-md peer-checked:shadow-blue-500 transition-all duration-300"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 text-white hidden peer-checked:block"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="custom-checkbox"
+                onClick={() => toggleCheck("check")}
+                checked={check}
+                className="hidden peer"
+              />
+              <label
+                htmlFor="custom-checkbox"
+                className="w-4 h-4 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:shadow-md peer-checked:shadow-blue-500 transition-all duration-300"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 00-1.414-1.414L7 12.586 4.707 10.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l9-9z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </label>
-            <span>มีค่าประกันหรือไม่</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-white hidden peer-checked:block"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 00-1.414-1.414L7 12.586 4.707 10.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l9-9z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </label>
+              <span className="whitespace-nowrap">ค่าประกันอัคคีภัย</span>
+            </div>
 
             {check && (
               <input
@@ -324,38 +355,40 @@ const AdvanceForm = ({
                 placeholder="กรอกจำนวนเงิน"
                 value={additionalInput}
                 onChange={(e) => setAdditionalInput(e.target.value)}
-                className="w-40 rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
               />
             )}
           </div>
 
           {/* ปุ่มที่ 2 */}
           <div className="flex items-center space-x-4">
-            <input
-              type="checkbox"
-              id="custom-checkbox2"
-              onClick={() => toggleCheck("check2")}
-              checked={check2}
-              className="hidden peer"
-            />
-            <label
-              htmlFor="custom-checkbox2"
-              className="w-4 h-4 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:shadow-md peer-checked:shadow-blue-500 transition-all duration-300"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 text-white hidden peer-checked:block"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="custom-checkbox2"
+                onClick={() => toggleCheck("check2")}
+                checked={check2}
+                className="hidden peer"
+              />
+              <label
+                htmlFor="custom-checkbox2"
+                className="w-4 h-4 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:shadow-md peer-checked:shadow-blue-500 transition-all duration-300"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 00-1.414-1.414L7 12.586 4.707 10.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l9-9z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </label>
-            <span>มีค่าจดจำนองหรือไม่</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-white hidden peer-checked:block"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 00-1.414-1.414L7 12.586 4.707 10.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l9-9z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </label>
+              <span className="whitespace-nowrap">ค่าจดจำนอง</span>
+            </div>
 
             {check2 && (
               <input
@@ -364,7 +397,7 @@ const AdvanceForm = ({
                 placeholder="กรอกจำนวนเงิน"
                 value={additionalInput2}
                 onChange={(e) => setAdditionalInput2(e.target.value)}
-                className="w-40 rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
               />
             )}
           </div>
@@ -387,6 +420,7 @@ const AdvanceForm = ({
           </button>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };
