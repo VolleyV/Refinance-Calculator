@@ -92,9 +92,15 @@ export const calculateBasicYearThreeYearSummary = (details) => {
     0
   );
 
+  const principalPortionAfterThreeYears = limitedDetails.reduce(
+    (sum, item) => sum + item.principalPortion,
+    0
+  );
+
   return {
     principalAfterThreeYears,
     totalInterestThreeYears,
+    principalPortionAfterThreeYears,
   };
 };
 
