@@ -115,6 +115,7 @@ const AdvanceForm = ({
     }
   };
 
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -130,45 +131,57 @@ const AdvanceForm = ({
         theme: "light",
         transition: Bounce,
       });
-
       return;
     }
 
     const loanAmountNum = parseFloat(loanAmount.replace(/,/g, ""));
-    const monthlyPaymentNum = parseFloat(monthlyPayment[0]?.replace(/,/g, "")); // ใช้ monthlyPayment[0]
-    const interestRateNum = parseFloat(interestRates[0] || 0) / 100; // ใช้ interestRates[0]
+    for (let i = 0; i < monthlyPayment.length; i++) {
+      const monthlyPaymentRaw = monthlyPayment[i]?.replace(/,/g, "");
+      const interestRateRaw = interestRates[i]?.trim();
 
-    if (!monthlyPaymentNum || isNaN(monthlyPaymentNum)) {
-      toast.error("กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้อง", {
-        position: "top-center",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-      return;
-    }
+      // Skip validation if both interestRate and monthlyPayment are empty
+      if (!monthlyPaymentRaw && !interestRateRaw) {
+        continue;
+      }
+      const monthlyPaymentNum = parseFloat(
+        monthlyPayment[i]?.replace(/,/g, "")
+      );
+      const interestRateNum = parseFloat(interestRates[i] || 0) / 100;
+      const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
 
-    const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
+      if (!monthlyPaymentNum || isNaN(monthlyPaymentNum)) {
+        toast.error(`กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้องในแถวที่ ${i + 1}`, {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        return;
+      }
 
-    // ตรวจสอบว่าค่า monthlyPayment น้อยกว่าดอกเบี้ยต่อเดือน
-    if (monthlyPaymentNum <= monthlyInterestOnly) {
-      toast.error("จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด", {
-        position: "top-center",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-      return;
+      if (monthlyPaymentNum <= monthlyInterestOnly) {
+        toast.error(
+          `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
+            i + 1
+          } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`
+          , {
+            position: "top-center",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        return;
+      }
     }
 
     const advanceData = {
@@ -182,6 +195,7 @@ const AdvanceForm = ({
 
     onAdvanceSubmit(advanceData);
   };
+
 
   const resetFields = () => {
     setLoanAmount("");
