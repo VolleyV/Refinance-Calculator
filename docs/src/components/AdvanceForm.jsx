@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import { ToastContainer, toast, Bounce } from "react-toastify";
 
 const AdvanceForm = ({
   onAdvanceSubmit,
@@ -8,6 +7,7 @@ const AdvanceForm = ({
   advanceInitialInput,
 }) => {
   const [loanAmount, setLoanAmount] = useState("");
+  const [termMonths, setTermMonths] = useState("");
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
@@ -15,12 +15,6 @@ const AdvanceForm = ({
   const [endTerm, setEndTerm] = useState(["", "", "", "", ""]);
   const [interestRates, setInterestRates] = useState(["", "", "", "", ""]);
   const [monthlyPayment, setMonthlyPayment] = useState(["", "", "", "", ""]);
-
-  const [check, setCheck] = useState(false);
-  const [additionalInput, setAdditionalInput] = useState("");
-
-  const [check2, setCheck2] = useState(false);
-  const [additionalInput2, setAdditionalInput2] = useState("");
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
@@ -36,16 +30,23 @@ const AdvanceForm = ({
     setter(event.target.value);
 
   const handleInterestRateChange = (index, value) => {
-    const rawValue = value.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
+    const rawValue = value.replace(/[^0-9.]/g, "");
     const numericValue = parseFloat(rawValue);
 
-    if (rawValue === "" || (numericValue >= 0 && numericValue <= 10)) {
-      // Valid input: update the specific index
+    if (!isNaN(numericValue) && numericValue >= 0) {
       setInterestRates((prev) => {
         const updated = [...prev];
-        updated[index] = rawValue; // Keep raw value to allow partial decimals like "1."
+        updated[index] = rawValue;
         return updated;
       });
+    } else if (rawValue === "") {
+      setInterestRates((prev) => {
+        const updated = [...prev];
+        updated[index] = "";
+        return updated;
+      });
+    } else {
+      alert("Invalid input. Only positive numbers are allowed.");
     }
   };
 
@@ -68,6 +69,10 @@ const AdvanceForm = ({
     } else {
       alert("Invalid input. Only positive numbers are allowed.");
     }
+  };
+
+  const handleDurationChange = (event) => {
+    setTermMonths(Number(event.target.value));
   };
 
   const handleEndTermChange = (index, value) => {
@@ -101,36 +106,11 @@ const AdvanceForm = ({
     }
   };
 
-  const toggleCheck = (type) => {
-    if (type == "check") {
-      setCheck(!check);
-      if (!check) {
-        setAdditionalInput("");
-      }
-    } else if (type == "check2") {
-      setCheck2(!check2);
-      if (!check2) {
-        setAdditionalInput2("");
-      }
-    }
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!loanAmount || !startDate) {
-      toast.error("กรุณากรอกข้อมูลให้ครบถ้วน", {
-        position: "top-center",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-
+      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
       return;
     }
 
@@ -139,17 +119,7 @@ const AdvanceForm = ({
     const interestRateNum = parseFloat(interestRates[0] || 0) / 100; // ใช้ interestRates[0]
 
     if (!monthlyPaymentNum || isNaN(monthlyPaymentNum)) {
-      toast.error("กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้อง", {
-        position: "top-center",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      alert("กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้อง");
       return;
     }
 
@@ -157,22 +127,15 @@ const AdvanceForm = ({
 
     // ตรวจสอบว่าค่า monthlyPayment น้อยกว่าดอกเบี้ยต่อเดือน
     if (monthlyPaymentNum <= monthlyInterestOnly) {
-      toast.error("จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด", {
-        position: "top-center",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      alert(
+        "จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน"
+      );
       return;
     }
 
     const advanceData = {
       loanAmount,
+      termMonths,
       startDate,
       startTerm,
       endTerm,
@@ -186,6 +149,8 @@ const AdvanceForm = ({
   const resetFields = () => {
     setLoanAmount("");
     setMonthlyPayment(["", "", "", "", ""]);
+    setTermMonths("");
+    setStartDate("");
     setInterestRates(["", "", "", "", ""]);
     setStartTerm(["1", "", "", "", ""]);
     setEndTerm(["", "", "", "", ""]);
@@ -196,6 +161,7 @@ const AdvanceForm = ({
     if (advanceInitialInput) {
       setLoanAmount(advanceInitialInput.loanAmount || 0);
       setMonthlyPayment(advanceInitialInput.monthlyPayment || 0);
+      setTermMonths(advanceInitialInput.termMonths || 0);
       setStartDate(advanceInitialInput.startDate || 0);
       setInterestRates(advanceInitialInput.interestRates || 0);
       setStartTerm(advanceInitialInput.startTerm || 0);
@@ -207,23 +173,45 @@ const AdvanceForm = ({
     <div className="bg-white rounded-b-lg px-6 py-4">
       <h2 className="text-xl font-bold">คำนวณดอกเบี้ยแบบมีหลายอัตราดอกเบี้ย</h2>
       <form id="loan-form-advance" className="mt-4" onSubmit={handleSubmit}>
+        <div className="mt-4">
+          <label
+            htmlFor="loanAmount-advance"
+            className="block text-l font-medium text-gray-700"
+          >
+            จำนวนเงินที่กู้ (บาท)
+          </label>
+          <input
+            type="text"
+            id="loanAmount-advance"
+            className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
+            placeholder="จำนวนเงินที่กู้ (บาท)"
+            value={loanAmount}
+            onChange={handleLoanAmountChange}
+          />
+        </div>
+
         {/* Term Months and Start Date */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
           <div className="relative">
             <label
-              htmlFor="loanAmount-advance"
+              htmlFor="payment-duration"
               className="block text-l font-medium text-gray-700"
             >
-              จำนวนเงินที่กู้ (บาท)
+              เลือกระยะเวลาในการผ่อน
             </label>
-            <input
-              type="text"
-              id="loanAmount-advance"
+            <select
+              id="payment-duration"
+              name="payment-duration"
+              onChange={handleDurationChange}
+              value={termMonths}
               className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-              placeholder="จำนวนเงินที่กู้ (บาท)"
-              value={loanAmount}
-              onChange={handleLoanAmountChange}
-            />
+            >
+              {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
+                <option key={year} value={year}>
+                  {year} ปี
+                </option>
+              ))}
+            </select>
           </div>
           <div
             className="relative cursor-pointer"
@@ -274,6 +262,11 @@ const AdvanceForm = ({
                 type="text"
                 value={term}
                 placeholder="ถึงงวดที่"
+                // onChange={(e) => {
+                //   const updatedEndTerm = [...endTerm];
+                //   updatedEndTerm[index] = e.target.value;
+                //   setEndTerm(updatedEndTerm);
+                // }}
                 onChange={(e) => handleEndTermChange(index, e.target.value)}
                 className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
               />
@@ -317,92 +310,6 @@ const AdvanceForm = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          {/* ปุ่มที่ 1 */}
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="custom-checkbox"
-                onClick={() => toggleCheck("check")}
-                checked={check}
-                className="hidden peer"
-              />
-              <label
-                htmlFor="custom-checkbox"
-                className="w-4 h-4 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:shadow-md peer-checked:shadow-blue-500 transition-all duration-300"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-white hidden peer-checked:block"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 00-1.414-1.414L7 12.586 4.707 10.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l9-9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </label>
-              <span className="whitespace-nowrap">ค่าประกันอัคคีภัย</span>
-            </div>
-
-            {check && (
-              <input
-                type="text"
-                id="additional-input"
-                placeholder="กรอกจำนวนเงิน"
-                value={additionalInput}
-                onChange={(e) => setAdditionalInput(e.target.value)}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-              />
-            )}
-          </div>
-
-          {/* ปุ่มที่ 2 */}
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="custom-checkbox2"
-                onClick={() => toggleCheck("check2")}
-                checked={check2}
-                className="hidden peer"
-              />
-              <label
-                htmlFor="custom-checkbox2"
-                className="w-4 h-4 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:shadow-md peer-checked:shadow-blue-500 transition-all duration-300"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-white hidden peer-checked:block"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 00-1.414-1.414L7 12.586 4.707 10.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l9-9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </label>
-              <span className="whitespace-nowrap">ค่าจดจำนอง</span>
-            </div>
-
-            {check2 && (
-              <input
-                type="text"
-                id="additional-input2"
-                placeholder="กรอกจำนวนเงิน"
-                value={additionalInput2}
-                onChange={(e) => setAdditionalInput2(e.target.value)}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-              />
-            )}
-          </div>
-        </div>
-
         {/* Submit and Reset Buttons */}
         <div className="mt-4">
           <button
@@ -420,7 +327,6 @@ const AdvanceForm = ({
           </button>
         </div>
       </form>
-      <ToastContainer />
     </div>
   );
 };
