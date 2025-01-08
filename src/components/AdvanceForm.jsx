@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
+import { ToastContainer, toast, Bounce } from "react-toastify";
 
 const AdvanceForm = ({
   onAdvanceSubmit,
@@ -118,38 +119,56 @@ const AdvanceForm = ({
     e.preventDefault();
 
     if (!loanAmount || !startDate) {
-      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+      toast.error("กรุณากรอกข้อมูลให้ครบถ้วน", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
       return;
     }
 
     const loanAmountNum = parseFloat(loanAmount.replace(/,/g, ""));
-    for (let i = 0; i < monthlyPayment.length; i++) {
-      const monthlyPaymentRaw = monthlyPayment[i]?.replace(/,/g, "");
-      const interestRateRaw = interestRates[i]?.trim();
+    const monthlyPaymentNum = parseFloat(monthlyPayment[0]?.replace(/,/g, "")); // ใช้ monthlyPayment[0]
+    const interestRateNum = parseFloat(interestRates[0] || 0) / 100; // ใช้ interestRates[0]
 
-      // Skip validation if both interestRate and monthlyPayment are empty
-      if (!monthlyPaymentRaw && !interestRateRaw) {
-        continue;
-      }
-      const monthlyPaymentNum = parseFloat(
-        monthlyPayment[i]?.replace(/,/g, "")
-      );
-      const interestRateNum = parseFloat(interestRates[i] || 0) / 100;
-      const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
+    if (!monthlyPaymentNum || isNaN(monthlyPaymentNum)) {
+      toast.error("กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้อง", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
 
-      if (!monthlyPaymentNum || isNaN(monthlyPaymentNum)) {
-        alert(`กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้องในแถวที่ ${i + 1}`);
-        return;
-      }
+    const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
 
-      if (monthlyPaymentNum <= monthlyInterestOnly) {
-        alert(
-          `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
-            i + 1
-          } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`
-        );
-        return;
-      }
+    // ตรวจสอบว่าค่า monthlyPayment น้อยกว่าดอกเบี้ยต่อเดือน
+    if (monthlyPaymentNum <= monthlyInterestOnly) {
+      toast.error("จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
     }
 
     const advanceData = {
@@ -167,7 +186,6 @@ const AdvanceForm = ({
   const resetFields = () => {
     setLoanAmount("");
     setMonthlyPayment(["", "", "", "", ""]);
-    setStartDate("");
     setInterestRates(["", "", "", "", ""]);
     setStartTerm(["1", "", "", "", ""]);
     setEndTerm(["", "", "", "", ""]);
@@ -299,11 +317,10 @@ const AdvanceForm = ({
           </div>
         </div>
 
-        <div className="flex flex-col space-y-4 mt-4">
-          {/* กลุ่มของทั้งปุ่มที่ 1 และปุ่มที่ 2 */}
-          <div className="flex items-center space-x-8">
-            {/* ปุ่มที่ 1 */}
-            <div className="flex items-center space-x-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          {/* ปุ่มที่ 1 */}
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
               <input
                 type="checkbox"
                 id="custom-checkbox"
@@ -328,22 +345,24 @@ const AdvanceForm = ({
                   />
                 </svg>
               </label>
-              <span>มีค่าประกันหรือไม่</span>
-
-              {check && (
-                <input
-                  type="text"
-                  id="additional-input"
-                  placeholder="กรอกจำนวนเงิน"
-                  value={additionalInput}
-                  onChange={(e) => setAdditionalInput(e.target.value)}
-                  className="w-40 rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-                />
-              )}
+              <span className="whitespace-nowrap">ค่าประกันอัคคีภัย</span>
             </div>
 
-            {/* ปุ่มที่ 2 */}
-            <div className="flex items-center space-x-4">
+            {check && (
+              <input
+                type="text"
+                id="additional-input"
+                placeholder="กรอกจำนวนเงิน"
+                value={additionalInput}
+                onChange={(e) => setAdditionalInput(e.target.value)}
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
+              />
+            )}
+          </div>
+
+          {/* ปุ่มที่ 2 */}
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
               <input
                 type="checkbox"
                 id="custom-checkbox2"
@@ -368,19 +387,19 @@ const AdvanceForm = ({
                   />
                 </svg>
               </label>
-              <span>มีค่าจดจำนองหรือไม่</span>
-
-              {check2 && (
-                <input
-                  type="text"
-                  id="additional-input2"
-                  placeholder="กรอกจำนวนเงิน"
-                  value={additionalInput2}
-                  onChange={(e) => setAdditionalInput2(e.target.value)}
-                  className="w-40 rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-                />
-              )}
+              <span className="whitespace-nowrap">ค่าจดจำนอง</span>
             </div>
+
+            {check2 && (
+              <input
+                type="text"
+                id="additional-input2"
+                placeholder="กรอกจำนวนเงิน"
+                value={additionalInput2}
+                onChange={(e) => setAdditionalInput2(e.target.value)}
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
+              />
+            )}
           </div>
         </div>
 
@@ -401,6 +420,7 @@ const AdvanceForm = ({
           </button>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };

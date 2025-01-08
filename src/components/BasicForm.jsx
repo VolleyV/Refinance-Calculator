@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
-
+import { ToastContainer, toast, Bounce } from "react-toastify";
 const BasicForm = ({ onSubmit, onReset, initialInput }) => {
   // States
   const [loanAmount, setLoanAmount] = useState("");
@@ -39,7 +39,7 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
 
     if (
       decimalRegex.test(value) &&
-      (numericValue <= 10 || isNaN(numericValue))
+      (numericValue <= 20 || isNaN(numericValue))
     ) {
       setInterestRate(value);
     }
@@ -57,7 +57,18 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!loanAmount || !interestRate || !monthlyPayment) {
-      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+      toast.error("กรุณากรอกข้อมูลให้ครบถ้วน", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
       return;
     }
 
@@ -67,9 +78,17 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
     const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
 
     if (monthlyPaymentNum <= monthlyInterestOnly) {
-      alert(
-        "จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน"
-      );
+      toast.error("จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       return;
     }
 
@@ -200,6 +219,7 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };
