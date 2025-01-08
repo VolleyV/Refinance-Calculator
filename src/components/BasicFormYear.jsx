@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import { ToastContainer, toast, Bounce } from "react-toastify";
 
 const BasicFormYear = ({
   onSubmitBasicYear,
@@ -47,7 +48,7 @@ const BasicFormYear = ({
 
     if (
       decimalRegex.test(value) &&
-      (numericValue <= 10 || isNaN(numericValue))
+      (numericValue <= 20 || isNaN(numericValue))
     ) {
       setInterestRate(value);
     }
@@ -56,7 +57,17 @@ const BasicFormYear = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!loanAmount || !interestRate) {
-      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+      toast.error("กรุณากรอกข้อมูลให้ครบถ้วน", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       return;
     }
     const data = {
@@ -191,6 +202,7 @@ const BasicFormYear = ({
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };
