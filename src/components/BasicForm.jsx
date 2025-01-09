@@ -108,6 +108,17 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
     setInterestRate("");
     setStartDate(new Date().toISOString().split("T")[0]);
     onReset();
+    toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
   };
 
   useEffect(() => {

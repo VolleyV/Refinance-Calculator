@@ -15,6 +15,7 @@ const AdvanceForm = ({
   const [endTerm, setEndTerm] = useState(["", "", "", "", ""]);
   const [interestRates, setInterestRates] = useState(["", "", "", "", ""]);
   const [monthlyPayment, setMonthlyPayment] = useState(["", "", "", "", ""]);
+  const [visibleRows, setVisibleRows] = useState(1); // แถวที่แสดงอยู่
 
   const [check, setCheck] = useState(false);
   const [additionalInput, setAdditionalInput] = useState("");
@@ -115,7 +116,6 @@ const AdvanceForm = ({
     }
   };
 
- 
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -150,26 +150,9 @@ const AdvanceForm = ({
       const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
 
       if (!monthlyPaymentNum || isNaN(monthlyPaymentNum)) {
-        toast.error(`กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้องในแถวที่ ${i + 1}`, {
-          position: "top-center",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-        });
-        return;
-      }
-
-      if (monthlyPaymentNum <= monthlyInterestOnly) {
         toast.error(
-          `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
-            i + 1
-          } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`
-          , {
+          `กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้องในแถวที่ ${i + 1}`,
+          {
             position: "top-center",
             autoClose: 1500,
             hideProgressBar: false,
@@ -179,7 +162,28 @@ const AdvanceForm = ({
             progress: undefined,
             theme: "light",
             transition: Bounce,
-          });
+          }
+        );
+        return;
+      }
+
+      if (monthlyPaymentNum <= monthlyInterestOnly) {
+        toast.error(
+          `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
+            i + 1
+          } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`,
+          {
+            position: "top-center",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          }
+        );
         return;
       }
     }
@@ -191,19 +195,46 @@ const AdvanceForm = ({
       endTerm,
       interestRates,
       monthlyPayment,
+      visibleRows,
     };
 
     onAdvanceSubmit(advanceData);
   };
 
+  const addRow = () => {
+    if (visibleRows < 5) {
+      setVisibleRows((prev) => prev + 1);
+    }
+  };
+
+  const removeRow = () => {
+    if (visibleRows > 1) {
+      setVisibleRows((prev) => prev - 1);
+    }
+  };
 
   const resetFields = () => {
     setLoanAmount("");
     setMonthlyPayment(["", "", "", "", ""]);
+    setStartDate(new Date().toISOString().split("T")[0]);
     setInterestRates(["", "", "", "", ""]);
     setStartTerm(["1", "", "", "", ""]);
     setEndTerm(["", "", "", "", ""]);
+    setVisibleRows(1);
+    setCheck(false);
+    setCheck2(false);
     onAdvanceReset();
+    toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
   };
 
   useEffect(() => {
@@ -214,6 +245,7 @@ const AdvanceForm = ({
       setInterestRates(advanceInitialInput.interestRates || 0);
       setStartTerm(advanceInitialInput.startTerm || 0);
       setEndTerm(advanceInitialInput.endTerm || 0);
+      setVisibleRows(advanceInitialInput.visibleRows || 1);
     }
   }, [advanceInitialInput]);
 
@@ -260,75 +292,81 @@ const AdvanceForm = ({
           </div>
         </div>
 
-        {/* Interest Rates, Start Term, End Term, and Monthly Payments */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mt-4">
-          <div>
-            <label>งวดที่</label>
-            {startTerm.map((term, index) => (
-              <input
-                key={`startTerm-${index}`}
-                type="text"
-                value={term}
-                placeholder="งวดที่เริ่ม"
-                onChange={(e) => {
-                  const updatedStartTerm = [...startTerm];
-                  updatedStartTerm[index] = e.target.value;
-                  setStartTerm(updatedStartTerm);
-                }}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
-              />
-            ))}
-          </div>
-
-          <div>
-            <label>ถึงงวดที่</label>
-            {endTerm.map((term, index) => (
-              <input
-                key={`endTerm-${index}`}
-                type="text"
-                value={term}
-                placeholder="ถึงงวดที่"
-                onChange={(e) => handleEndTermChange(index, e.target.value)}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
-              />
-            ))}
-          </div>
-
-          <div>
-            <label>อัตราดอกเบี้ย</label>
-            {Array(5)
-              .fill("")
-              .map((_, idx) => (
+        <div className="grid grid-cols-1 gap-4 mt-4">
+          {Array.from({ length: visibleRows }).map((_, index) => (
+            <div key={index} className="flex space-x-4 items-center">
+              <div>
+                <label>งวดที่เริ่ม</label>
                 <input
-                  key={`interest-rate-${idx}`}
                   type="text"
-                  value={interestRates[idx]}
+                  value={startTerm[index]}
+                  placeholder="งวดที่เริ่ม"
+                  onChange={(e) => {
+                    const updatedStartTerm = [...startTerm];
+                    updatedStartTerm[index] = e.target.value;
+                    setStartTerm(updatedStartTerm);
+                  }}
+                  className="w-full rounded-lg border border-gray-400 p-2"
+                />
+              </div>
+              <div>
+                <label>ถึงงวดที่</label>
+                <input
+                  type="text"
+                  value={endTerm[index]}
+                  placeholder="ถึงงวดที่"
+                  onChange={(e) => handleEndTermChange(index, e.target.value)}
+                  className="w-full rounded-lg border border-gray-400 p-2"
+                />
+              </div>
+              <div>
+                <label>อัตราดอกเบี้ย</label>
+                <input
+                  type="text"
+                  value={interestRates[index]}
                   placeholder="อัตราดอกเบี้ย"
                   onChange={(e) =>
-                    handleInterestRateChange(idx, e.target.value)
+                    handleInterestRateChange(index, e.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
+                  className="w-full rounded-lg border border-gray-400 p-2"
                 />
-              ))}
-          </div>
-
-          <div>
-            <label>จำนวนเงินที่จะผ่อน</label>
-            {Array(5)
-              .fill("")
-              .map((_, idx) => (
+              </div>
+              <div>
+                <label>จำนวนเงินที่จะผ่อน</label>
                 <input
-                  key={`monthly-payment-${idx}`}
                   type="text"
-                  value={monthlyPayment[idx]}
+                  value={monthlyPayment[index]}
                   placeholder="จำนวนเงินที่จะผ่อน"
                   onChange={(e) =>
-                    handleMonthlyPaymentChange(idx, e.target.value)
+                    handleMonthlyPaymentChange(index, e.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
+                  className="w-full rounded-lg border border-gray-400 p-2"
                 />
-              ))}
-          </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ปุ่มเพิ่ม/ลบบรรทัด */}
+        <div className="flex space-x-4 mt-4">
+          {visibleRows < 5 && (
+            <button
+              type="button"
+              className="bg-blue-500 text-white w-8 h-8 rounded-full items-center justify-center"
+              onClick={addRow}
+            >
+              +
+            </button>
+          )}
+          {visibleRows > 1 && (
+            <button
+              type="button"
+              className="bg-red-500 text-white w-8 h-8 rounded-full items-center justify-center"
+              onClick={removeRow}
+            >
+              -
+            </button>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
