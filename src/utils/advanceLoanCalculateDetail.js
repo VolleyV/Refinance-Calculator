@@ -39,11 +39,6 @@ export const advanceLoanCalculateDetail = (advanceData) => {
   let currentMonthlyPayment =
     parseFloat(monthlyPayment[0]?.replace(/,/g, "")) || 0;
 
-  if (currentMonthlyPayment === 0) {
-    alert("Monthly payment must be greater than 0.");
-    return [];
-  }
-
   // Calculate until loanAmountRemaining is 0
   while (loanAmountRemaining > 0) {
     const dateClone = new Date(initialStartDate);
@@ -67,11 +62,6 @@ export const advanceLoanCalculateDetail = (advanceData) => {
           currentMonthlyPayment;
         break;
       }
-    }
-
-    if (isNaN(currentMonthlyPayment) || currentMonthlyPayment <= 0) {
-      alert("Invalid monthly payment value.");
-      return [];
     }
 
     const interest =
