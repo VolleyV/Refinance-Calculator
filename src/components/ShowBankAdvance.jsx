@@ -15,66 +15,63 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
     lastDayOfPaying,
   } = advanceCalculateSummary;
 
-  const remainingDateText = `ผ่อนดอกเบี้ยจนหมด ใช้เวลาทั้งหมด ${totalYears} ปี ${totalMonths} เดือน`;
+  const remainingDateText = `ระยะเวลาผ่อนชำระ: ${totalYears} ปี ${totalMonths} เดือน`;
 
-  const remainingInterestText = `ผ่อนดอกเบี้ยทั้งหมดแล้วเป็นจำนวนเงิน ${parseFloat(
+  const remainingInterestText = `ดอกเบี้ยสุทธิ: ${parseFloat(
     totalInterestPaid
   ).toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })} บาท`;
 
-  const lastPaymentText = `ผ่อนหมดในวันที่ ${lastDayOfPaying}`;
-
-  //  //แบบไทย
-  //   const lastPaymentText = `ผ่อนหมดในวันที่ ${new Date(
-  //     lastDayOfPaying
-  //   ).toLocaleDateString("th-TH", {
-  //     year: "numeric",
-  //     month: "short",
-  //     day: "2-digit",
-  //   })}`;
+  const lastPaymentText = `สิ้นสุดการชำระ ณ วันที่: ${new Date(
+    lastDayOfPaying
+  ).toLocaleDateString("th-TH", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+  })}`;
 
   const handleNavigateToTable = () => {
     navigate("/advanceTable", { state: { activeTab: "advanced" } });
   };
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8 mt-10 shadow-lg p-5">
-      <div className="h-42 rounded-lg bg-gray-200 p-0 mb-4">
-        <div className="h-18 bg-blue-400 p-4 rounded-t-lg">
-          <img src="bank50.png" />
+    <div className="relative p-6 max-w-4xl mx-auto rounded-lg shadow-md mt-8">
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="h-42 rounded-lg bg-gray-200 p-0 flex-1">
+          <div className="h-18 bg-blue-400 p-4 rounded-t-lg">
+            <img src="bank50.png" alt="Bank Logo" />
+          </div>
+          <div className="p-3">
+            <p>
+              <b>ระยะเวลาเริ่มผ่อนชำระงวด 3 ปีแรกเริ่ม</b>
+            </p>
+            <p>เงินกู้คงเหลือ: {totalLoanRemaining.toLocaleString()} บาท</p>
+            <p>ดอกเบี้ยสุทธิ: {totalInterestThreeYears.toLocaleString()} บาท</p>
+            <p>
+              เงินต้นที่สุทธิ:{" "}
+              {principalPortionAfterThreeYears.toLocaleString()} บาท
+            </p>
+            <button
+              onClick={handleNavigateToTable}
+              className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+            >
+              ดูเพิ่มเติม
+            </button>
+          </div>
         </div>
-        <div className="p-3">
-          <p>
-            <b>3ปีแรก</b>
-          </p>
-          <p>เงินกู้คงเหลือ: {totalLoanRemaining.toLocaleString()} บาท</p>
-          <p>
-            ดอกเบี้ยที่จ่ายไป: {totalInterestThreeYears.toLocaleString()} บาท
-          </p>
-          <p>
-            เงินต้นทั้งหมด: {principalPortionAfterThreeYears.toLocaleString()}{" "}
-            บาท
-          </p>
-          <button
-            onClick={handleNavigateToTable}
-            className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
-          >
-            ดูเพิ่มเติม
-          </button>
-        </div>
-      </div>
-      <div className="h-42 rounded-lg bg-gray-200 p-0 mb-4">
-        <div className="h-18 bg-blue-400 p-4 rounded-t-lg">
-          <img src="bank50.png" />
-        </div>
-        <div className="p-3">
-          <p>
-            <b>จนผ่อนจบ</b>
-          </p>
-          <p>{remainingDateText}</p>
-          <p>{remainingInterestText.toLocaleString()}</p>
-          <p>{lastPaymentText}</p>
+        <div className="h-42 rounded-lg bg-gray-200 p-0 flex-1">
+          <div className="h-18 bg-blue-400 p-4 rounded-t-lg">
+            <img src="bank50.png" alt="Bank Logo" />
+          </div>
+          <div className="p-3">
+            <p>
+              <b>ระยะเวลาจนถึงสิ้นสุดการชำระ</b>
+            </p>
+            <p>{remainingDateText}</p>
+            <p>{lastPaymentText}</p>
+            <p>{remainingInterestText.toLocaleString()}</p>
+          </div>
         </div>
       </div>
     </div>

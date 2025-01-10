@@ -18,10 +18,9 @@ const AdvanceForm = ({
   const [visibleRows, setVisibleRows] = useState(1); // แถวที่แสดงอยู่
 
   const [check, setCheck] = useState(false);
-  const [mrta, setMrta] = useState("");
-
   const [check2, setCheck2] = useState(false);
-  const [mortgage, setMortgage] = useState("");
+  const [insurance, setInsurance] = useState("");
+  const [mortgageFee, setMortgageFee] = useState("");
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
@@ -103,16 +102,34 @@ const AdvanceForm = ({
   };
 
   const toggleCheck = (type) => {
-    if (type == "check") {
+    if (type === "check") {
       setCheck(!check);
-      if (!check) {
-        setMrta("");
+      if (check) {
+        setInsurance("");
       }
-    } else if (type == "check2") {
+    } else if (type === "check2") {
       setCheck2(!check2);
-      if (!check2) {
-        setMortgage("");
+      if (check2) {
+        setMortgageFee("");
       }
+    }
+  };
+
+  const handleInsuranceChange = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setInsurance(formattedValue);
+    }
+  };
+
+  const handleMorgageFeeChange = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setMortgageFee(formattedValue);
     }
   };
 
@@ -212,8 +229,8 @@ const AdvanceForm = ({
       interestRates,
       monthlyPayment,
       visibleRows,
-      mrta,
-      mortgage
+      insurance,
+      mortgageFee,
     };
 
     onAdvanceSubmit(advanceData);
@@ -245,6 +262,8 @@ const AdvanceForm = ({
     setVisibleRows(1);
     setCheck(false);
     setCheck2(false);
+    setInsurance("");
+    setMortgageFee("");
     onAdvanceReset();
     toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
       position: "top-center",
@@ -268,14 +287,16 @@ const AdvanceForm = ({
       setStartTerm(advanceInitialInput.startTerm || 0);
       setEndTerm(advanceInitialInput.endTerm || 0);
       setVisibleRows(advanceInitialInput.visibleRows || 1);
-      setMrta(advanceInitialInput.mrta||0);
-      setMortgage(advanceInitialInput.mortgage||0);
+      setInsurance(advanceInitialInput.insurance || 0);
+      setMortgageFee(advanceInitialInput.mortgageFee || 0);
     }
   }, [advanceInitialInput]);
 
   return (
     <div className="bg-white rounded-b-lg px-6 py-4">
-      <h2 className="text-xl font-bold">คำนวณดอกเบี้ยแบบมีหลายอัตราดอกเบี้ย</h2>
+      <h2 className="font-itim text-xl font-bold">
+        คำนวณดอกเบี้ยแบบมีหลายอัตราดอกเบี้ย
+      </h2>
       <form id="loan-form-advance" className="mt-4" onSubmit={handleSubmit}>
         {/* Term Months and Start Date */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
@@ -316,11 +337,16 @@ const AdvanceForm = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 mt-4">
+        <div className="grid grid-cols-1 gap-6 mt-6">
           {Array.from({ length: visibleRows }).map((_, index) => (
-            <div key={index} className="flex space-x-4 items-center">
+            <div
+              key={index}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center"
+            >
               <div>
-                <label>งวดที่เริ่ม</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  งวดที่เริ่ม
+                </label>
                 <input
                   type="text"
                   value={startTerm[index]}
@@ -330,21 +356,25 @@ const AdvanceForm = ({
                     updatedStartTerm[index] = e.target.value;
                     setStartTerm(updatedStartTerm);
                   }}
-                  className="w-full rounded-lg border border-gray-400 p-2"
+                  className="w-full rounded-lg border border-gray-400 p-2 focus:ring-2 focus:ring-blue-500 shadow-md"
                 />
               </div>
               <div>
-                <label>ถึงงวดที่</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  ถึงงวดที่
+                </label>
                 <input
                   type="text"
                   value={endTerm[index]}
                   placeholder="ถึงงวดที่"
                   onChange={(e) => handleEndTermChange(index, e.target.value)}
-                  className="w-full rounded-lg border border-gray-400 p-2"
+                  className="w-full rounded-lg border border-gray-400 p-2 focus:ring-2 focus:ring-blue-500 shadow-md"
                 />
               </div>
               <div>
-                <label>อัตราดอกเบี้ย</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  อัตราดอกเบี้ย
+                </label>
                 <input
                   type="text"
                   value={interestRates[index]}
@@ -352,11 +382,13 @@ const AdvanceForm = ({
                   onChange={(e) =>
                     handleInterestRateChange(index, e.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-400 p-2"
+                  className="w-full rounded-lg border border-gray-400 p-2 focus:ring-2 focus:ring-blue-500 shadow-md"
                 />
               </div>
               <div>
-                <label>จำนวนเงินที่จะผ่อน</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  จำนวนเงินที่จะผ่อน
+                </label>
                 <input
                   type="text"
                   value={monthlyPayment[index]}
@@ -364,7 +396,7 @@ const AdvanceForm = ({
                   onChange={(e) =>
                     handleMonthlyPaymentChange(index, e.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-400 p-2"
+                  className="w-full rounded-lg border border-gray-400 p-2 focus:ring-2 focus:ring-blue-500 shadow-md"
                 />
               </div>
             </div>
@@ -400,40 +432,25 @@ const AdvanceForm = ({
               <input
                 type="checkbox"
                 id="custom-checkbox"
-                onClick={() => toggleCheck("check")}
                 checked={check}
-                className="hidden peer"
+                onChange={() => toggleCheck("check")}
               />
-              <label
-                htmlFor="custom-checkbox"
-                className="w-4 h-4 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:shadow-md peer-checked:shadow-blue-500 transition-all duration-300"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-white hidden peer-checked:block"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 00-1.414-1.414L7 12.586 4.707 10.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l9-9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+              <label htmlFor="custom-checkbox" className="whitespace-nowrap">
+                ค่าประกันอัคคีภัย
               </label>
-              <span className="whitespace-nowrap">ค่าประกันอัคคีภัย</span>
             </div>
 
-            {check && (
-              <input
-                type="text"
-                id="additional-input"
-                placeholder="กรอกจำนวนเงิน"
-                value={mrta}
-                onChange={(e) => setMrta(e.target.value)}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-              />
-            )}
+            <input
+              type="text"
+              id="insurance-input"
+              placeholder="กรอกจำนวนเงิน"
+              value={insurance}
+              onChange={handleInsuranceChange}
+              disabled={!check} // Disable input when "check" is false
+              className={`w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md ${
+                !check ? "bg-gray-200" : ""
+              }`}
+            />
           </div>
 
           {/* ปุ่มที่ 2 */}
@@ -442,57 +459,41 @@ const AdvanceForm = ({
               <input
                 type="checkbox"
                 id="custom-checkbox2"
-                onClick={() => toggleCheck("check2")}
                 checked={check2}
-                className="hidden peer"
+                onChange={() => toggleCheck("check2")}
               />
-              <label
-                htmlFor="custom-checkbox2"
-                className="w-4 h-4 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:shadow-md peer-checked:shadow-blue-500 transition-all duration-300"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-white hidden peer-checked:block"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 00-1.414-1.414L7 12.586 4.707 10.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l9-9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+              <label htmlFor="custom-checkbox2" className="whitespace-nowrap">
+                ค่าจดจำนอง
               </label>
-              <span className="whitespace-nowrap">ค่าจดจำนอง</span>
             </div>
 
-            {check2 && (
-              <input
-                type="text"
-                id="additional-input2"
-                placeholder="กรอกจำนวนเงิน"
-                value={mortgage}
-                onChange={(e) => setMortgage(e.target.value)}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-              />
-            )}
+            <input
+              type="text"
+              id="additional-input2"
+              placeholder="กรอกจำนวนเงิน"
+              value={mortgageFee}
+              onChange={handleMorgageFeeChange}
+              disabled={!check2} // Disable input when "check2" is false
+              className={`w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md ${
+                !check2 ? "bg-gray-200" : ""
+              }`}
+            />
           </div>
         </div>
 
-        {/* Submit and Reset Buttons */}
-        <div className="mt-4">
+        <div className="mt-4 flex flex-wrap justify-between sm:justify-end gap-2">
           <button
             type="submit"
-            className="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto"
+            className="inline-block w-full sm:w-auto rounded-lg bg-blue-800 px-5 py-3 font-medium text-white"
           >
             คำนวณ
           </button>
           <button
             type="button"
-            className="inline-block w-full rounded-lg bg-red-500 px-5 py-3 font-medium text-white sm:w-auto mt-2 ml-2"
             onClick={resetFields}
+            className="text-gray-600 hover:text-gray-800 underline font-medium w-full sm:w-auto sm:ml-2 sm:order-first"
           >
-            Reset
+            ล้างข้อมูล
           </button>
         </div>
       </form>

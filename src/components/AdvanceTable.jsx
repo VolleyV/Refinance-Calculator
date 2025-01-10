@@ -183,11 +183,11 @@ AdvanceTable.propTypes = {
     PropTypes.shape({
       month: PropTypes.number.isRequired,
       date: PropTypes.string.isRequired,
-      interestRate: PropTypes.number.isRequired, // แก้เป็น number
-      monthlyPayment: PropTypes.number.isRequired, // แก้เป็น number
-      loanAmountPortion: PropTypes.number.isRequired, // แก้ชื่อให้ตรง
-      interest: PropTypes.number.isRequired, // แก้เป็น number
-      remainingLoanAmount: PropTypes.number.isRequired, // แก้ชื่อให้ตรง
+      interestRate: PropTypes.number.isRequired,
+      monthlyPayment: PropTypes.number.isRequired,
+      loanAmountPortion: PropTypes.number.isRequired,
+      interest: PropTypes.number.isRequired,
+      remainingLoanAmount: PropTypes.number.isRequired,
     })
   ),
 };

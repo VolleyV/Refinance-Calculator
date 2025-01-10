@@ -17,6 +17,8 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     interestRates,
     startTerm = ["1"],
     endTerm,
+    insurance,
+    mortgageFee,
   } = advanceData;
 
   if (!advanceData || typeof advanceData !== "object") {
@@ -156,7 +158,7 @@ export const advanceRemainingToLast = (details) => {
   return {
     totalYears,
     totalMonths: totalMonthsRemainder,
-    totalInterestPaid: totalInterestPaid.toFixed(2),
+    totalInterestPaid: parseFloat(totalInterestPaid.toFixed(2)),
     lastDayOfPaying: lastDate.toLocaleDateString("en-EN", {
       year: "numeric",
       month: "long",
