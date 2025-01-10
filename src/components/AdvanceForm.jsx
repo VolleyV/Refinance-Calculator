@@ -15,6 +15,13 @@ const AdvanceForm = ({
   const [endTerm, setEndTerm] = useState(["", "", "", "", ""]);
   const [interestRates, setInterestRates] = useState(["", "", "", "", ""]);
   const [monthlyPayment, setMonthlyPayment] = useState(["", "", "", "", ""]);
+  const [dateText, setDateText] = useState(
+    new Date().toLocaleDateString("th-TH", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    }) || "Invalid Date"
+  );
   const [visibleRows, setVisibleRows] = useState(1); // แถวที่แสดงอยู่
 
   const [check, setCheck] = useState(false);
@@ -32,8 +39,17 @@ const AdvanceForm = ({
   };
 
   const startDateRef = useRef(null);
-  const handleStartDateChange = (setter) => (event) =>
-    setter(event.target.value);
+
+  const handleStartDateChange = (event) => {
+    setStartDate(event.target.value);
+    setDateText(
+      new Date(event.target.value).toLocaleDateString("th-TH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      })
+    );
+  };
 
   const handleInterestRateChange = (index, value) => {
     const rawValue = value.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
@@ -322,9 +338,7 @@ const AdvanceForm = ({
               startDateRef.current && startDateRef.current.showPicker?.()
             }
           >
-            <label htmlFor="start-date-advance">
-              เลือกวันที่ (วัน/เดือน/ปี)
-            </label>
+            <label htmlFor="start-date-advance">วันที่เริ่ม ({dateText})</label>
             <input
               type="date"
               name="start-date-advance"
@@ -332,7 +346,7 @@ const AdvanceForm = ({
               className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md cursor-pointer"
               value={startDate}
               ref={startDateRef}
-              onChange={handleStartDateChange(setStartDate)}
+              onChange={handleStartDateChange}
             />
           </div>
         </div>

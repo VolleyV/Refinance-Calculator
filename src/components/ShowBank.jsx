@@ -2,12 +2,10 @@ import PropTypes from "prop-types";
 
 const ShowBank = ({ basicCalculateSummary }) => {
   const handleOpenTableInNewTab = () => {
-    // เก็บข้อมูลใน sessionStorage
     sessionStorage.setItem(
       "basicTableData",
       JSON.stringify(basicCalculateSummary)
     );
-    // เปิดแท็บใหม่ไปยัง URL ที่กำหนด
     window.open("/basicTab", "_blank");
   };
 
