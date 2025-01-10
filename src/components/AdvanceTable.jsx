@@ -1,10 +1,17 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { advanceLoanCalculateDetail } from "../utils/advanceLoanCalculateDetail";
+import { useNavigate } from "react-router-dom";
 const AdvanceTable = ({ advanceData }) => {
   if (!advanceData) {
     return <p>ไม่มีข้อมูล กรุณากลับไปกรอกแบบฟอร์มก่อน</p>;
   }
+
+  const navigate = useNavigate(); // Hook สำหรับนำทางไปยังหน้าอื่น
+
+  const goBack = () => {
+    navigate(-1); // นำทางกลับไปหน้าก่อนหน้า
+  };
 
   const itemsPerPage = 36; // จำนวนงวดต่อหน้า
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,26 +29,45 @@ const AdvanceTable = ({ advanceData }) => {
   const goToNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
-      });
+      scrollToTop();
     }
   };
 
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
-      });
+      scrollToTop();
     }
+  };
+
+  const goToFirstPage = () => {
+    setCurrentPage(1);
+    scrollToTop();
+  };
+
+  const goToLastPage = () => {
+    setCurrentPage(totalPages);
+    scrollToTop();
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
+    });
   };
 
   return (
     <div className="container mx-auto mt-10 px-4">
-      <h2 className="text-lg font-bold">ตารางการคำนวณ</h2>
+      <div className="relative flex items-center mb-5">
+        <button
+          onClick={goBack}
+          className="absolute left-0 mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          ย้อนกลับ
+        </button>
+        <h2 className="text-lg font-bold mx-auto">ตารางการคำนวณ</h2>
+      </div>
       {currentItems.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
@@ -109,6 +135,13 @@ const AdvanceTable = ({ advanceData }) => {
           {/* ปุ่มเปลี่ยนหน้า */}
           <div className="flex justify-between mt-4">
             <button
+              onClick={goToFirstPage}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+            >
+              หน้าแรก
+            </button>
+            <button
               onClick={goToPreviousPage}
               disabled={currentPage === 1}
               className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
@@ -125,6 +158,13 @@ const AdvanceTable = ({ advanceData }) => {
             >
               หน้าถัดไป
             </button>
+            <button
+              onClick={goToLastPage}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+            >
+              หน้าสุดท้าย
+            </button>
           </div>
         </div>
       ) : (
@@ -133,20 +173,6 @@ const AdvanceTable = ({ advanceData }) => {
     </div>
   );
 };
-
-// AdvanceTable.propTypes = {
-//   advanceData: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       month: PropTypes.number.isRequired,
-//       date: PropTypes.string.isRequired,
-//       interestRate: PropTypes.string.isRequired,
-//       monthlyPayment: PropTypes.string.isRequired,
-//       principalPortion: PropTypes.string.isRequired,
-//       interest: PropTypes.string.isRequired,
-//       remainingPrincipal: PropTypes.string.isRequired,
-//     })
-//   ).isRequired,
-// };
 
 AdvanceTable.propTypes = {
   advanceData: PropTypes.arrayOf(

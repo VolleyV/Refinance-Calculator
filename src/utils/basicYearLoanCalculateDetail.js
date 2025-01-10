@@ -1,4 +1,5 @@
-// utils/basicLoanCalculateDetail.js
+// utils/basicYearLoanCalculateDetail.js
+
 const isLeapYear = (year) =>
   (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 
@@ -10,29 +11,57 @@ const daysInMonth = (year, month) => {
   return daysInMonths[month];
 };
 
-export const basicLoanCalculateDetail = (data) => {
-  const { loanAmount, startDate, interestRate, monthlyPayment } = data;
+export const basicYearLoanCalculateDetail = (basicYearData) => {
+  const { loanAmount, startDate, interestRate, paymentDuration } =
+    basicYearData;
 
-  let principalRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
-  let monthlyPaymentAmount = parseFloat(monthlyPayment.replace(/,/g, "")) || 0;
-  const interestRateMonthly = interestRate / 100;
+  // Parse input values
+  const principal = parseFloat(loanAmount.replace(/,/g, "")) || 0; // Loan principal
+  const annualRate = interestRate / 100; // Annual interest rate in decimal
+  const totalMonths = paymentDuration * 12; // Convert years to months
+
+  // Calculate monthly payment using the provided formula
+  const monthlyRate = annualRate / 12;
+  const calculatedMonthlyPayment =
+    monthlyRate === 0
+      ? principal / totalMonths // Edge case: Zero interest
+      : (principal * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) /
+        (Math.pow(1 + monthlyRate, totalMonths) - 1);
+
+  if (calculatedMonthlyPayment <= 0) {
+    console.error("Invalid calculated monthly payment.");
+    return [];
+  }
+
   const initialStartDate = new Date(startDate);
+  let principalRemaining = principal;
   const details = [];
   let monthsElapsed = 0;
 
+  // Main calculation loop
   while (principalRemaining > 0) {
     const currentYear = initialStartDate.getFullYear();
     const currentMonth = initialStartDate.getMonth();
     const daysInCurrentMonth = daysInMonth(currentYear, currentMonth);
     const daysInCurrentYear = daysInYear(currentYear);
 
-    const interest =
-      (principalRemaining * interestRateMonthly * daysInCurrentMonth) /
-      daysInCurrentYear;
-    const principalPortion = Math.max(0, monthlyPaymentAmount - interest);
+    // Calculate interest and principal portions
+    const monthlyInterest =
+      (principalRemaining * annualRate * daysInCurrentMonth) /
+      daysInCurrentYear; // Monthly interest
+    const principalPortion = Math.max(
+      0,
+      calculatedMonthlyPayment - monthlyInterest
+    );
+
+    if (principalPortion <= 0) {
+      console.error("Monthly payment is too low to reduce the principal.");
+      break;
+    }
 
     principalRemaining = Math.max(0, principalRemaining - principalPortion);
 
+    // Push the current month's details
     details.push({
       month: monthsElapsed + 1,
       date: initialStartDate.toLocaleDateString("en-EN", {
@@ -40,13 +69,14 @@ export const basicLoanCalculateDetail = (data) => {
         month: "short",
         day: "2-digit",
       }),
-      interest: parseFloat(interest.toFixed(2)),
+      interest: parseFloat(monthlyInterest.toFixed(2)),
       principalPortion: parseFloat(principalPortion.toFixed(2)),
       remainingPrincipal: parseFloat(principalRemaining.toFixed(2)),
-      monthlyPayment: parseFloat(monthlyPaymentAmount.toFixed(2)),
-      interestRate,
+      monthlyPayment: parseFloat(calculatedMonthlyPayment.toFixed(2)),
+      interestRate: interestRate,
     });
 
+    // Advance date to the next month
     initialStartDate.setMonth(initialStartDate.getMonth() + 1);
     monthsElapsed++;
   }
@@ -54,8 +84,7 @@ export const basicLoanCalculateDetail = (data) => {
   return details;
 };
 
-//
-export const calculateThreeYearSummary = (details) => {
+export const calculateBasicYearThreeYearSummary = (details) => {
   const threeYears = 3 * 12;
   const limitedDetails = details.slice(0, threeYears);
 
@@ -73,7 +102,7 @@ export const calculateThreeYearSummary = (details) => {
   };
 };
 
-export const remainingToLast = (details) => {
+export const remainingBasicYearToLast = (details) => {
   const lastDetail = details[details.length - 1];
   let remainingPrincipal = lastDetail.remainingPrincipal;
   const monthlyPayment = lastDetail.monthlyPayment;
@@ -130,7 +159,8 @@ export const remainingToLast = (details) => {
   const totalMonthsRemainder = totalMonths % 12;
 
   return {
-    fullyPaid: fixRemain === 0, // Check if it’s fully paid
+    fullyPaid: fixRemain === 0,
+    monthlyPayment: monthlyPayment.toFixed(2),
     totalYears,
     totalMonths: totalMonthsRemainder,
     remainingDate: { years: yearsRemaining, months: remainingMonths },

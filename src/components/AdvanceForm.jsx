@@ -11,7 +11,7 @@ const AdvanceForm = ({
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
-  const [startTerm, setStartTerm] = useState(["", "", "", "", ""]);
+  const [startTerm, setStartTerm] = useState(["1", "", "", "", ""]);
   const [endTerm, setEndTerm] = useState(["", "", "", "", ""]);
   const [interestRates, setInterestRates] = useState(["", "", "", "", ""]);
   const [monthlyPayment, setMonthlyPayment] = useState(["", "", "", "", ""]);
@@ -82,11 +82,61 @@ const AdvanceForm = ({
     setTermMonths(Number(event.target.value));
   };
 
+  const handleEndTermChange = (index, value) => {
+    const updatedEndTerm = [...endTerm];
+    updatedEndTerm[index] = value;
+
+    setEndTerm(updatedEndTerm);
+
+    // เมื่อ "ถึงงวดที่" ถูกลบออก
+    if (value === "" || value === undefined) {
+      if (index + 1 < startTerm.length) {
+        setStartTerm((prev) => {
+          const updated = [...prev];
+          updated[index + 1] = ""; // ลบค่าใน "งวดที่เริ่ม" ของบรรทัดถัดไป
+          return updated;
+        });
+      }
+      return;
+    }
+
+    // อัปเดต "งวดที่เริ่ม" ในแถวถัดไป
+    if (index + 1 < startTerm.length) {
+      const nextStartTerm = parseInt(value, 10) + 1; // เพิ่มค่าเป็น 1
+      if (!isNaN(nextStartTerm)) {
+        setStartTerm((prev) => {
+          const updated = [...prev];
+          updated[index + 1] = nextStartTerm.toString();
+          return updated;
+        });
+      }
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!loanAmount || !startDate) {
       alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+      return;
+    }
+
+    const loanAmountNum = parseFloat(loanAmount.replace(/,/g, ""));
+    const monthlyPaymentNum = parseFloat(monthlyPayment[0]?.replace(/,/g, "")); // ใช้ monthlyPayment[0]
+    const interestRateNum = parseFloat(interestRates[0] || 0) / 100; // ใช้ interestRates[0]
+
+    if (!monthlyPaymentNum || isNaN(monthlyPaymentNum)) {
+      alert("กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้อง");
+      return;
+    }
+
+    const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
+
+    // ตรวจสอบว่าค่า monthlyPayment น้อยกว่าดอกเบี้ยต่อเดือน
+    if (monthlyPaymentNum <= monthlyInterestOnly) {
+      alert(
+        "จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน"
+      );
       return;
     }
 
@@ -109,7 +159,7 @@ const AdvanceForm = ({
     setTermMonths("");
     setStartDate("");
     setInterestRates(["", "", "", "", ""]);
-    setStartTerm(["", "", "", "", ""]);
+    setStartTerm(["1", "", "", "", ""]);
     setEndTerm(["", "", "", "", ""]);
     onAdvanceReset();
   };
@@ -219,11 +269,12 @@ const AdvanceForm = ({
                 type="text"
                 value={term}
                 placeholder="ถึงงวดที่"
-                onChange={(e) => {
-                  const updatedEndTerm = [...endTerm];
-                  updatedEndTerm[index] = e.target.value;
-                  setEndTerm(updatedEndTerm);
-                }}
+                // onChange={(e) => {
+                //   const updatedEndTerm = [...endTerm];
+                //   updatedEndTerm[index] = e.target.value;
+                //   setEndTerm(updatedEndTerm);
+                // }}
+                onChange={(e) => handleEndTermChange(index, e.target.value)}
                 className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
               />
             ))}
@@ -267,21 +318,21 @@ const AdvanceForm = ({
         </div>
 
         {/* Submit and Reset Buttons */}
-        <div className="mt-4">
-          <button
-            type="submit"
-            className="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto"
-          >
-            คำนวณ
-          </button>
-          <button
-            type="button"
-            className="inline-block w-full rounded-lg bg-red-500 px-5 py-3 font-medium text-white sm:w-auto mt-2 ml-2"
-            onClick={resetFields}
-          >
-            Reset
-          </button>
-        </div>
+        <div className="mt-4 flex flex-wrap justify-between sm:justify-end gap-2">
+            <button
+              type="submit"
+              className="inline-block w-full sm:w-auto rounded-lg bg-blue-800 px-5 py-3 font-medium text-white"
+            >
+              คำนวณ
+            </button>
+            <button
+              type="button"
+              onClick={resetFields}
+              className="text-gray-600 hover:text-gray-800 underline font-medium w-full sm:w-auto sm:ml-2 sm:order-first"
+            >
+              ล้างข้อมูล
+            </button>
+          </div>
       </form>
     </div>
   );

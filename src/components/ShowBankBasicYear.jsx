@@ -1,16 +1,17 @@
-import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const ShowBank = ({ basicCalculateSummary }) => {
+const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
   const navigate = useNavigate();
 
   const handleNavigateToTable = () => {
-    navigate("/basicTab", { state: { activeTab: "basic" } });
+    navigate("/BasicYearTable", { state: { activeTab: "basicYear" } });
   };
 
   const {
     principalAfterThreeYears,
     totalInterestThreeYears,
+    monthlyPayment,
     fullyPaid,
     totalYears,
     totalMonths,
@@ -18,7 +19,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
     remainingInterest,
     totalInterestPaid,
     lastDayOfPaying,
-  } = basicCalculateSummary;
+  } = basicYearCalculateSummary;
 
   const remainingDateText = fullyPaid
     ? `ผ่อนดอกเบี้ยจนหมด ใช้เวลาทั้งหมด ${totalYears} ปี ${totalMonths} เดือน`
@@ -48,48 +49,51 @@ const ShowBank = ({ basicCalculateSummary }) => {
 
   return (
     <div className="relative p-6 max-w-4xl mx-auto rounded-lg shadow-md mt-8">
-  <div className="flex flex-col sm:flex-row gap-4">
-    <div className="h-42 rounded-lg bg-gray-200 p-0 flex-1">
-      <div className="h-18 bg-blue-400 p-4 rounded-t-lg">
-        <img src="bank50.png" alt="Bank Logo" />
-      </div>
-      <div className="p-3">
-        <p>
-          <b>ผ่อน 3 ปีแรก</b>
-        </p>
-        <p>เงินกู้คงเหลือ: {principalAfterThreeYears.toLocaleString()} บาท</p>
-        <p>ดอกเบี้ยที่จ่ายไป: {totalInterestThreeYears.toLocaleString()} บาท</p>
-        <button
-          onClick={handleNavigateToTable}
-          className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
-        >
-          ดูเพิ่มเติม
-        </button>
-      </div>
-    </div>
-    <div className="h-42 rounded-lg bg-gray-200 p-0 flex-1">
-      <div className="h-18 bg-blue-400 p-4 rounded-t-lg">
-        <img src="bank50.png" alt="Bank Logo" />
-      </div>
-      <div className="p-3">
-        <p>
-          <b>จนผ่อนจบ</b>
-        </p>
-        <p>{remainingDateText}</p>
-        <p>{remainingInterestText.toLocaleString()}</p>
-        <p>{lastPaymentText}</p>
-      </div>
-    </div>
-  </div>
-</div>
+    <div className="flex gap-4">
+      <div className="h-42 rounded-lg bg-gray-200 p-0 mb-4 flex-1">
+        <div className="h-18 bg-blue-400 p-4 rounded-t-lg">
+          <img src="bank50.png" />
+        </div>
+        <div className="p-3">
+          <p>
+            <b>ผ่อน 3 ปีแรก (ผ่อนเดือนละ {monthlyPayment} บาท)</b>
+          </p>
 
+          <p>เงินกู้คงเหลือ: {principalAfterThreeYears.toLocaleString()} บาท</p>
+          <p>
+            ดอกเบี้ยที่จ่ายไป: {totalInterestThreeYears.toLocaleString()} บาท
+          </p>
+          <button
+            onClick={handleNavigateToTable}
+            className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+          >
+            ดูเพิ่มเติม
+          </button>
+        </div>
+      </div>
+      <div className="h-42 rounded-lg bg-gray-200 p-0 mb-4 flex-1">
+      <div className="h-18 bg-blue-400 p-4 rounded-t-lg">
+        <img src="bank50.png" />
+      </div>
+      <div className="p-3">
+          <p>
+            <b>จนผ่อนจบ (ผ่อนเดือนละ {monthlyPayment} บาท)</b>
+          </p>
+          <p>{remainingDateText}</p>
+          <p>{remainingInterestText.toLocaleString()}</p>
+          <p>{lastPaymentText}</p>
+        </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
-ShowBank.propTypes = {
-  basicCalculateSummary: PropTypes.shape({
+ShowBankBasicYear.propTypes = {
+  basicYearCalculateSummary: PropTypes.shape({
     principalAfterThreeYears: PropTypes.number.isRequired,
     totalInterestThreeYears: PropTypes.number.isRequired,
+    monthlyPayment: PropTypes.number.isRequired,
     fullyPaid: PropTypes.bool.isRequired,
     totalYears: PropTypes.number.isRequired,
     totalMonths: PropTypes.number.isRequired,
@@ -103,4 +107,4 @@ ShowBank.propTypes = {
   }).isRequired,
 };
 
-export default ShowBank;
+export default ShowBankBasicYear;
