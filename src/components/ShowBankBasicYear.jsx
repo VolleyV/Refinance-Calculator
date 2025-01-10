@@ -1,11 +1,19 @@
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleNavigateToTable = () => {
-    navigate("/BasicYearTable", { state: { activeTab: "basicYear" } });
+  // const handleNavigateToTable = () => {
+  //   navigate("/BasicYearTable", { state: { activeTab: "basicYear" } });
+  // };
+
+  const handleOpenTableInNewTab = () => {
+    sessionStorage.setItem(
+      "basicTableData",
+      JSON.stringify(basicYearCalculateSummary)
+    );
+    window.open("/basicYearTable", "_blank");
   };
 
   const {
@@ -59,7 +67,8 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               {principalPortionAfterThreeYears.toLocaleString()} บาท
             </p>
             <button
-              onClick={handleNavigateToTable}
+              // onClick={handleNavigateToTable}
+              onClick={handleOpenTableInNewTab}
               className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
             >
               ดูเพิ่มเติม
