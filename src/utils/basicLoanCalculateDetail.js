@@ -26,9 +26,15 @@ export const basicLoanCalculateDetail = (data) => {
     const daysInCurrentMonth = daysInMonth(currentYear, currentMonth);
     const daysInCurrentYear = daysInYear(currentYear);
 
-    const interest =
-      (principalRemaining * interestRateMonthly * daysInCurrentMonth) /
-      daysInCurrentYear;
+    // const interest =
+    //   (principalRemaining * interestRateMonthly * daysInCurrentMonth) /
+    //   daysInCurrentYear;
+    const interest = parseFloat(
+      (
+        (principalRemaining * interestRateMonthly * daysInCurrentMonth) /
+        daysInCurrentYear
+      ).toFixed(2)
+    );
     const principalPortion = Math.max(0, monthlyPaymentAmount - interest);
 
     principalRemaining = Math.max(0, principalRemaining - principalPortion);
@@ -116,7 +122,7 @@ export const remainingToLast = (details) => {
   return {
     totalYears,
     totalMonths: totalMonthsRemainder,
-    totalInterestPaid: totalInterestPaid.toFixed(2),
+    totalInterestPaid: parseFloat(totalInterestPaid.toFixed(2)),
     lastDayOfPaying: lastDate.toLocaleDateString("en-EN", {
       year: "numeric",
       month: "long",

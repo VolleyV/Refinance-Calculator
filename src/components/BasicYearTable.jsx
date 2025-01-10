@@ -183,7 +183,7 @@ BasicYearTable.propTypes = {
     loanAmount: PropTypes.string.isRequired,
     startDate: PropTypes.string,
     paymentDuration: PropTypes.number.isRequired,
-    interestRate: PropTypes.number.isRequired,
+    interestRate: PropTypes.string.isRequired,
   }).isRequired,
 };
 

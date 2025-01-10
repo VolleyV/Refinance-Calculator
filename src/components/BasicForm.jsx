@@ -9,6 +9,13 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
+  const [dateText, setDateText] = useState(
+    new Date().toLocaleDateString("th-TH", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    }) || "Invalid Date"
+  );
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
@@ -22,6 +29,13 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
   const startDateRef = useRef(null);
   const handleStartDateChange = (event) => {
     setStartDate(event.target.value);
+    setDateText(
+      new Date(event.target.value).toLocaleDateString("th-TH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      })
+    );
   };
 
   const handleInterestRateChange = (event) => {
@@ -123,9 +137,9 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
 
   useEffect(() => {
     if (initialInput) {
-      setLoanAmount(initialInput.loanAmount || "");
-      setInterestRate(initialInput.interestRate || "");
-      setMonthlyPayment(initialInput.monthlyPayment || "");
+      setLoanAmount(initialInput.loanAmount || "0");
+      setInterestRate(initialInput.interestRate || "0");
+      setMonthlyPayment(initialInput.monthlyPayment || "0");
       setStartDate(
         initialInput.startDate || new Date().toISOString().split("T")[0]
       );
@@ -135,7 +149,9 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
   return (
     <div>
       <div className="bg-white rounded-b-lg px-6 py-4">
-        <h2 className="text-xl font-bold">คำนวณแบบอัตราดอกเบี้ยเดียว</h2>
+        <h2 className="font-itim text-xl font-bold ">
+          คำนวณแบบอัตราดอกเบี้ยเดียว
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
             <div className="relative">
@@ -164,7 +180,7 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
                 htmlFor="startDate"
                 className="block text-l font-medium text-gray-700"
               >
-                เลือกวันที่ (MM/DD/YYYY)
+                วันที่เริ่ม ({dateText})
               </label>
               <input
                 type="date"
@@ -213,19 +229,19 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
             </div>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-4 flex flex-wrap justify-between sm:justify-end gap-2">
             <button
               type="submit"
-              className="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto mr-2"
+              className="inline-block w-full sm:w-auto rounded-lg bg-blue-800 px-5 py-3 font-medium text-white"
             >
               คำนวณ
             </button>
             <button
               type="button"
               onClick={resetFields}
-              className="inline-block w-full rounded-lg bg-red-500 px-5 py-3 font-medium text-white sm:w-auto"
+              className="text-gray-600 hover:text-gray-800 underline font-medium w-full sm:w-auto sm:ml-2 sm:order-first"
             >
-              ล้างข้อมููล
+              ล้างข้อมูล
             </button>
           </div>
         </form>

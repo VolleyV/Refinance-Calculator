@@ -33,7 +33,7 @@ function App() {
   });
 
   const [basicFormYearData, setBasicFormYearData] = useState(() => {
-    const storedData = sessionStorage.getItem("formData");
+    const storedData = sessionStorage.getItem("formYearData");
     return storedData ? JSON.parse(storedData) : null;
   });
 
@@ -58,7 +58,7 @@ function App() {
     setIsLoading(true);
     setTimeout(() => {
       setBasicFormYearData(basicYearData);
-      sessionStorage.setItem("formData", JSON.stringify(basicYearData));
+      sessionStorage.setItem("formYearData", JSON.stringify(basicYearData));
       setIsLoading(false);
     }, 500);
   };
@@ -80,7 +80,7 @@ function App() {
 
   const clearBasicFormYearData = () => {
     setBasicFormYearData(null);
-    sessionStorage.removeItem("formData");
+    sessionStorage.removeItem("formYearData");
   };
 
   const clearAdvanceFormData = () => {
@@ -90,7 +90,7 @@ function App() {
 
   useEffect(() => {
     const handleUnload = () => {
-      if (location.pathname === "/") {
+      if (window.location.pathname === "/") {
         clearFormData();
         clearBasicFormYearData();
         clearAdvanceFormData();
@@ -174,7 +174,43 @@ function App() {
           <Route
             path="/"
             element={
-              <div className="container mx-auto px-4">
+              // <div className="container mx-auto px-4 mt-16">
+              //   <InputForm
+              //     onSubmit={handleFormSubmit}
+              //     onReset={clearFormData}
+              //     initialInput={basicFormData}
+              //     onSubmitBasicYear={handleBasicFormYearSubmit}
+              //     onResetBasicYear={clearBasicFormYearData}
+              //     basicYearInitialInput={basicFormYearData}
+              //     onAdvanceSubmit={handleAdvanceFormSubmit}
+              //     onAdvanceReset={clearAdvanceFormData}
+              //     advanceInitialInput={advanceFormData}
+              //   />
+              //   {isLoading && (
+              //     <div className="text-center my-4">
+              //       <div className="loader mx-auto"></div>
+              //       <p>กำลังคำนวณ...</p>
+              //     </div>
+              //   )}
+              //   {!isLoading && basicFormData && (
+              //     <div>
+              //       <ShowBank basicCalculateSummary={basicSummary} />
+              //     </div>
+              //   )}
+              //   {!isLoading && basicFormYearData && (
+              //     <div>
+              //       <ShowBankBasicYear
+              //         basicYearCalculateSummary={basicYearSummary}
+              //       />
+              //     </div>
+              //   )}
+              //   {!isLoading && advanceFormData && (
+              //     <div>
+              //       <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
+              //     </div>
+              //   )}
+              // </div>
+              <div>
                 <InputForm
                   onSubmit={handleFormSubmit}
                   onReset={clearFormData}
@@ -185,6 +221,7 @@ function App() {
                   onAdvanceSubmit={handleAdvanceFormSubmit}
                   onAdvanceReset={clearAdvanceFormData}
                   advanceInitialInput={advanceFormData}
+                  isLoading={isLoading}
                 />
                 {isLoading && (
                   <div className="text-center my-4">
@@ -193,36 +230,52 @@ function App() {
                   </div>
                 )}
                 {!isLoading && basicFormData && (
-                  <div>
-                    <ShowBank basicCalculateSummary={basicSummary} />
-                  </div>
+                  <ShowBank basicCalculateSummary={basicSummary} />
                 )}
                 {!isLoading && basicFormYearData && (
-                  <div>
-                    <ShowBankBasicYear
-                      basicYearCalculateSummary={basicYearSummary}
-                    />
-                  </div>
+                  <ShowBankBasicYear
+                    basicYearCalculateSummary={basicYearSummary}
+                  />
                 )}
                 {!isLoading && advanceFormData && (
-                  <div>
-                    <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
-                  </div>
+                  <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
                 )}
               </div>
             }
           />
           <Route
             path="/basicTab"
-            element={<BasicTable data={basicFormData || {}} />}
+            element={
+              <BasicTable
+                data={
+                  basicFormData || {
+                    loanAmount: "0",
+                    interestRate: "0",
+                    monthlyPayment: "0",
+                    startDate: "",
+                  }
+                }
+              />
+            }
           />
           <Route
             path="/basicYearTable"
-            element={<BasicYearTable basicYearData={basicFormYearData || {}} />}
+            element={
+              <BasicYearTable
+                basicYearData={
+                  basicFormYearData || {
+                    loanAmount: "0",
+                    interestRate: "0",
+                    paymentDuration: 0,
+                    startDate: "",
+                  }
+                }
+              />
+            }
           />
           <Route
             path="/advanceTable"
-            element={<AdvanceTable advanceData={advanceFormData || {}} />}
+            element={<AdvanceTable advanceData={advanceFormData || []} />}
           />
         </Routes>
       </div>

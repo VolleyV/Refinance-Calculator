@@ -69,7 +69,7 @@ export const basicYearLoanCalculateDetail = (basicYearData) => {
       principalPortion: parseFloat(principalPortion.toFixed(2)),
       remainingPrincipal: parseFloat(principalRemaining.toFixed(2)),
       monthlyPayment: parseFloat(calculatedMonthlyPayment.toFixed(2)),
-      interestRate: interestRate,
+      interestRate,
     });
 
     // Advance date to the next month
@@ -121,9 +121,6 @@ export const remainingBasicYearToLast = (details) => {
     lastDate = new Date(Date.now());
   }
 
-  const fixRemain = remainingPrincipal;
-
-  let remainingInterest = 0;
   let totalInterestPaid = 0;
   let monthsRemaining = 0;
 
@@ -145,7 +142,6 @@ export const remainingBasicYearToLast = (details) => {
       break;
     }
 
-    remainingInterest += monthlyInterest;
     totalInterestPaid += monthlyInterest;
     remainingPrincipal = Math.max(0, remainingPrincipal - principalPortion);
 
@@ -153,21 +149,15 @@ export const remainingBasicYearToLast = (details) => {
     lastDate.setMonth(lastDate.getMonth() + 1);
   }
 
-  const yearsRemaining = Math.floor(monthsRemaining / 12);
-  const remainingMonths = monthsRemaining % 12;
-
   const totalMonths = details.length + monthsRemaining;
   const totalYears = Math.floor(totalMonths / 12);
   const totalMonthsRemainder = totalMonths % 12;
 
   return {
-    fullyPaid: fixRemain === 0,
-    monthlyPayment: monthlyPayment.toFixed(2),
+    monthlyPayment: parseFloat(monthlyPayment.toFixed(2)),
     totalYears,
     totalMonths: totalMonthsRemainder,
-    remainingDate: { years: yearsRemaining, months: remainingMonths },
-    remainingInterest: remainingInterest.toFixed(2),
-    totalInterestPaid: totalInterestPaid.toFixed(2),
+    totalInterestPaid: parseFloat(totalInterestPaid.toFixed(2)),
     lastDayOfPaying: lastDate.toLocaleDateString("en-EN", {
       year: "numeric",
       month: "long",
