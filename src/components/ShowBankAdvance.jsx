@@ -1,18 +1,18 @@
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const ShowBankAdvance = ({ advanceCalculateSummary }) => {
-  // const navigate = useNavigate();
-  // const handleNavigateToTable = () => {
-  //   navigate("/advanceTable", { state: { activeTab: "advanced" } });
-  // };
-  const handleOpenTableInNewTab = () => {
-    sessionStorage.setItem(
-      "basicTableData",
-      JSON.stringify(advanceCalculateSummary)
-    );
-    window.open("/advanceTable", "_blank");
+  const navigate = useNavigate();
+  const handleNavigateToTable = () => {
+    navigate("/advanceTable", { state: { activeTab: "advanced" } });
   };
+  // const handleOpenTableInNewTab = () => {
+  //   sessionStorage.setItem(
+  //     "basicTableData",
+  //     JSON.stringify(advanceCalculateSummary)
+  //   );
+  //   window.open("/advanceTable", "_blank");
+  // };
 
   const totalLoanRemaining = advanceCalculateSummary.loanAmountAfterThreeYears;
   const totalInterestThreeYears =
@@ -60,8 +60,8 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
               {principalPortionAfterThreeYears.toLocaleString()} บาท
             </p>
             <button
-              // onClick={handleNavigateToTable}
-              onClick={handleOpenTableInNewTab}
+              onClick={handleNavigateToTable}
+              // onClick={handleOpenTableInNewTab}
               className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
             >
               ดูเพิ่มเติม
