@@ -18,10 +18,10 @@ const AdvanceForm = ({
   const [visibleRows, setVisibleRows] = useState(1); // แถวที่แสดงอยู่
 
   const [check, setCheck] = useState(false);
-  const [additionalInput, setAdditionalInput] = useState("");
+  const [mrta, setMrta] = useState("");
 
   const [check2, setCheck2] = useState(false);
-  const [additionalInput2, setAdditionalInput2] = useState("");
+  const [mortgage, setMortgage] = useState("");
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
@@ -106,12 +106,12 @@ const AdvanceForm = ({
     if (type == "check") {
       setCheck(!check);
       if (!check) {
-        setAdditionalInput("");
+        setMrta("");
       }
     } else if (type == "check2") {
       setCheck2(!check2);
       if (!check2) {
-        setAdditionalInput2("");
+        setMortgage("");
       }
     }
   };
@@ -212,6 +212,8 @@ const AdvanceForm = ({
       interestRates,
       monthlyPayment,
       visibleRows,
+      mrta,
+      mortgage
     };
 
     onAdvanceSubmit(advanceData);
@@ -266,6 +268,8 @@ const AdvanceForm = ({
       setStartTerm(advanceInitialInput.startTerm || 0);
       setEndTerm(advanceInitialInput.endTerm || 0);
       setVisibleRows(advanceInitialInput.visibleRows || 1);
+      setMrta(advanceInitialInput.mrta||0);
+      setMortgage(advanceInitialInput.mortgage||0);
     }
   }, [advanceInitialInput]);
 
@@ -425,8 +429,8 @@ const AdvanceForm = ({
                 type="text"
                 id="additional-input"
                 placeholder="กรอกจำนวนเงิน"
-                value={additionalInput}
-                onChange={(e) => setAdditionalInput(e.target.value)}
+                value={mrta}
+                onChange={(e) => setMrta(e.target.value)}
                 className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
               />
             )}
@@ -467,8 +471,8 @@ const AdvanceForm = ({
                 type="text"
                 id="additional-input2"
                 placeholder="กรอกจำนวนเงิน"
-                value={additionalInput2}
-                onChange={(e) => setAdditionalInput2(e.target.value)}
+                value={mortgage}
+                onChange={(e) => setMortgage(e.target.value)}
                 className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
               />
             )}
