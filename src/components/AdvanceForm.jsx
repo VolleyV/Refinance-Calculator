@@ -26,8 +26,8 @@ const AdvanceForm = ({
 
   const [check, setCheck] = useState(false);
   const [check2, setCheck2] = useState(false);
-  const [insurance, setInsurance] = useState("");
-  const [mortgageFee, setMortgageFee] = useState("");
+  const [insurance, setInsurance] = useState(0);
+  const [mortgageFee, setMortgageFee] = useState(0);
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
@@ -248,6 +248,7 @@ const AdvanceForm = ({
       insurance,
       mortgageFee,
     };
+    console.log(advanceData);
 
     onAdvanceSubmit(advanceData);
   };
@@ -310,7 +311,7 @@ const AdvanceForm = ({
 
   return (
     <div className="bg-white rounded-b-lg px-6 py-4">
-      <h2 className="font-itim text-xl font-bold">
+      <h2 className="font-sans text-xl font-bold">
         คำนวณดอกเบี้ยแบบมีหลายอัตราดอกเบี้ย
       </h2>
       <form id="loan-form-advance" className="mt-4" onSubmit={handleSubmit}>
