@@ -7,10 +7,10 @@ const AdvanceTable = ({ advanceData }) => {
     return <p>ไม่มีข้อมูล กรุณากลับไปกรอกแบบฟอร์มก่อน</p>;
   }
 
-  const navigate = useNavigate(); // Hook สำหรับนำทางไปยังหน้าอื่น
+  const navigate = useNavigate();
 
   const goBack = () => {
-    navigate(-1); // นำทางกลับไปหน้าก่อนหน้า
+    navigate(-1);
   };
 
   const itemsPerPage = 36; // จำนวนงวดต่อหน้า
@@ -110,7 +110,11 @@ const AdvanceTable = ({ advanceData }) => {
                     {detail.month}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {detail.date}
+                    {new Date(detail.date).toLocaleDateString("th-TH", {
+                      year: "numeric",
+                      month: "short",
+                      day: "2-digit",
+                    }) || "Invalid Date"}
                   </td>
                   <td className="border px-6 py-4 text-center">
                     {parseFloat(detail.interestRate).toLocaleString()}%
@@ -179,11 +183,11 @@ AdvanceTable.propTypes = {
     PropTypes.shape({
       month: PropTypes.number.isRequired,
       date: PropTypes.string.isRequired,
-      interestRate: PropTypes.number.isRequired, // แก้เป็น number
-      monthlyPayment: PropTypes.number.isRequired, // แก้เป็น number
-      loanAmountPortion: PropTypes.number.isRequired, // แก้ชื่อให้ตรง
-      interest: PropTypes.number.isRequired, // แก้เป็น number
-      remainingLoanAmount: PropTypes.number.isRequired, // แก้ชื่อให้ตรง
+      interestRate: PropTypes.number.isRequired,
+      monthlyPayment: PropTypes.number.isRequired,
+      loanAmountPortion: PropTypes.number.isRequired,
+      interest: PropTypes.number.isRequired,
+      remainingLoanAmount: PropTypes.number.isRequired,
     })
   ),
 };

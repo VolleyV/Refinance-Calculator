@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
+import { ToastContainer, toast, Bounce } from "react-toastify";
 
 const AdvanceForm = ({
   onAdvanceSubmit,
@@ -7,7 +8,6 @@ const AdvanceForm = ({
   advanceInitialInput,
 }) => {
   const [loanAmount, setLoanAmount] = useState("");
-  const [termMonths, setTermMonths] = useState("");
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
@@ -15,45 +15,53 @@ const AdvanceForm = ({
   const [endTerm, setEndTerm] = useState(["", "", "", "", ""]);
   const [interestRates, setInterestRates] = useState(["", "", "", "", ""]);
   const [monthlyPayment, setMonthlyPayment] = useState(["", "", "", "", ""]);
+  const [dateText, setDateText] = useState(
+    new Date().toLocaleDateString("th-TH", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    }) || "Invalid Date"
+  );
+  const [visibleRows, setVisibleRows] = useState(1); // แถวที่แสดงอยู่
+
+  const [check, setCheck] = useState(false);
+  const [check2, setCheck2] = useState(false);
+  const [insurance, setInsurance] = useState("");
+  const [mortgageFee, setMortgageFee] = useState("");
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
-
-    const rawValue = value.replace(/[^0-9.]/g, "");
-
-    const numericValue = parseFloat(rawValue);
-    if (!isNaN(numericValue) && numericValue >= 0) {
-      if (numericValue <= 999_000_000) {
-        const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        setLoanAmount(formattedValue);
-      }
-    } else {
-      alert("Negative values or invalid input are not allowed.");
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setLoanAmount(formattedValue);
     }
   };
 
   const startDateRef = useRef(null);
-  const handleStartDateChange = (setter) => (event) =>
-    setter(event.target.value);
+
+  const handleStartDateChange = (event) => {
+    setStartDate(event.target.value);
+    setDateText(
+      new Date(event.target.value).toLocaleDateString("th-TH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      })
+    );
+  };
 
   const handleInterestRateChange = (index, value) => {
-    const rawValue = value.replace(/[^0-9.]/g, "");
+    const rawValue = value.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
     const numericValue = parseFloat(rawValue);
 
-    if (!isNaN(numericValue) && numericValue >= 0) {
+    if (rawValue === "" || (numericValue >= 0 && numericValue <= 10)) {
+      // Valid input: update the specific index
       setInterestRates((prev) => {
         const updated = [...prev];
-        updated[index] = rawValue;
+        updated[index] = rawValue; // Keep raw value to allow partial decimals like "1."
         return updated;
       });
-    } else if (rawValue === "") {
-      setInterestRates((prev) => {
-        const updated = [...prev];
-        updated[index] = "";
-        return updated;
-      });
-    } else {
-      alert("Invalid input. Only positive numbers are allowed.");
     }
   };
 
@@ -76,10 +84,6 @@ const AdvanceForm = ({
     } else {
       alert("Invalid input. Only positive numbers are allowed.");
     }
-  };
-
-  const handleDurationChange = (event) => {
-    setTermMonths(Number(event.target.value));
   };
 
   const handleEndTermChange = (index, value) => {
@@ -113,227 +117,426 @@ const AdvanceForm = ({
     }
   };
 
+  const toggleCheck = (type) => {
+    if (type === "check") {
+      setCheck(!check);
+      if (check) {
+        setInsurance("");
+      }
+    } else if (type === "check2") {
+      setCheck2(!check2);
+      if (check2) {
+        setMortgageFee("");
+      }
+    }
+  };
+
+  const handleInsuranceChange = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setInsurance(formattedValue);
+    }
+  };
+
+  const handleMorgageFeeChange = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setMortgageFee(formattedValue);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!loanAmount || !startDate) {
-      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+      toast.error("กรุณากรอกข้อมูลให้ครบถ้วน", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       return;
     }
 
     const loanAmountNum = parseFloat(loanAmount.replace(/,/g, ""));
-    const monthlyPaymentNum = parseFloat(monthlyPayment[0]?.replace(/,/g, "")); // ใช้ monthlyPayment[0]
-    const interestRateNum = parseFloat(interestRates[0] || 0) / 100; // ใช้ interestRates[0]
+    for (let i = 0; i < visibleRows; i++) {
+      const monthlyPaymentRaw = monthlyPayment[i]?.replace(/,/g, "");
+      const interestRateRaw = interestRates[i]?.trim();
 
-    if (!monthlyPaymentNum || isNaN(monthlyPaymentNum)) {
-      alert("กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้อง");
-      return;
-    }
+      // ตรวจสอบว่าแถวแรกต้องใส่ทั้งอัตราดอกเบี้ยและจำนวนเงินที่จะผ่อน
+      if (i === 0 && (!interestRateRaw || !monthlyPaymentRaw)) {
+        toast.error(
+          `กรุณาใส่ข้อมูลอัตราดอกเบี้ยและจำนวนเงินผ่อนในแถวที่ ${i + 1}`,
+          {
+            position: "top-center",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          }
+        );
+        return;
+      }
 
-    const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
+      // ตรวจสอบค่าในแถวอื่น ๆ ถ้ามีข้อมูลใดๆ ต้องตรวจสอบให้ครบ
+      if (interestRateRaw || monthlyPaymentRaw) {
+        const monthlyPaymentNum = parseFloat(monthlyPaymentRaw || 0);
+        const interestRateNum = parseFloat(interestRateRaw || 0) / 100;
+        const monthlyInterestOnly = (loanAmountNum * interestRateNum) / 12;
 
-    // ตรวจสอบว่าค่า monthlyPayment น้อยกว่าดอกเบี้ยต่อเดือน
-    if (monthlyPaymentNum <= monthlyInterestOnly) {
-      alert(
-        "จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน"
-      );
-      return;
+        if (!monthlyPaymentNum || isNaN(monthlyPaymentNum)) {
+          toast.error(
+            `กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้องในแถวที่ ${i + 1}`,
+            {
+              position: "top-center",
+              autoClose: 1500,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            }
+          );
+          return;
+        }
+
+        if (monthlyPaymentNum <= monthlyInterestOnly) {
+          toast.error(
+            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${i + 1
+            } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`,
+            {
+              position: "top-center",
+              autoClose: 1500,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            }
+          );
+          return;
+        }
+      }
     }
 
     const advanceData = {
       loanAmount,
-      termMonths,
       startDate,
       startTerm,
       endTerm,
       interestRates,
       monthlyPayment,
+      visibleRows,
+      insurance,
+      mortgageFee,
     };
 
     onAdvanceSubmit(advanceData);
   };
 
+  const addRow = () => {
+    if (visibleRows < 5) {
+      setVisibleRows((prev) => prev + 1);
+    }
+  };
+
+  const removeRow = () => {
+    if (visibleRows > 1) {
+      setStartTerm((prev) => prev.slice(0, visibleRows - 1));
+      setEndTerm((prev) => prev.slice(0, visibleRows - 1));
+      setInterestRates((prev) => prev.slice(0, visibleRows - 1));
+      setMonthlyPayment((prev) => prev.slice(0, visibleRows - 1));
+      setVisibleRows((prev) => prev - 1);
+    }
+  };
+
   const resetFields = () => {
     setLoanAmount("");
     setMonthlyPayment(["", "", "", "", ""]);
-    setTermMonths("");
-    setStartDate("");
+    setStartDate(new Date().toISOString().split("T")[0]);
     setInterestRates(["", "", "", "", ""]);
     setStartTerm(["1", "", "", "", ""]);
     setEndTerm(["", "", "", "", ""]);
+    setVisibleRows(1);
+    setCheck(false);
+    setCheck2(false);
+    setInsurance("");
+    setMortgageFee("");
     onAdvanceReset();
+    toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
   };
 
   useEffect(() => {
     if (advanceInitialInput) {
       setLoanAmount(advanceInitialInput.loanAmount || 0);
       setMonthlyPayment(advanceInitialInput.monthlyPayment || 0);
-      setTermMonths(advanceInitialInput.termMonths || 0);
       setStartDate(advanceInitialInput.startDate || 0);
       setInterestRates(advanceInitialInput.interestRates || 0);
       setStartTerm(advanceInitialInput.startTerm || 0);
       setEndTerm(advanceInitialInput.endTerm || 0);
+      setVisibleRows(advanceInitialInput.visibleRows || 1);
+      setInsurance(advanceInitialInput.insurance || 0);
+      setMortgageFee(advanceInitialInput.mortgageFee || 0);
     }
   }, [advanceInitialInput]);
 
   return (
-    <div className="bg-white rounded-b-lg px-6 py-4">
-      <h2 className="text-xl font-bold">คำนวณดอกเบี้ยแบบมีหลายอัตราดอกเบี้ย</h2>
-      <form id="loan-form-advance" className="mt-4" onSubmit={handleSubmit}>
-        <div className="mt-4">
-          <label
-            htmlFor="loanAmount-advance"
-            className="block text-l font-medium text-gray-700"
-          >
-            จำนวนเงินที่กู้ (บาท)
-          </label>
-          <input
-            type="text"
-            id="loanAmount-advance"
-            className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-            placeholder="จำนวนเงินที่กู้ (บาท)"
-            value={loanAmount}
-            onChange={handleLoanAmountChange}
-          />
-        </div>
-
-        {/* Term Months and Start Date */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
-          <div className="relative">
+    <div>
+      <h2 className="font-sans text-xl font-bold mb-4">
+        คำนวณแบบอัตราดอกเบี้ยเดียว
+      </h2>
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* จำนวนเงินที่กู้ */}
+          <div className="flex flex-col justify-center">
             <label
-              htmlFor="payment-duration"
-              className="block text-l font-medium text-gray-700"
+              className="text-gray-700 font-medium text-lg mb-2"
+              htmlFor="Loan-Amount"
             >
-              เลือกระยะเวลาในการผ่อน
+              จำนวนเงินที่กู้ (บาท)
             </label>
-            <select
-              id="payment-duration"
-              name="payment-duration"
-              onChange={handleDurationChange}
-              value={termMonths}
-              className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-            >
-              {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
-                <option key={year} value={year}>
-                  {year} ปี
-                </option>
-              ))}
-            </select>
+            <input
+              type="text"
+              name="Loan-Amount"
+              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
+              onChange={handleLoanAmountChange}
+              value={loanAmount}
+              placeholder="1,500,000"
+            />
           </div>
           <div
-            className="relative cursor-pointer"
+            className="flex flex-col justify-center"
             onClick={() =>
               startDateRef.current && startDateRef.current.showPicker?.()
             }
           >
-            <label htmlFor="start-date-advance">
-              เลือกวันที่ (วัน/เดือน/ปี)
-            </label>
+            <label htmlFor="start-date-advance" className="text-gray-700 font-medium text-lg mb-2">วันที่เริ่ม ({dateText})</label>
             <input
               type="date"
               name="start-date-advance"
               id="start-date-advance"
-              className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md cursor-pointer"
+              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
               value={startDate}
               ref={startDateRef}
-              onChange={handleStartDateChange(setStartDate)}
+              onChange={handleStartDateChange}
             />
           </div>
         </div>
 
-        {/* Interest Rates, Start Term, End Term, and Monthly Payments */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mt-4">
-          <div>
-            <label>งวดที่</label>
-            {startTerm.map((term, index) => (
-              <input
-                key={`startTerm-${index}`}
-                type="text"
-                value={term}
-                placeholder="งวดที่เริ่ม"
-                onChange={(e) => {
-                  const updatedStartTerm = [...startTerm];
-                  updatedStartTerm[index] = e.target.value;
-                  setStartTerm(updatedStartTerm);
-                }}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
-              />
-            ))}
-          </div>
-
-          <div>
-            <label>ถึงงวดที่</label>
-            {endTerm.map((term, index) => (
-              <input
-                key={`endTerm-${index}`}
-                type="text"
-                value={term}
-                placeholder="ถึงงวดที่"
-                // onChange={(e) => {
-                //   const updatedEndTerm = [...endTerm];
-                //   updatedEndTerm[index] = e.target.value;
-                //   setEndTerm(updatedEndTerm);
-                // }}
-                onChange={(e) => handleEndTermChange(index, e.target.value)}
-                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
-              />
-            ))}
-          </div>
-
-          <div>
-            <label>อัตราดอกเบี้ย</label>
-            {Array(5)
-              .fill("")
-              .map((_, idx) => (
+        <div className="grid grid-cols-1 gap-6 mt-6">
+          {Array.from({ length: visibleRows }).map((_, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center"
+            >
+              {/* งวดที่เริ่ม */}
+              <div className="flex flex-col justify-center">
+                <label
+                  className="text-gray-700 font-medium text-lg mb-2"
+                  htmlFor={`start-term-${index}`}
+                >
+                  งวดที่เริ่ม
+                </label>
                 <input
-                  key={`interest-rate-${idx}`}
                   type="text"
-                  value={interestRates[idx]}
-                  placeholder="อัตราดอกเบี้ย"
-                  onChange={(e) =>
-                    handleInterestRateChange(idx, e.target.value)
-                  }
-                  className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
+                  id={`start-term-${index}`}
+                  value={startTerm[index]}
+                  placeholder="งวดที่เริ่ม"
+                  onChange={(e) => {
+                    const updatedStartTerm = [...startTerm];
+                    updatedStartTerm[index] = e.target.value;
+                    setStartTerm(updatedStartTerm);
+                  }}
+                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
                 />
-              ))}
+              </div>
+
+              {/* ถึงงวดที่ */}
+              <div className="flex flex-col justify-center">
+                <label
+                  className="text-gray-700 font-medium text-lg mb-2"
+                  htmlFor={`end-term-${index}`}
+                >
+                  ถึงงวดที่
+                </label>
+                <input
+                  type="text"
+                  id={`end-term-${index}`}
+                  value={endTerm[index]}
+                  placeholder="36"
+                  onChange={(e) => handleEndTermChange(index, e.target.value)}
+                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
+                />
+              </div>
+
+              {/* อัตราดอกเบี้ย */}
+              <div className="flex flex-col justify-center">
+                <label
+                  className="text-gray-700 font-medium text-lg mb-2"
+                  htmlFor={`interest-rate-${index}`}
+                >
+                  อัตราดอกเบี้ย (%)
+                </label>
+                <input
+                  type="text"
+                  id={`interest-rate-${index}`}
+                  value={interestRates[index]}
+                  placeholder="6.75"
+                  onChange={(e) => handleInterestRateChange(index, e.target.value)}
+                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
+                />
+              </div>
+
+              {/* จำนวนเงินที่จะผ่อน */}
+              <div className="flex flex-col justify-center">
+                <label
+                  className="text-gray-700 font-medium text-lg mb-2"
+                  htmlFor={`monthly-payment-${index}`}
+                >
+                  จำนวนเงินที่จะผ่อน
+                </label>
+                <input
+                  type="text"
+                  id={`monthly-payment-${index}`}
+                  value={monthlyPayment[index]}
+                  placeholder="11,000"
+                  onChange={(e) => handleMonthlyPaymentChange(index, e.target.value)}
+                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+
+        {/* ปุ่มเพิ่ม/ลบบรรทัด */}
+        <div className="flex space-x-4 mt-4">
+          {visibleRows < 5 && (
+            <button
+              type="button"
+              className="bg-blue-500 text-white w-8 h-8 rounded-full items-center justify-center"
+              onClick={addRow}
+            >
+              +
+            </button>
+          )}
+          {visibleRows > 1 && (
+            <button
+              type="button"
+              className="bg-red-500 text-white w-8 h-8 rounded-full items-center justify-center"
+              onClick={removeRow}
+            >
+              -
+            </button>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          {/* ค่าประกันอัคคีภัย */}
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="custom-checkbox"
+                checked={check}
+                onChange={() => toggleCheck("check")}
+              />
+              <label htmlFor="custom-checkbox" className="whitespace-nowrap text-gray-700 font-medium text-lg">
+                ค่าประกันอัคคีภัย
+              </label>
+            </div>
+
+            <input
+              type="text"
+              id="insurance-input"
+              placeholder="กรอกจำนวนเงิน"
+              value={insurance}
+              onChange={handleInsuranceChange}
+              disabled={!check} // Disable input when "check" is false
+              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] ${!check ? "bg-gray-200 text-gray-400 cursor-not-allowed" : ""}`}
+            />
           </div>
 
-          <div>
-            <label>จำนวนเงินที่จะผ่อน</label>
-            {Array(5)
-              .fill("")
-              .map((_, idx) => (
-                <input
-                  key={`monthly-payment-${idx}`}
-                  type="text"
-                  value={monthlyPayment[idx]}
-                  placeholder="จำนวนเงินที่จะผ่อน"
-                  onChange={(e) =>
-                    handleMonthlyPaymentChange(idx, e.target.value)
-                  }
-                  className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md mt-2"
-                />
-              ))}
+          {/* ค่าจดจำนอง */}
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="custom-checkbox2"
+                checked={check2}
+                onChange={() => toggleCheck("check2")}
+              />
+              <label htmlFor="custom-checkbox2" className="whitespace-nowrap text-gray-700 font-medium text-lg">
+                ค่าจดจำนอง
+              </label>
+            </div>
+
+            <input
+              type="text"
+              id="additional-input2"
+              placeholder="กรอกจำนวนเงิน"
+              value={mortgageFee}
+              onChange={handleMorgageFeeChange}
+              disabled={!check2} // Disable input when "check2" is false
+              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] ${!check2 ? "bg-gray-200 text-gray-400 cursor-not-allowed" : ""}`}
+            />
           </div>
         </div>
 
-        {/* Submit and Reset Buttons */}
-        <div className="mt-4 flex flex-wrap justify-between sm:justify-end gap-2">
-            <button
-              type="submit"
-              className="inline-block w-full sm:w-auto rounded-lg bg-blue-800 px-5 py-3 font-medium text-white"
-            >
-              คำนวณ
-            </button>
-            <button
-              type="button"
-              onClick={resetFields}
-              className="text-gray-600 hover:text-gray-800 underline font-medium w-full sm:w-auto sm:ml-2 sm:order-first"
-            >
-              ล้างข้อมูล
-            </button>
-          </div>
+
+        <div className="flex justify-between items-center mt-8">
+          {/* ปุ่มล้างข้อมูล */}
+          <button
+            type="button"
+            onClick={resetFields}
+            className="flex items-center text-gray-600 hover:text-gray-800 text-sm font-medium"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 12a7.5 7.5 0 1113.91 3.06M9 11.25L4.5 12l2.25-4.5M16.5 12l-2.25 4.5M12 12h.008v.008H12v-.008z"
+            />
+            ล้างข้อมูล
+          </button>
+
+          {/* ปุ่มคำนวณ */}
+          <button
+            type="submit"
+            className="inline-block w-full sm:w-auto rounded-full bg-[#30A572] px-6 py-2 text-sm font-bold text-white hover:bg-green-600"
+          >
+            คำนวณ
+          </button>
+        </div>
+
       </form>
+      <ToastContainer />
     </div>
   );
 };
@@ -344,4 +547,4 @@ AdvanceForm.propTypes = {
   advanceInitialInput: PropTypes.object,
 };
 
-export default AdvanceForm;     
+export default AdvanceForm;

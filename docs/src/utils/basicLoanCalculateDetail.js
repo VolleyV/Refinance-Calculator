@@ -1,33 +1,26 @@
-// utils/calculationUtils.js
+// utils/basicLoanCalculateDetail.js
+const isLeapYear = (year) =>
+  (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+
+const daysInYear = (year) => (isLeapYear(year) ? 366 : 365);
+
+const daysInMonth = (year, month) => {
+  const daysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (month === 1 && isLeapYear(year)) return 29;
+  return daysInMonths[month];
+};
+
 export const basicLoanCalculateDetail = (data) => {
-  const {
-    loanAmount,
-    startDate,
-    interestRate,
-    paymentDuration,
-    monthlyPayment,
-  } = data;
-
-  const isLeapYear = (year) =>
-    (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-
-  const daysInYear = (year) => (isLeapYear(year) ? 366 : 365);
-
-  const daysInMonth = (year, month) => {
-    const daysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    if (month === 1 && isLeapYear(year)) return 29;
-    return daysInMonths[month];
-  };
+  const { loanAmount, startDate, interestRate, monthlyPayment } = data;
 
   let principalRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
   let monthlyPaymentAmount = parseFloat(monthlyPayment.replace(/,/g, "")) || 0;
-  const termMonthDuration = paymentDuration * 12;
   const interestRateMonthly = interestRate / 100;
   const initialStartDate = new Date(startDate);
   const details = [];
   let monthsElapsed = 0;
 
-  while (monthsElapsed < termMonthDuration && principalRemaining > 0) {
+  while (principalRemaining > 0) {
     const currentYear = initialStartDate.getFullYear();
     const currentMonth = initialStartDate.getMonth();
     const daysInCurrentMonth = daysInMonth(currentYear, currentMonth);
@@ -37,10 +30,6 @@ export const basicLoanCalculateDetail = (data) => {
       (principalRemaining * interestRateMonthly * daysInCurrentMonth) /
       daysInCurrentYear;
     const principalPortion = Math.max(0, monthlyPaymentAmount - interest);
-
-    if (principalPortion <= 0) {
-      console.error("Monthly payment is too low to reduce principal.");
-    }
 
     principalRemaining = Math.max(0, principalRemaining - principalPortion);
 

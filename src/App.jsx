@@ -33,7 +33,7 @@ function App() {
   });
 
   const [basicFormYearData, setBasicFormYearData] = useState(() => {
-    const storedData = sessionStorage.getItem("formData");
+    const storedData = sessionStorage.getItem("formYearData");
     return storedData ? JSON.parse(storedData) : null;
   });
 
@@ -42,22 +42,34 @@ function App() {
     return storedData ? JSON.parse(storedData) : null;
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   //submit
   const handleFormSubmit = (data) => {
-    console.log("Basic form submitted:", data);
-    setBasicFormData(data);
-    sessionStorage.setItem("formData", JSON.stringify(data));
+    setIsLoading(true);
+    setTimeout(() => {
+      setBasicFormData(data);
+      sessionStorage.setItem("formData", JSON.stringify(data));
+      setIsLoading(false);
+    }, 500);
   };
 
   const handleBasicFormYearSubmit = (basicYearData) => {
-    console.log("Basic form submitted:", basicYearData);
-    setBasicFormYearData(basicYearData);
-    sessionStorage.setItem("formData", JSON.stringify(basicYearData));
+    setIsLoading(true);
+    setTimeout(() => {
+      setBasicFormYearData(basicYearData);
+      sessionStorage.setItem("formYearData", JSON.stringify(basicYearData));
+      setIsLoading(false);
+    }, 500);
   };
 
   const handleAdvanceFormSubmit = (advanceData) => {
-    setAdvanceFormData(advanceData);
-    sessionStorage.setItem("advanceFormData", JSON.stringify(advanceData));
+    setIsLoading(true);
+    setTimeout(() => {
+      setAdvanceFormData(advanceData);
+      sessionStorage.setItem("advanceFormData", JSON.stringify(advanceData));
+      setIsLoading(false);
+    }, 500);
   };
 
   //Clear
@@ -68,7 +80,7 @@ function App() {
 
   const clearBasicFormYearData = () => {
     setBasicFormYearData(null);
-    sessionStorage.removeItem("formData");
+    sessionStorage.removeItem("formYearData");
   };
 
   const clearAdvanceFormData = () => {
@@ -78,7 +90,7 @@ function App() {
 
   useEffect(() => {
     const handleUnload = () => {
-      if (location.pathname === "/") {
+      if (window.location.pathname === "/") {
         clearFormData();
         clearBasicFormYearData();
         clearAdvanceFormData();
@@ -162,7 +174,43 @@ function App() {
           <Route
             path="/"
             element={
-              <div className="container mx-auto px-4 mt-16">
+              // <div className="container mx-auto px-4 mt-16">
+              //   <InputForm
+              //     onSubmit={handleFormSubmit}
+              //     onReset={clearFormData}
+              //     initialInput={basicFormData}
+              //     onSubmitBasicYear={handleBasicFormYearSubmit}
+              //     onResetBasicYear={clearBasicFormYearData}
+              //     basicYearInitialInput={basicFormYearData}
+              //     onAdvanceSubmit={handleAdvanceFormSubmit}
+              //     onAdvanceReset={clearAdvanceFormData}
+              //     advanceInitialInput={advanceFormData}
+              //   />
+              //   {isLoading && (
+              //     <div className="text-center my-4">
+              //       <div className="loader mx-auto"></div>
+              //       <p>กำลังคำนวณ...</p>
+              //     </div>
+              //   )}
+              //   {!isLoading && basicFormData && (
+              //     <div>
+              //       <ShowBank basicCalculateSummary={basicSummary} />
+              //     </div>
+              //   )}
+              //   {!isLoading && basicFormYearData && (
+              //     <div>
+              //       <ShowBankBasicYear
+              //         basicYearCalculateSummary={basicYearSummary}
+              //       />
+              //     </div>
+              //   )}
+              //   {!isLoading && advanceFormData && (
+              //     <div>
+              //       <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
+              //     </div>
+              //   )}
+              // </div>
+              <div>
                 <InputForm
                   onSubmit={handleFormSubmit}
                   onReset={clearFormData}
@@ -173,39 +221,61 @@ function App() {
                   onAdvanceSubmit={handleAdvanceFormSubmit}
                   onAdvanceReset={clearAdvanceFormData}
                   advanceInitialInput={advanceFormData}
+                  isLoading={isLoading}
                 />
-                {basicFormData && (
-                  <div>
-                    <ShowBank basicCalculateSummary={basicSummary} />
+                {isLoading && (
+                  <div className="text-center my-4">
+                    <div className="loader mx-auto"></div>
+                    <p>กำลังคำนวณ...</p>
                   </div>
                 )}
-                {basicFormYearData && (
-                  <div>
-                    <ShowBankBasicYear
-                      basicYearCalculateSummary={basicYearSummary}
-                    />
-                  </div>
+                {!isLoading && basicFormData && (
+                  <ShowBank basicCalculateSummary={basicSummary} />
                 )}
-
-                {advanceFormData && (
-                  <div>
-                    <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
-                  </div>
+                {!isLoading && basicFormYearData && (
+                  <ShowBankBasicYear
+                    basicYearCalculateSummary={basicYearSummary}
+                  />
+                )}
+                {!isLoading && advanceFormData && (
+                  <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
                 )}
               </div>
             }
           />
           <Route
             path="/basicTab"
-            element={<BasicTable data={basicFormData || {}} />}
+            element={
+              <BasicTable
+                data={
+                  basicFormData || {
+                    loanAmount: "0",
+                    interestRate: "0",
+                    monthlyPayment: "0",
+                    startDate: "",
+                  }
+                }
+              />
+            }
           />
           <Route
             path="/basicYearTable"
-            element={<BasicYearTable basicYearData={basicFormYearData || {}} />}
+            element={
+              <BasicYearTable
+                basicYearData={
+                  basicFormYearData || {
+                    loanAmount: "0",
+                    interestRate: "0",
+                    paymentDuration: 0,
+                    startDate: "",
+                  }
+                }
+              />
+            }
           />
           <Route
             path="/advanceTable"
-            element={<AdvanceTable advanceData={advanceFormData || {}} />}
+            element={<AdvanceTable advanceData={advanceFormData || []} />}
           />
         </Routes>
       </div>

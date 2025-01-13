@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        itim: ["Itim", "cursive"],
+        sans: ['Noto Sans Thai', 'sans-serif'],
       },
     },
   },

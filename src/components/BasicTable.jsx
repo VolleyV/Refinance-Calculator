@@ -1,17 +1,32 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { basicLoanCalculateDetail } from "../utils/basicLoanCalculateDetail.js";
 import { useNavigate } from "react-router-dom";
 
 const BasicTable = ({ data }) => {
+  // const [tableData, setTableData] = useState(data);
+
+  // useEffect(() => {
+  //   if (!data) {
+  //     // ดึงข้อมูลจาก sessionStorage หากไม่มี props
+  //     const storedData = sessionStorage.getItem("basicTableData");
+  //     if (storedData) {
+  //       setTableData(JSON.parse(storedData));
+  //     }
+  //   }
+  // }, [data]);
+
+  // if (!tableData) {
+  //   return <div>ไม่มีข้อมูลที่จะแสดง</div>;
+  // }
   if (!data) {
     return <div>ไม่มีข้อมูลที่จะแสดง</div>;
   }
 
-  const navigate = useNavigate(); // Hook สำหรับนำทางไปยังหน้าอื่น
+  const navigate = useNavigate();
 
   const goBack = () => {
-    navigate(-1); // นำทางกลับไปหน้าก่อนหน้า
+    navigate(-1);
   };
 
   const itemsPerPage = 36; // จำนวนงวดต่อหน้า
@@ -112,7 +127,11 @@ const BasicTable = ({ data }) => {
                     {detail.month}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {detail.date}
+                    {new Date(detail.date).toLocaleDateString("th-TH", {
+                      year: "numeric",
+                      month: "short",
+                      day: "2-digit",
+                    }) || "Invalid Date"}
                   </td>
                   <td className="border px-6 py-4 text-center">
                     {parseFloat(detail.interestRate).toLocaleString()}%
@@ -180,8 +199,7 @@ BasicTable.propTypes = {
   data: PropTypes.shape({
     loanAmount: PropTypes.string.isRequired,
     startDate: PropTypes.string,
-    // paymentDuration: PropTypes.number.isRequired,
-    interestRate: PropTypes.number.isRequired,
+    interestRate: PropTypes.string.isRequired,
     monthlyPayment: PropTypes.string.isRequired,
   }).isRequired,
 };
