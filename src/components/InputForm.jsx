@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import BasicForm from "./BasicForm";
 import AdvanceForm from "./AdvanceForm";
@@ -100,47 +101,51 @@ const InputForm = ({
     //   </div>
     // </div>
     <div className="relative p-6 max-w-4xl mx-auto rounded-lg shadow-md border-t mt-16">
-      <div className="flex flex-wrap gap-2 overflow-x-auto">
-        <div className="border-gray-200 container mx-auto px-4">
-          <div className="flex justify-between items-center py-4">
-            <nav
-              className="-mb-px flex justify-between w-full"
-              aria-label="Tabs"
-            >
-              <button
-                onClick={() => switchTab("basic")}
-                className={`flex-1 text-center border-b-2 ${
-                  activeTab === "basic"
-                    ? "border-sky-500 text-sky-600"
-                    : "border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                } px-1 pb-4 text-sm font-medium`}
-              >
-                ผ่อนต่อเดือน
-              </button>
-              <button
-                onClick={() => switchTab("basicYear")}
-                className={`flex-1 text-center border-b-2 ${
-                  activeTab === "basicYear"
-                    ? "border-sky-500 text-sky-600"
-                    : "border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                } px-1 pb-4 text-sm font-medium`}
-              >
-                เลือกระยะเวลา
-              </button>
-              <button
-                onClick={() => switchTab("advanced")}
-                className={`flex-1 text-center border-b-2 ${
-                  activeTab === "advanced"
-                    ? "border-sky-500 text-sky-600"
-                    : "border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                } px-1 pb-4 text-sm font-medium`}
-              >
-                ข้อมูลขั้นสูง
-              </button>
-            </nav>
-          </div>
-        </div>
+  <div className="flex flex-wrap gap-2 overflow-x-auto">
+    <div className="border-gray-200 container mx-auto px-4">
+      <div className="flex items-center py-4">
+        <nav
+          className="flex w-full bg-gray-200 rounded-full p-1"
+          aria-label="Tabs"
+        >
+          <button
+            onClick={() => switchTab("basic")}
+            className={`flex-grow text-center rounded-full py-2.5 text-sm font-medium transition-all duration-300 ${
+              activeTab === "basic"
+                ? "bg-[#082044] text-white"
+                : "bg-transparent text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            ผ่อนต่อเดือน
+          </button>
+          <button
+            onClick={() => switchTab("basicYear")}
+            className={`flex-grow text-center rounded-full py-2.5 text-sm font-medium transition-all duration-300 ${
+              activeTab === "basicYear"
+                ? "bg-[#082044] text-white"
+                : "bg-transparent text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            เลือกระยะเวลา
+          </button>
+          <button
+            onClick={() => switchTab("advanced")}
+            className={`flex-grow text-center rounded-full py-2.5 text-sm font-medium transition-all duration-300 ${
+              activeTab === "advanced"
+                ? "bg-[#082044] text-white"
+                : "bg-transparent text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            ข้อมูลขั้นสูง
+          </button>
+        </nav>
       </div>
+    </div>
+  </div>
+
+
+  
+  
 
       <div className="p-6 bg-white rounded-lg">
         {activeTab === "basic" && (

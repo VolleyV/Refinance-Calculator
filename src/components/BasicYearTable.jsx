@@ -1,190 +1,258 @@
+import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useState } from "react";
-import { basicYearLoanCalculateDetail } from "../utils/basicYearLoanCalculateDetail";
-import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast, Bounce } from "react-toastify";
 
-const BasicYearTable = ({ basicYearData }) => {
-  if (!basicYearData) {
-    return <p>ไม่มีข้อมูล กรุณากลับไปกรอกแบบฟอร์มก่อน</p>;
-  }
+const BasicFormYear = ({
+  onSubmitBasicYear,
+  onResetBasicYear,
+  basicYearInitialInput,
+}) => {
+  // States
+  const [loanAmount, setLoanAmount] = useState("");
+  const [paymentDuration, setPaymentDuration] = useState(1);
+  const [interestRate, setInterestRate] = useState("");
+  const [startDate, setStartDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [dateText, setDateText] = useState(
+    new Date().toLocaleDateString("th-TH", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    }) || "Invalid Date"
+  );
 
-  const navigate = useNavigate();
-
-  const goBack = () => {
-    navigate(-1);
-  };
-
-  const itemsPerPage = 36; // จำนวนงวดต่อหน้า
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const calculationDetails = basicYearLoanCalculateDetail(basicYearData);
-
-  // คำนวณข้อมูลสำหรับหน้า
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = calculationDetails.slice(startIndex, endIndex);
-
-  const totalPages = Math.ceil(calculationDetails.length / itemsPerPage);
-
-  // ฟังก์ชันเปลี่ยนหน้า
-  const goToNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-      scrollToTop();
+  const handleLoanAmountChange = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setLoanAmount(formattedValue);
     }
   };
 
-  const goToPreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-      scrollToTop();
+  const handleDurationChange = (event) => {
+    setPaymentDuration(Number(event.target.value));
+  };
+
+  const startDateRef = useRef(null);
+  const handleStartDateChange = (event) => {
+    setStartDate(event.target.value);
+    setDateText(
+      new Date(event.target.value).toLocaleDateString("th-TH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      })
+    );
+  };
+
+  const handleInterestRateChange = (event) => {
+    const { value } = event.target;
+
+    // Allow empty input for clearing the field
+    if (value === "") {
+      setInterestRate("");
+      return;
+    }
+
+    // Validate decimal numbers and ensure value is <= 10
+    const decimalRegex = /^\d*\.?\d*$/; // Allows digits and one optional decimal point
+    const numericValue = parseFloat(value);
+
+    if (
+      decimalRegex.test(value) &&
+      (numericValue <= 20 || isNaN(numericValue))
+    ) {
+      setInterestRate(value);
     }
   };
 
-  const goToFirstPage = () => {
-    setCurrentPage(1);
-    scrollToTop();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!loanAmount || !interestRate) {
+      toast.error("กรุณากรอกข้อมูลให้ครบถ้วน", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+    const data = {
+      loanAmount,
+      paymentDuration,
+      startDate,
+      interestRate,
+    };
+    onSubmitBasicYear(data);
   };
 
-  const goToLastPage = () => {
-    setCurrentPage(totalPages);
-    scrollToTop();
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
+  const resetFields = () => {
+    setLoanAmount("");
+    setPaymentDuration(1);
+    setInterestRate("");
+    setStartDate(new Date().toISOString().split("T")[0]);
+    onResetBasicYear();
+    toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
     });
   };
-  return (
-    <div className="container mx-auto mt-10 px-4">
-      <div className="relative flex items-center mb-5">
-        <button
-          onClick={goBack}
-          className="absolute left-0 mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          ย้อนกลับ
-        </button>
-        <h2 className="text-lg font-bold mx-auto">ตารางการคำนวณ</h2>
-      </div>
-      {currentItems.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-            <thead className="ltr:text-left rtl:text-right">
-              <tr>
-                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  งวดที่
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  วันที่
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  อัตราดอกเบี้ย
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  ผ่อนต่อเดือน
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  เงินต้น
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  ดอกเบี้ย
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  ยอดคงเหลือ
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((detail, index) => (
-                <tr
-                  key={index}
-                  className={`${
-                    index % 2 === 0
-                      ? "bg-gray-100 dark:bg-gray-800"
-                      : "bg-white dark:bg-gray-900"
-                  }`}
-                >
-                  <td className="border px-6 py-4 text-center">
-                    {detail.month}
-                  </td>
-                  <td className="border px-6 py-4 text-center">
-                    {new Date(detail.date).toLocaleDateString("th-TH", {
-                      year: "numeric",
-                      month: "short",
-                      day: "2-digit",
-                    }) || "Invalid Date"}
-                  </td>
-                  <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.interestRate).toLocaleString()}%
-                  </td>
-                  <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.monthlyPayment).toLocaleString()}
-                  </td>
-                  <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.principalPortion).toLocaleString()}
-                  </td>
-                  <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.interest).toLocaleString()}
-                  </td>
-                  <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.remainingPrincipal).toLocaleString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
 
-          {/* ปุ่มเปลี่ยนหน้า */}
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={goToFirstPage}
-              disabled={currentPage === 1}
-              className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+  useEffect(() => {
+    if (basicYearInitialInput) {
+      setLoanAmount(basicYearInitialInput.loanAmount || "");
+      setPaymentDuration(basicYearInitialInput.paymentDuration || 1);
+      setInterestRate(basicYearInitialInput.interestRate || "");
+      setStartDate(
+        basicYearInitialInput.startDate ||
+          new Date().toISOString().split("T")[0]
+      );
+    }
+  }, [basicYearInitialInput]);
+
+  return (
+    <div>
+      <div className="bg-white rounded-b-lg px-6 py-4">
+        <h2 className="font-itim text-xl font-bold">
+          คำนวณแบบอัตราดอกเบี้ยเดียว
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
+            <div className="relative">
+              <label
+                htmlFor="Loan-Amount"
+                className="block text-l font-medium text-gray-700"
+              >
+                จำนวนเงินที่กู้ (บาท)
+              </label>
+              <input
+                type="text"
+                name="Loan-Amount"
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
+                onChange={handleLoanAmountChange}
+                value={loanAmount}
+                placeholder="ใส่จำนวนเงินกู้"
+              />
+            </div>
+            <div
+              className="relative cursor-pointer"
+              onClick={() =>
+                startDateRef.current && startDateRef.current.showPicker?.()
+              }
             >
-              หน้าแรก
+              <label
+                htmlFor="startDate"
+                className="block text-l font-medium text-gray-700"
+              >
+                วันที่เริ่ม ({dateText})
+              </label>
+              <input
+                type="date"
+                id="startDate"
+                name="startDate"
+                value={startDate}
+                ref={startDateRef}
+                onChange={handleStartDateChange}
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
+            <div className="relative">
+              <label
+                htmlFor="interestRate"
+                className="block text-l font-medium text-gray-700"
+              >
+                อัตราดอกเบี้ย (%)
+              </label>
+              <input
+                type="number"
+                name="interestRate"
+                value={interestRate}
+                onChange={handleInterestRateChange}
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
+                placeholder="อัตราดอกเบี้ย"
+              />
+            </div>
+            <div className="relative">
+              <label
+                htmlFor="payment-duration"
+                className="block text-l font-medium text-gray-700"
+              >
+                เลือกระยะเวลาในการผ่อน
+              </label>
+              <select
+                id="payment-duration"
+                name="payment-duration"
+                onChange={handleDurationChange}
+                value={paymentDuration}
+                className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm cursor-pointer shadow-md"
+              >
+                {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
+                  <option key={year} value={year}>
+                    {year} ปี
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* <div className="mt-4">
+            <button
+              type="submit"
+              className="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto mr-2"
+            >
+              คำนวณ
             </button>
             <button
-              onClick={goToPreviousPage}
-              disabled={currentPage === 1}
-              className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+              type="button"
+              onClick={resetFields}
+              className="inline-block w-full rounded-lg bg-red-500 px-5 py-3 font-medium text-white sm:w-auto"
             >
-              หน้าก่อนหน้า
+              ล้างข้อมููล
             </button>
-            <span>
-              หน้า {currentPage} จาก {totalPages}
-            </span>
+          </div> */}
+          <div className="mt-4 flex flex-wrap justify-between sm:justify-end gap-2">
             <button
-              onClick={goToNextPage}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+              type="submit"
+              className="inline-block w-full sm:w-auto rounded-lg bg-blue-800 px-5 py-3 font-medium text-white"
             >
-              หน้าถัดไป
+              คำนวณ
             </button>
             <button
-              onClick={goToLastPage}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+              type="button"
+              onClick={resetFields}
+              className="text-gray-600 hover:text-gray-800 underline font-medium w-full sm:w-auto sm:ml-2 sm:order-first"
             >
-              หน้าสุดท้าย
+              ล้างข้อมูล
             </button>
           </div>
-        </div>
-      ) : (
-        <p>ไม่มีข้อมูลการคำนวณ</p>
-      )}
+        </form>
+      </div>
+      <ToastContainer />
     </div>
   );
 };
 
-BasicYearTable.propTypes = {
-  basicYearData: PropTypes.shape({
-    loanAmount: PropTypes.string.isRequired,
-    startDate: PropTypes.string,
-    paymentDuration: PropTypes.number.isRequired,
-    interestRate: PropTypes.string.isRequired,
-  }).isRequired,
+BasicFormYear.propTypes = {
+  onSubmitBasicYear: PropTypes.func.isRequired,
+  onResetBasicYear: PropTypes.func.isRequired,
+  basicYearInitialInput: PropTypes.object,
 };
 
-export default BasicYearTable;
+export default BasicFormYear;

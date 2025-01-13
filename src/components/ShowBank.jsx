@@ -1,3 +1,4 @@
+
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
@@ -43,48 +44,92 @@ const ShowBank = ({ basicCalculateSummary }) => {
   })}`;
 
   return (
-    <div className="relative p-6 max-w-4xl mx-auto rounded-lg shadow-md mt-8">
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="h-42 rounded-lg bg-gray-200 p-0 flex-1">
-          <div className="h-18 bg-blue-400 p-4 rounded-t-lg">
-            <img src="bank50.png" alt="Bank Logo" />
-          </div>
-          <div className="p-3">
-            <p>
-              <b>ระยะเวลาเริ่มผ่อนชำระงวด 3 ปีแรกเริ่ม</b>
-            </p>
-            <p>
-              เงินกู้คงเหลือ: {principalAfterThreeYears.toLocaleString()} บาท
-            </p>
-            <p>ดอกเบี้ยสุทธิ: {totalInterestThreeYears.toLocaleString()} บาท</p>
-            <p>
-              เงินต้นที่สุทธิ:{" "}
-              {principalPortionAfterThreeYears.toLocaleString()} บาท
-            </p>
-            <button
-              onClick={handleNavigateToTable}
-              // onClick={handleOpenTableInNewTab}
-              className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
-            >
-              ดูเพิ่มเติม
-            </button>
+    <div className="relative p-6 max-w-4xl mx-auto rounded-lg mt-8 bg-white">
+      {/* ส่วนข้อมูล */}
+      <div className="flex flex-col gap-8">
+        {/* ส่วนข้อมูลระยะเวลา 3 ปีแรก */}
+        <div className="p-6 border-b border-[#D3D8E2]">
+          <h2 className="text-lg font-bold text-[#082044] text-center">ผ่อน 3 ปี แรก</h2>
+          <p className="text-[#82828E] text-sm text-center mt-1">(จำนวนเงิน 396,000 บาท)</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-6">
+            <div className="flex justify-center">
+              {/* วงกลม */}
+              <div className="relative w-32 h-32">
+                <div className="w-full h-full rounded-full border-[6px] border-[#082044] border-b-[#D3D8E2]"></div>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-sm">
+                  <p className="text-[#082044] font-bold">ดอกเบี้ย</p>
+                  <p className="text-[#82828E]">เงินต้น</p>
+                </div>
+              </div>
+            </div>
+            <div className="text-sm space-y-2">
+              <p>
+                ผ่อนเงินต้นไป{" "}
+                <br/> 
+                <span className="font-bold text-[#30A572]">{principalPortionAfterThreeYears.toLocaleString()}</span> บาท
+              </p>
+              <p>
+                ผ่อนดอกเบี้ยไป{" "}
+                <br/>  <span className="font-bold text-[#30A572]">{totalInterestThreeYears.toLocaleString()}</span> บาท
+              </p>
+              <p>
+                เหลือเงินต้นต้องผ่อนอีก{" "}
+                <br/> <span className="font-bold text-[#30A572]">{principalAfterThreeYears.toLocaleString()}</span> บาท
+              </p>
+            </div>
           </div>
         </div>
-        <div className="h-42 rounded-lg bg-gray-200 p-0 flex-1">
-          <div className="h-18 bg-blue-400 p-4 rounded-t-lg">
-            <img src="bank50.png" alt="Bank Logo" />
-          </div>
-          <div className="p-3">
-            <p>
-              <b>ระยะเวลาจนถึงสิ้นสุดการชำระ</b>
-            </p>
-            <p>{remainingDateText}</p>
-            <p>{lastPaymentText}</p>
-            <p>{remainingInterestText.toLocaleString()}</p>
+
+        {/* ส่วนข้อมูลจนถึงสิ้นสุดการชำระ */}
+        <div className="p-6">
+          <h2 className="text-lg font-bold text-[#082044] text-center">
+            จะผ่อนหมดต้องใช้เวลา {remainingDateText}
+          </h2>
+          <p className="text-[#82828E] text-sm text-center mt-1">
+            ({lastPaymentText})
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-6">
+            <div className="flex justify-center">
+              {/* วงกลม */}
+              <div className="relative w-32 h-32">
+                <div className="w-full h-full rounded-full border-[6px] border-[#082044] border-b-[#D3D8E2]"></div>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-sm">
+                  <p className="text-[#082044] font-bold">ดอกเบี้ย</p>
+                  <p className="text-[#82828E]">เงินต้น</p>
+                </div>
+              </div>
+            </div>
+            <div className="text-sm space-y-2">
+              <p className="text-[#35373F]">
+                รวมเงินผ่อนทั้งหมด
+                <br />
+                <span className="font-bold text-[#30A572]">1,650,000</span>
+                <span> บาท</span>
+              </p>
+
+              <p>
+                รวมค่าดอกเบี้ยตลอดระยะเวลาผ่อน{" "}
+                <br/>
+                <span className="font-bold text-[#30A572]">{remainingInterestText.toLocaleString()}</span>
+                <span> บาท</span>
+              </p>
+
+            </div>
           </div>
         </div>
       </div>
+
+      {/* ปุ่มดูรายละเอียด */}
+      <div className="mt-6 text-center">
+        <button
+          onClick={handleNavigateToTable}
+          className="inline-block rounded-full bg-[#30A572] px-8 py-2 text-sm font-bold text-white hover:bg-[#28a062]"
+        >
+          ดูรายละเอียด
+        </button>
+      </div>
     </div>
+
   );
 };
 

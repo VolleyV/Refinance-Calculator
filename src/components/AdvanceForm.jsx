@@ -217,8 +217,7 @@ const AdvanceForm = ({
 
         if (monthlyPaymentNum <= monthlyInterestOnly) {
           toast.error(
-            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
-              i + 1
+            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${i + 1
             } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`,
             {
               position: "top-center",
@@ -309,41 +308,41 @@ const AdvanceForm = ({
   }, [advanceInitialInput]);
 
   return (
-    <div className="bg-white rounded-b-lg px-6 py-4">
-      <h2 className="font-itim text-xl font-bold">
-        คำนวณดอกเบี้ยแบบมีหลายอัตราดอกเบี้ย
+    <div>
+      <h2 className="font-sans text-xl font-bold mb-4">
+        คำนวณแบบอัตราดอกเบี้ยเดียว
       </h2>
-      <form id="loan-form-advance" className="mt-4" onSubmit={handleSubmit}>
-        {/* Term Months and Start Date */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
-          <div className="relative">
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* จำนวนเงินที่กู้ */}
+          <div className="flex flex-col justify-center">
             <label
-              htmlFor="loanAmount-advance"
-              className="block text-l font-medium text-gray-700"
+              className="text-gray-700 font-medium text-lg mb-2"
+              htmlFor="Loan-Amount"
             >
               จำนวนเงินที่กู้ (บาท)
             </label>
             <input
               type="text"
-              id="loanAmount-advance"
-              className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md"
-              placeholder="จำนวนเงินที่กู้ (บาท)"
-              value={loanAmount}
+              name="Loan-Amount"
+              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
               onChange={handleLoanAmountChange}
+              value={loanAmount}
+              placeholder="1,500,000"
             />
           </div>
           <div
-            className="relative cursor-pointer"
+            className="flex flex-col justify-center"
             onClick={() =>
               startDateRef.current && startDateRef.current.showPicker?.()
             }
           >
-            <label htmlFor="start-date-advance">วันที่เริ่ม ({dateText})</label>
+            <label htmlFor="start-date-advance" className="text-gray-700 font-medium text-lg mb-2">วันที่เริ่ม ({dateText})</label>
             <input
               type="date"
               name="start-date-advance"
               id="start-date-advance"
-              className="w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md cursor-pointer"
+              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
               value={startDate}
               ref={startDateRef}
               onChange={handleStartDateChange}
@@ -357,12 +356,17 @@ const AdvanceForm = ({
               key={index}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center"
             >
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
+              {/* งวดที่เริ่ม */}
+              <div className="flex flex-col justify-center">
+                <label
+                  className="text-gray-700 font-medium text-lg mb-2"
+                  htmlFor={`start-term-${index}`}
+                >
                   งวดที่เริ่ม
                 </label>
                 <input
                   type="text"
+                  id={`start-term-${index}`}
                   value={startTerm[index]}
                   placeholder="งวดที่เริ่ม"
                   onChange={(e) => {
@@ -370,52 +374,67 @@ const AdvanceForm = ({
                     updatedStartTerm[index] = e.target.value;
                     setStartTerm(updatedStartTerm);
                   }}
-                  className="w-full rounded-lg border border-gray-400 p-2 focus:ring-2 focus:ring-blue-500 shadow-md"
+                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
+
+              {/* ถึงงวดที่ */}
+              <div className="flex flex-col justify-center">
+                <label
+                  className="text-gray-700 font-medium text-lg mb-2"
+                  htmlFor={`end-term-${index}`}
+                >
                   ถึงงวดที่
                 </label>
                 <input
                   type="text"
+                  id={`end-term-${index}`}
                   value={endTerm[index]}
-                  placeholder="ถึงงวดที่"
+                  placeholder="36"
                   onChange={(e) => handleEndTermChange(index, e.target.value)}
-                  className="w-full rounded-lg border border-gray-400 p-2 focus:ring-2 focus:ring-blue-500 shadow-md"
+                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  อัตราดอกเบี้ย
+
+              {/* อัตราดอกเบี้ย */}
+              <div className="flex flex-col justify-center">
+                <label
+                  className="text-gray-700 font-medium text-lg mb-2"
+                  htmlFor={`interest-rate-${index}`}
+                >
+                  อัตราดอกเบี้ย (%)
                 </label>
                 <input
                   type="text"
+                  id={`interest-rate-${index}`}
                   value={interestRates[index]}
-                  placeholder="อัตราดอกเบี้ย"
-                  onChange={(e) =>
-                    handleInterestRateChange(index, e.target.value)
-                  }
-                  className="w-full rounded-lg border border-gray-400 p-2 focus:ring-2 focus:ring-blue-500 shadow-md"
+                  placeholder="6.75"
+                  onChange={(e) => handleInterestRateChange(index, e.target.value)}
+                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
+
+              {/* จำนวนเงินที่จะผ่อน */}
+              <div className="flex flex-col justify-center">
+                <label
+                  className="text-gray-700 font-medium text-lg mb-2"
+                  htmlFor={`monthly-payment-${index}`}
+                >
                   จำนวนเงินที่จะผ่อน
                 </label>
                 <input
                   type="text"
+                  id={`monthly-payment-${index}`}
                   value={monthlyPayment[index]}
-                  placeholder="จำนวนเงินที่จะผ่อน"
-                  onChange={(e) =>
-                    handleMonthlyPaymentChange(index, e.target.value)
-                  }
-                  className="w-full rounded-lg border border-gray-400 p-2 focus:ring-2 focus:ring-blue-500 shadow-md"
+                  placeholder="11,000"
+                  onChange={(e) => handleMonthlyPaymentChange(index, e.target.value)}
+                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
                 />
               </div>
             </div>
           ))}
         </div>
+
 
         {/* ปุ่มเพิ่ม/ลบบรรทัด */}
         <div className="flex space-x-4 mt-4">
@@ -440,7 +459,7 @@ const AdvanceForm = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          {/* ปุ่มที่ 1 */}
+          {/* ค่าประกันอัคคีภัย */}
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               <input
@@ -449,7 +468,7 @@ const AdvanceForm = ({
                 checked={check}
                 onChange={() => toggleCheck("check")}
               />
-              <label htmlFor="custom-checkbox" className="whitespace-nowrap">
+              <label htmlFor="custom-checkbox" className="whitespace-nowrap text-gray-700 font-medium text-lg">
                 ค่าประกันอัคคีภัย
               </label>
             </div>
@@ -461,13 +480,11 @@ const AdvanceForm = ({
               value={insurance}
               onChange={handleInsuranceChange}
               disabled={!check} // Disable input when "check" is false
-              className={`w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md ${
-                !check ? "bg-gray-200" : ""
-              }`}
+              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] ${!check ? "bg-gray-200 text-gray-400 cursor-not-allowed" : ""}`}
             />
           </div>
 
-          {/* ปุ่มที่ 2 */}
+          {/* ค่าจดจำนอง */}
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               <input
@@ -476,7 +493,7 @@ const AdvanceForm = ({
                 checked={check2}
                 onChange={() => toggleCheck("check2")}
               />
-              <label htmlFor="custom-checkbox2" className="whitespace-nowrap">
+              <label htmlFor="custom-checkbox2" className="whitespace-nowrap text-gray-700 font-medium text-lg">
                 ค่าจดจำนอง
               </label>
             </div>
@@ -488,28 +505,36 @@ const AdvanceForm = ({
               value={mortgageFee}
               onChange={handleMorgageFeeChange}
               disabled={!check2} // Disable input when "check2" is false
-              className={`w-full rounded-lg border border-gray-400 focus:ring-2 focus:ring-blue-500 p-3 text-sm shadow-md ${
-                !check2 ? "bg-gray-200" : ""
-              }`}
+              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] ${!check2 ? "bg-gray-200 text-gray-400 cursor-not-allowed" : ""}`}
             />
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap justify-between sm:justify-end gap-2">
-          <button
-            type="submit"
-            className="inline-block w-full sm:w-auto rounded-lg bg-blue-800 px-5 py-3 font-medium text-white"
-          >
-            คำนวณ
-          </button>
+
+        <div className="flex justify-between items-center mt-8">
+          {/* ปุ่มล้างข้อมูล */}
           <button
             type="button"
             onClick={resetFields}
-            className="text-gray-600 hover:text-gray-800 underline font-medium w-full sm:w-auto sm:ml-2 sm:order-first"
+            className="flex items-center text-gray-600 hover:text-gray-800 text-sm font-medium"
           >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 12a7.5 7.5 0 1113.91 3.06M9 11.25L4.5 12l2.25-4.5M16.5 12l-2.25 4.5M12 12h.008v.008H12v-.008z"
+            />
             ล้างข้อมูล
           </button>
+
+          {/* ปุ่มคำนวณ */}
+          <button
+            type="submit"
+            className="inline-block w-full sm:w-auto rounded-full bg-[#30A572] px-6 py-2 text-sm font-bold text-white hover:bg-green-600"
+          >
+            คำนวณ
+          </button>
         </div>
+
       </form>
       <ToastContainer />
     </div>
