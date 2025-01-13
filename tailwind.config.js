@@ -4,7 +4,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+<<<<<<< HEAD
         sans: ['Noto Sans Thai', 'sans-serif'],
+=======
+        sans: ["Noto Sans Thai", "sans-serif"],
+>>>>>>> 502baa9aa59eee5c111c3994b8635369a79c1c98
       },
     },
   },

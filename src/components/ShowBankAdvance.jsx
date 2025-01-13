@@ -20,6 +20,9 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
     advanceCalculateSummary.totalInterestThreeYears;
   const {
     principalPortionAfterThreeYears,
+    insurance,
+    mortgageFee,
+    total,
     totalYears,
     totalMonths,
     totalInterestPaid,
