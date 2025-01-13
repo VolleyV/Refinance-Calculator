@@ -84,6 +84,8 @@ export const advanceLoanCalculateDetail = (advanceData) => {
       remainingLoanAmount: loanAmountRemaining.toFixed(2),
       monthlyPayment: currentMonthlyPayment.toFixed(2),
       interestRate: (currentInterestRate * 100).toFixed(2),
+      insurance: insurance,
+      mortgageFee: mortgageFee,
     });
 
     monthsElapsed++;
@@ -94,6 +96,16 @@ export const advanceLoanCalculateDetail = (advanceData) => {
 };
 
 export const advanceThreeYearsSummary = (details) => {
+  const lastDetail = details[details.length - 1];
+  const insurance = lastDetail.insurance
+    ? parseFloat(lastDetail.insurance.replace(/,/g, ""))
+    : 0;
+
+  const mortgageFee = lastDetail.mortgageFee
+    ? parseFloat(lastDetail.mortgageFee.replace(/,/g, ""))
+    : 0;
+
+  console.log(insurance, mortgageFee);
   const threeYears = 3 * 12;
   const limitedDetails = details.slice(0, threeYears);
   const loanAmountAfterThreeYears =
@@ -111,10 +123,19 @@ export const advanceThreeYearsSummary = (details) => {
     0
   );
 
+  const total =
+    parseFloat(totalInterestThreeYears) +
+    parseFloat(principalPortionAfterThreeYears) +
+    parseFloat(insurance) +
+    parseFloat(mortgageFee);
+
   return {
     loanAmountAfterThreeYears,
     totalInterestThreeYears,
     principalPortionAfterThreeYears,
+    insurance,
+    mortgageFee,
+    total,
   };
 };
 

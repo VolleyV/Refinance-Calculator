@@ -19,6 +19,9 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
     advanceCalculateSummary.totalInterestThreeYears;
   const {
     principalPortionAfterThreeYears,
+    insurance,
+    mortgageFee,
+    total,
     totalYears,
     totalMonths,
     totalInterestPaid,
@@ -59,6 +62,9 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
               เงินต้นที่สุทธิ:{" "}
               {principalPortionAfterThreeYears.toLocaleString()} บาท
             </p>
+            <p>ค่าประกัน: {insurance.toLocaleString()} บาท</p>
+            <p>ค่าจดจำนอง: {mortgageFee.toLocaleString()} บาท</p>
+            <p>รวมทั้งหมด: {total.toLocaleString()} บาท</p>
             <button
               onClick={handleNavigateToTable}
               // onClick={handleOpenTableInNewTab}

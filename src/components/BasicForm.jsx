@@ -149,7 +149,7 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
   return (
     <div>
       <div className="bg-white rounded-b-lg px-6 py-4">
-        <h2 className="font-itim text-xl font-bold ">
+        <h2 className="font-sans text-xl font-bold ">
           คำนวณแบบอัตราดอกเบี้ยเดียว
         </h2>
         <form onSubmit={handleSubmit}>

@@ -174,42 +174,6 @@ function App() {
           <Route
             path="/"
             element={
-              // <div className="container mx-auto px-4 mt-16">
-              //   <InputForm
-              //     onSubmit={handleFormSubmit}
-              //     onReset={clearFormData}
-              //     initialInput={basicFormData}
-              //     onSubmitBasicYear={handleBasicFormYearSubmit}
-              //     onResetBasicYear={clearBasicFormYearData}
-              //     basicYearInitialInput={basicFormYearData}
-              //     onAdvanceSubmit={handleAdvanceFormSubmit}
-              //     onAdvanceReset={clearAdvanceFormData}
-              //     advanceInitialInput={advanceFormData}
-              //   />
-              //   {isLoading && (
-              //     <div className="text-center my-4">
-              //       <div className="loader mx-auto"></div>
-              //       <p>กำลังคำนวณ...</p>
-              //     </div>
-              //   )}
-              //   {!isLoading && basicFormData && (
-              //     <div>
-              //       <ShowBank basicCalculateSummary={basicSummary} />
-              //     </div>
-              //   )}
-              //   {!isLoading && basicFormYearData && (
-              //     <div>
-              //       <ShowBankBasicYear
-              //         basicYearCalculateSummary={basicYearSummary}
-              //       />
-              //     </div>
-              //   )}
-              //   {!isLoading && advanceFormData && (
-              //     <div>
-              //       <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
-              //     </div>
-              //   )}
-              // </div>
               <div>
                 <InputForm
                   onSubmit={handleFormSubmit}

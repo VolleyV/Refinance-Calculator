@@ -26,8 +26,8 @@ const AdvanceForm = ({
 
   const [check, setCheck] = useState(false);
   const [check2, setCheck2] = useState(false);
-  const [insurance, setInsurance] = useState("");
-  const [mortgageFee, setMortgageFee] = useState("");
+  const [insurance, setInsurance] = useState(0);
+  const [mortgageFee, setMortgageFee] = useState(0);
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
@@ -121,12 +121,12 @@ const AdvanceForm = ({
     if (type === "check") {
       setCheck(!check);
       if (check) {
-        setInsurance("");
+        setInsurance(0);
       }
     } else if (type === "check2") {
       setCheck2(!check2);
       if (check2) {
-        setMortgageFee("");
+        setMortgageFee(0);
       }
     }
   };
@@ -248,6 +248,7 @@ const AdvanceForm = ({
       insurance,
       mortgageFee,
     };
+    console.log(advanceData);
 
     onAdvanceSubmit(advanceData);
   };
@@ -278,8 +279,8 @@ const AdvanceForm = ({
     setVisibleRows(1);
     setCheck(false);
     setCheck2(false);
-    setInsurance("");
-    setMortgageFee("");
+    setInsurance(0);
+    setMortgageFee(0);
     onAdvanceReset();
     toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
       position: "top-center",
@@ -310,7 +311,7 @@ const AdvanceForm = ({
 
   return (
     <div className="bg-white rounded-b-lg px-6 py-4">
-      <h2 className="font-itim text-xl font-bold">
+      <h2 className="font-sans text-xl font-bold">
         คำนวณดอกเบี้ยแบบมีหลายอัตราดอกเบี้ย
       </h2>
       <form id="loan-form-advance" className="mt-4" onSubmit={handleSubmit}>
