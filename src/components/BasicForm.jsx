@@ -93,7 +93,7 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
   return (
     <div>
       <div className="bg-white rounded-b-lg px-6 py-4">
-        <h2 className="font-itim text-xl font-bold">คำนวณแบบอัตราดอกเบี้ยเดียว</h2>
+        <h2 className="font-itim text-xl font-bold" >คำนวณแบบอัตราดอกเบี้ยเดียว</h2>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
             <div className="relative">

@@ -21,7 +21,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
   } = basicCalculateSummary;
 
   const remainingDateText = fullyPaid
-    ? `ผ่อนดอกเบี้ยจนหมด ใช้เวลาทั้งหมด ${totalYears} ปี ${totalMonths} เดือน`
+    ? `สิ้นสุดระยะเวลาผ่อนชำระ: ${totalYears} ปี ${totalMonths} เดือน`
     : `ผ่อนไปแล้ว ${totalYears - remainingDate.years} ปี ${
         totalMonths - remainingDate.months
       } เดือน และยังเหลืออีก ${remainingDate.years} ปี ${
@@ -29,7 +29,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
       } เดือน`;
 
   const remainingInterestText = fullyPaid
-    ? `ผ่อนดอกเบี้ยทั้งหมดแล้วเป็นจำนวนเงิน ${parseFloat(
+    ? `ดอกเบี้ยสุทธิ: ${parseFloat(
         totalInterestPaid
       ).toLocaleString("en-US", {
         minimumFractionDigits: 2,
@@ -43,7 +43,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
       })} บาท`;
 
   const lastPaymentText = fullyPaid
-    ? `ผ่อนหมดในวันที่ ${lastDayOfPaying}`
+    ? `สิ้นสุดการชำระ ณ วันที่: ${lastDayOfPaying}`
     : `จะผ่อนดอกเบี้ยจนหมดในวันที่ ${lastDayOfPaying}`;
 
   return (
@@ -55,10 +55,10 @@ const ShowBank = ({ basicCalculateSummary }) => {
       </div>
       <div className="p-3">
         <p>
-          <b>ผ่อน 3 ปีแรก</b>
+          <b>ระยะเวลาเริ่มผ่อนชำระงวด 3 ปีแรกเริ่ม</b>
         </p>
         <p>เงินกู้คงเหลือ: {principalAfterThreeYears.toLocaleString()} บาท</p>
-        <p>ดอกเบี้ยที่จ่ายไป: {totalInterestThreeYears.toLocaleString()} บาท</p>
+        <p>ดอกเบี้ยสุทธิ: {totalInterestThreeYears.toLocaleString()} บาท</p>
         <button
           onClick={handleNavigateToTable}
           className="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
@@ -73,7 +73,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
       </div>
       <div className="p-3">
         <p>
-          <b>จนผ่อนจบ</b>
+          <b>ระยะเวลาจนถึงสิ้นสุดการชำระ</b>
         </p>
         <p>{remainingDateText}</p>
         <p>{remainingInterestText.toLocaleString()}</p>
