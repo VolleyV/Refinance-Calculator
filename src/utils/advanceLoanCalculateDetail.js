@@ -95,8 +95,14 @@ export const advanceLoanCalculateDetail = (advanceData) => {
 
 export const advanceThreeYearsSummary = (details) => {
   const lastDetail = details[details.length - 1];
-  const insurance = parseFloat(lastDetail.insurance.replace(/,/g, "")) || 0;
-  const mortgageFee = parseFloat(lastDetail.mortgageFee.replace(/,/g, "")) || 0;
+  const insurance = lastDetail.insurance
+    ? parseFloat(lastDetail.insurance.replace(/,/g, ""))
+    : 0;
+
+  const mortgageFee = lastDetail.mortgageFee
+    ? parseFloat(lastDetail.mortgageFee.replace(/,/g, ""))
+    : 0;
+
   console.log(insurance, mortgageFee);
   const threeYears = 3 * 12;
   const limitedDetails = details.slice(0, threeYears);

@@ -121,12 +121,12 @@ const AdvanceForm = ({
     if (type === "check") {
       setCheck(!check);
       if (check) {
-        setInsurance("");
+        setInsurance(0);
       }
     } else if (type === "check2") {
       setCheck2(!check2);
       if (check2) {
-        setMortgageFee("");
+        setMortgageFee(0);
       }
     }
   };
@@ -279,8 +279,8 @@ const AdvanceForm = ({
     setVisibleRows(1);
     setCheck(false);
     setCheck2(false);
-    setInsurance("");
-    setMortgageFee("");
+    setInsurance(0);
+    setMortgageFee(0);
     onAdvanceReset();
     toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
       position: "top-center",
