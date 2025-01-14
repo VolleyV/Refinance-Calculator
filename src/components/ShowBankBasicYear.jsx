@@ -21,6 +21,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
     totalInterestThreeYears,
     principalPortionAfterThreeYears,
     totalMonthlyPaymentThreeYears,
+    monthlyPayment,
     totalYears,
     totalMonths,
     totalInterestPaid,
@@ -30,12 +31,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
 
   const remainingDateText = `ระยะเวลาผ่อนชำระ ${totalYears} ปี ${totalMonths} เดือน`;
 
-  const remainingInterestText = `ดอกเบี้ยสุทธิ ${parseFloat(
-    totalInterestPaid
-  ).toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })} บาท`;
+  const remainingInterestText = `${totalInterestPaid.toLocaleString()}`;
 
   const lastPaymentText = `สิ้นสุดการชำระ ณ วันที่: ${new Date(
     lastDayOfPaying
@@ -52,7 +48,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
         {/* ส่วนข้อมูลระยะเวลา 3 ปีแรก */}
         <div className="p-6 border-b border-[#D3D8E2]">
           <h2 className="text-lg font-bold text-[#082044] text-center">
-            ผ่อน 3 ปี แรก
+            ผ่อน 3 ปี แรก ({monthlyPayment.toLocaleString()} บาท/เดือน)
           </h2>
           <p className="text-[#82828E] text-sm text-center mt-1">
             (จำนวนเงิน {totalMonthlyPaymentThreeYears.toLocaleString()} บาท)

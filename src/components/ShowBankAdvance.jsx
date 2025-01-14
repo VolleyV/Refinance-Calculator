@@ -39,9 +39,8 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
     datasets: [
       {
         label: "# of Votes",
-        data: [principalPortionAfterThreeYears,totalInterestThreeYears],
+        data: [principalPortionAfterThreeYears, totalInterestThreeYears],
         backgroundColor: ["#082044", "#82828E"],
-       
       },
     ],
   };
@@ -52,19 +51,18 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
         label: "# of Votes",
         data: [totalMonthlyPayment, totalInterestPaid],
         backgroundColor: ["#082044", "#82828E"],
-       
       },
     ],
   };
-  
-  const options= {
+
+  const options = {
     cutout: "65%",
     plugins: {
       legend: {
         position: "bottom", // Moves labels below the chart
         labels: {
           font: {
-            size: 14,  // Adjust font size for the legend
+            size: 14, // Adjust font size for the legend
             family: "'Noto Sans Thai', sans-serif",
           },
           padding: 20, // Adjust spacing between legend items
@@ -72,17 +70,12 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
         },
       },
     },
-  }
+  };
   const totalInsuranceMortgage = insurance + mortgageFee;
 
   const remainingDateText = `ระยะเวลาผ่อนชำระ: ${totalYears} ปี ${totalMonths} เดือน`;
 
-  const remainingInterestText = `ดอกเบี้ยสุทธิ: ${parseFloat(
-    totalInterestPaid
-  ).toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })} บาท`;
+  const remainingInterestText = `${totalInterestPaid.toLocaleString()} `;
 
   const lastPaymentText = `สิ้นสุดการชำระ ณ วันที่: ${new Date(
     lastDayOfPaying
@@ -108,9 +101,9 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
             <div className="flex justify-center">
               {/* วงกลม */}
               <div className="relative w-48 h-48">
-                <Doughnut data={circleThreeYears} options={options}/>
+                <Doughnut data={circleThreeYears} options={options} />
               </div>
-            </div>      
+            </div>
             <div className="text-sm space-y-2">
               <div className="flex justify-between items-center">
                 <p className="mr-4">
@@ -162,7 +155,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
           <div className="flex justify-center">
             {/* วงกลม */}
             <div className="relative w-48 h-48">
-            <Doughnut data={circleAllYears} options={options}/>
+              <Doughnut data={circleAllYears} options={options} />
             </div>
           </div>
           <div className="text-sm space-y-2">

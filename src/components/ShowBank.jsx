@@ -29,12 +29,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
 
   const remainingDateText = `ระยะเวลาผ่อนชำระ: ${totalYears} ปี ${totalMonths} เดือน`;
 
-  const remainingInterestText = `ดอกเบี้ยสุทธิ: ${parseFloat(
-    totalInterestPaid
-  ).toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })} บาท`;
+  const remainingInterestText = `${totalInterestPaid.toLocaleString()} `;
 
   const lastPaymentText = `สิ้นสุดการชำระ ณ วันที่: ${new Date(
     lastDayOfPaying

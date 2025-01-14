@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { ToastContainer, toast, Bounce } from "react-toastify";
+import { IoReload } from "react-icons/io5";
 
 const BasicFormYear = ({
   onSubmitBasicYear,
@@ -119,7 +120,7 @@ const BasicFormYear = ({
       setInterestRate(basicYearInitialInput.interestRate || "");
       setStartDate(
         basicYearInitialInput.startDate ||
-        new Date().toISOString().split("T")[0]
+          new Date().toISOString().split("T")[0]
       );
     }
   }, [basicYearInitialInput]);
@@ -148,7 +149,9 @@ const BasicFormYear = ({
                 value={loanAmount}
                 placeholder="1,500,000"
               />
-              <span className="text-gray-700 font-medium text-lg ml-2">บาท</span>
+              <span className="text-gray-700 font-medium text-lg ml-2">
+                บาท
+              </span>
             </div>
           </div>
 
@@ -174,8 +177,6 @@ const BasicFormYear = ({
           </div>
         </div>
 
-
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           {/* อัตราดอกเบี้ย (%) */}
           <div className="flex flex-col">
@@ -189,7 +190,7 @@ const BasicFormYear = ({
                 value={interestRate}
                 onChange={handleInterestRateChange}
                 className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
-                placeholder="6.75"
+                placeholder="3.25"
               />
               <span className="text-gray-700 font-medium text-lg ml-2">%</span>
             </div>
@@ -234,6 +235,7 @@ const BasicFormYear = ({
                 strokeLinejoin="round"
                 d="M4.5 12a7.5 7.5 0 1113.91 3.06M9 11.25L4.5 12l2.25-4.5M16.5 12l-2.25 4.5M12 12h.008v.008H12v-.008z"
               />
+              <IoReload />
               ล้างข้อมูล
             </button>
           </div>
