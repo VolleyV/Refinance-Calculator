@@ -119,7 +119,7 @@ const BasicFormYear = ({
       setInterestRate(basicYearInitialInput.interestRate || "");
       setStartDate(
         basicYearInitialInput.startDate ||
-          new Date().toISOString().split("T")[0]
+        new Date().toISOString().split("T")[0]
       );
     }
   }, [basicYearInitialInput]);
@@ -130,68 +130,76 @@ const BasicFormYear = ({
         คำนวณแบบอัตราดอกเบี้ยเดียว
       </h2>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
           {/* จำนวนเงินที่กู้ */}
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col">
             <label
               className="text-gray-700 font-medium text-lg mb-2"
               htmlFor="Loan-Amount"
             >
               จำนวนเงินที่กู้ (บาท)
             </label>
-            <input
-              type="text"
-              name="Loan-Amount"
-              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
-              onChange={handleLoanAmountChange}
-              value={loanAmount}
-              placeholder="1,500,000"
-            />
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500">
+              <input
+                type="text"
+                name="Loan-Amount"
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 py-2 h-[48px]"
+                onChange={handleLoanAmountChange}
+                value={loanAmount}
+                placeholder="1,500,000"
+              />
+              <span className="text-gray-700 font-medium text-lg ml-2">บาท</span>
+            </div>
           </div>
 
           {/* วันที่เริ่ม */}
-          <div
-            className="flex flex-col justify-center "
-            onClick={() =>
-              startDateRef.current && startDateRef.current.showPicker?.()
-            }
-          >
+          <div className="flex flex-col">
             <label
               className="text-gray-700 font-medium text-lg mb-2"
               htmlFor="startDate"
             >
               วันที่เริ่ม ({dateText})
             </label>
-            <input
-              type="date"
-              id="startDate"
-              name="startDate"
-              value={startDate}
-              ref={startDateRef}
-              onChange={handleStartDateChange}
-              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
-            />
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500">
+              <input
+                type="date"
+                id="startDate"
+                name="startDate"
+                value={startDate}
+                ref={startDateRef}
+                onChange={handleStartDateChange}
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 py-2 h-[48px]"
+              />
+            </div>
           </div>
         </div>
 
+
+
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
-          <div className="relative">
-            <p className="text-gray-700 font-medium text-lg">
+          {/* อัตราดอกเบี้ย (%) */}
+          <div className="flex flex-col">
+            <label className="text-gray-700 font-medium text-lg mb-1">
               อัตราดอกเบี้ย (%)
-            </p>
-            <input
-              type="number"
-              name="interestRate"
-              value={interestRate}
-              onChange={handleInterestRateChange}
-              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-1"
-              placeholder="6.75"
-            />
+            </label>
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
+              <input
+                type="number"
+                name="interestRate"
+                value={interestRate}
+                onChange={handleInterestRateChange}
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
+                placeholder="6.75"
+              />
+              <span className="text-gray-700 font-medium text-lg ml-2">%</span>
+            </div>
           </div>
-          <div className="relative">
+
+          {/* เลือกระยะเวลาในการผ่อน */}
+          <div className="flex flex-col">
             <label
               htmlFor="payment-duration"
-              className="text-gray-700 font-medium text-lg"
+              className="text-gray-700 font-medium text-lg mb-1"
             >
               เลือกระยะเวลาในการผ่อน
             </label>
@@ -200,7 +208,7 @@ const BasicFormYear = ({
               name="payment-duration"
               onChange={handleDurationChange}
               value={paymentDuration}
-              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-1"
+              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none h-[48px] px-2 box-border appearance-none"
             >
               {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
                 <option key={year} value={year}>
