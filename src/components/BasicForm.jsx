@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { ToastContainer, toast, Bounce } from "react-toastify";
+import { IoReload } from "react-icons/io5";
+
 const BasicForm = ({ onSubmit, onReset, initialInput }) => {
   // States
   const [loanAmount, setLoanAmount] = useState("");
@@ -170,7 +172,9 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
                 value={loanAmount}
                 placeholder="1,500,000"
               />
-              <span className="text-gray-700 font-medium text-lg ml-2">บาท</span>
+              <span className="text-gray-700 font-medium text-lg ml-2">
+                บาท
+              </span>
             </div>
           </div>
 
@@ -196,7 +200,6 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
           </div>
         </div>
 
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           {/* อัตราดอกเบี้ย */}
           <div className="flex flex-col">
@@ -209,8 +212,8 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
                 name="interestRate"
                 value={interestRate}
                 onChange={handleInterestRateChange}
-                className="w-full text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full pr-8"
-                placeholder="6.75"
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
+                placeholder="3.25"
               />
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                 %
@@ -229,18 +232,15 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
                 name="monthly-payment"
                 value={monthlyPayment}
                 onChange={handleMonthlyPaymentChange}
-                className="w-full text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full pr-8"
-                placeholder="11,000"
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
+                placeholder="12,000"
               />
-              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+              <span className="text-gray-700 font-medium text-lg ml-2">
                 บาท
               </span>
             </div>
           </div>
         </div>
-
-
-
 
         <div className="mt-8 flex flex-wrap justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}
@@ -250,6 +250,7 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
               onClick={resetFields}
               className="flex items-center text-gray-600 hover:text-gray-800 text-sm font-medium"
             >
+              <IoReload />
               ล้างข้อมูล
             </button>
           </div>

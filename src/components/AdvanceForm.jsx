@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { ToastContainer, toast, Bounce } from "react-toastify";
+import { IoReload } from "react-icons/io5";
 
 const AdvanceForm = ({
   onAdvanceSubmit,
@@ -201,7 +202,8 @@ const AdvanceForm = ({
 
         if (monthlyPaymentNum <= monthlyInterestOnly) {
           toast.error(
-            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${i + 1
+            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
+              i + 1
             } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`,
             {
               position: "top-center",
@@ -315,7 +317,7 @@ const AdvanceForm = ({
                 value={loanAmount}
                 placeholder="1,500,000"
               />
-              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+              <span className="text-gray-700 font-medium text-lg ml-2">
                 บาท
               </span>
             </div>
@@ -404,11 +406,15 @@ const AdvanceForm = ({
                     type="text"
                     id={`interest-rate-${index}`}
                     value={interestRates[index]}
-                    placeholder="6.75"
-                    onChange={(e) => handleInterestRateChange(index, e.target.value)}
+                    placeholder="3.25"
+                    onChange={(e) =>
+                      handleInterestRateChange(index, e.target.value)
+                    }
                     className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                   />
-                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">%</span>
+                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+                    %
+                  </span>
                 </div>
               </div>
 
@@ -425,11 +431,13 @@ const AdvanceForm = ({
                     type="text"
                     id={`monthly-payment-${index}`}
                     value={monthlyPayment[index]}
-                    placeholder="11,000"
-                    onChange={(e) => handleMonthlyPaymentChange(index, e.target.value)}
-                    className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 pr-8 h-[48px]"
+                    placeholder="12,000"
+                    onChange={(e) =>
+                      handleMonthlyPaymentChange(index, e.target.value)
+                    }
+                    className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                   />
-                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+                  <span className="absolute righ  t-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                     บาท
                   </span>
                 </div>
@@ -438,9 +446,6 @@ const AdvanceForm = ({
             </div>
           ))}
         </div>
-
-
-
 
         {/* ปุ่มเพิ่ม/ลบบรรทัด */}
         <div className="flex space-x-4 mt-4">
@@ -467,7 +472,9 @@ const AdvanceForm = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           {/* ค่าประกัน */}
           <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg">ค่าประกัน</label>
+            <label className="text-gray-700 font-medium text-lg">
+              ค่าประกัน
+            </label>
             <div className="relative">
               <input
                 type="text"
@@ -485,7 +492,9 @@ const AdvanceForm = ({
 
           {/* ค่าจดจำนอง */}
           <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg">ค่าจดจำนอง</label>
+            <label className="text-gray-700 font-medium text-lg">
+              ค่าจดจำนอง
+            </label>
             <div className="relative">
               <input
                 type="text"
@@ -502,8 +511,6 @@ const AdvanceForm = ({
           </div>
         </div>
 
-
-
         <div className="mt-8 flex flex-wrap justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}
           <div className="flex-1 flex justify-start">
@@ -512,6 +519,7 @@ const AdvanceForm = ({
               onClick={resetFields}
               className="flex items-center text-gray-600 hover:text-gray-800 text-sm font-medium"
             >
+              <IoReload />
               ล้างข้อมูล
             </button>
           </div>

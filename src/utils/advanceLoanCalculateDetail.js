@@ -123,6 +123,11 @@ export const advanceThreeYearsSummary = (details) => {
     0
   );
 
+  const totalMonthlyPaymentThreeYears = limitedDetails.reduce(
+    (sum, item) => sum + parseFloat(item.monthlyPayment || 0),
+    0
+  );
+
   const total =
     parseFloat(totalInterestThreeYears) +
     parseFloat(principalPortionAfterThreeYears) +
@@ -130,12 +135,15 @@ export const advanceThreeYearsSummary = (details) => {
     parseFloat(mortgageFee);
 
   return {
-    loanAmountAfterThreeYears,
-    totalInterestThreeYears,
-    principalPortionAfterThreeYears,
-    insurance,
-    mortgageFee,
-    total,
+    loanAmountAfterThreeYears: Math.trunc(loanAmountAfterThreeYears),
+    totalInterestThreeYears: Math.trunc(totalInterestThreeYears),
+    principalPortionAfterThreeYears: Math.trunc(
+      principalPortionAfterThreeYears
+    ),
+    totalMonthlyPaymentThreeYears: Math.trunc(totalMonthlyPaymentThreeYears),
+    insurance: Math.trunc(insurance),
+    mortgageFee: Math.trunc(mortgageFee),
+    total: Math.trunc(total),
   };
 };
 
@@ -178,10 +186,16 @@ export const advanceRemainingToLast = (details) => {
   const totalYears = Math.floor(totalMonths / 12);
   const totalMonthsRemainder = totalMonths % 12;
 
+  const totalMonthlyPayment = details.reduce(
+    (sum, item) => sum + parseFloat(item.monthlyPayment || 0),
+    0
+  );
+
   return {
     totalYears,
     totalMonths: totalMonthsRemainder,
-    totalInterestPaid: parseFloat(totalInterestPaid.toFixed(2)),
+    totalInterestPaid: Math.trunc(totalInterestPaid),
+    totalMonthlyPayment: Math.trunc(totalMonthlyPayment),
     lastDayOfPaying: lastDate.toLocaleDateString("en-EN", {
       year: "numeric",
       month: "long",
