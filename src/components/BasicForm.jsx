@@ -152,75 +152,89 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
         คำนวณแบบอัตราดอกเบี้ยเดียว
       </h2>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
           {/* จำนวนเงินที่กู้ */}
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col">
             <label
               className="text-gray-700 font-medium text-lg mb-2"
               htmlFor="Loan-Amount"
             >
               จำนวนเงินที่กู้ (บาท)
             </label>
-            <input
-              type="text"
-              name="Loan-Amount"
-              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
-              onChange={handleLoanAmountChange}
-              value={loanAmount}
-              placeholder="1,500,000"
-            />
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
+              <input
+                type="text"
+                name="Loan-Amount"
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full min-w-[200px]"
+                onChange={handleLoanAmountChange}
+                value={loanAmount}
+                placeholder="1,500,000"
+              />
+              <span className="text-gray-700 font-medium text-lg ml-2">บาท</span>
+            </div>
           </div>
 
           {/* วันที่เริ่ม */}
-          <div className="flex flex-col justify-center" onClick={() =>
-                startDateRef.current && startDateRef.current.showPicker?.()
-              }>
+          <div className="flex flex-col">
             <label
               className="text-gray-700 font-medium text-lg mb-2"
               htmlFor="startDate"
             >
               วันที่เริ่ม ({dateText})
             </label>
-            <input
-              type="date"
-              id="startDate"
-              name="startDate"
-              value={startDate}
-              ref={startDateRef}
-              onChange={handleStartDateChange}
-              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
-            />
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
+              <input
+                type="date"
+                id="startDate"
+                name="startDate"
+                value={startDate}
+                ref={startDateRef}
+                onChange={handleStartDateChange}
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
+              />
+            </div>
           </div>
         </div>
 
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          {/* อัตราดอกเบี้ย */}
           <div className="flex flex-col">
             <label className="text-gray-700 font-medium text-lg mb-1">
               อัตราดอกเบี้ย (%)
             </label>
-            <input
-              type="number"
-              name="interestRate"
-              value={interestRate}
-              onChange={handleInterestRateChange}
-              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none py-2"
-              placeholder="6.75"
-            />
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500">
+              <input
+                type="number"
+                name="interestRate"
+                value={interestRate}
+                onChange={handleInterestRateChange}
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none py-2"
+                placeholder="6.75"
+              />
+              <span className="text-gray-700 font-medium text-lg ml-2">%</span>
+            </div>
           </div>
+
+          {/* เงินผ่อนต่อเดือน */}
           <div className="flex flex-col">
             <label className="text-gray-700 font-medium text-lg mb-1">
               เงินผ่อนต่อเดือน (บาท)
             </label>
-            <input
-              type="text"
-              name="monthly-payment"
-              value={monthlyPayment}
-              onChange={handleMonthlyPaymentChange}
-              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none py-2"
-              placeholder="11,000"
-            />
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500">
+              <input
+                type="text"
+                name="monthly-payment"
+                value={monthlyPayment}
+                onChange={handleMonthlyPaymentChange}
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none py-2"
+                placeholder="11,000"
+              />
+              <span className="text-gray-700 font-medium text-lg ml-2">บาท</span>
+            </div>
           </div>
         </div>
+
 
         <div className="mt-8 flex flex-wrap justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}
