@@ -24,8 +24,6 @@ const AdvanceForm = ({
   );
   const [visibleRows, setVisibleRows] = useState(1); // แถวที่แสดงอยู่
 
-  const [check, setCheck] = useState(false);
-  const [check2, setCheck2] = useState(false);
   const [insurance, setInsurance] = useState(0);
   const [mortgageFee, setMortgageFee] = useState(0);
 
@@ -113,20 +111,6 @@ const AdvanceForm = ({
           updated[index + 1] = nextStartTerm.toString();
           return updated;
         });
-      }
-    }
-  };
-
-  const toggleCheck = (type) => {
-    if (type === "check") {
-      setCheck(!check);
-      if (check) {
-        setInsurance(0);
-      }
-    } else if (type === "check2") {
-      setCheck2(!check2);
-      if (check2) {
-        setMortgageFee(0);
       }
     }
   };
@@ -277,8 +261,7 @@ const AdvanceForm = ({
     setStartTerm(["1", "", "", "", ""]);
     setEndTerm(["", "", "", "", ""]);
     setVisibleRows(1);
-    setCheck(false);
-    setCheck2(false);
+
     setInsurance(0);
     setMortgageFee(0);
     onAdvanceReset();
@@ -469,62 +452,27 @@ const AdvanceForm = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          {/* ค่าประกันอัคคีภัย */}
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="custom-checkbox"
-                checked={check}
-                onChange={() => toggleCheck("check")}
-              />
-              <label
-                htmlFor="custom-checkbox"
-                className="whitespace-nowrap text-gray-700 font-medium text-lg"
-              >
-                ค่าประกันอัคคีภัย
-              </label>
-            </div>
-
             <input
               type="text"
               id="insurance-input"
               placeholder="กรอกจำนวนเงิน"
               value={insurance}
               onChange={handleInsuranceChange}
-              disabled={!check} // Disable input when "check" is false
-              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] ${
-                !check ? "bg-gray-200 text-gray-400 cursor-not-allowed" : ""
+              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] "
               }`}
             />
           </div>
 
           {/* ค่าจดจำนอง */}
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="custom-checkbox2"
-                checked={check2}
-                onChange={() => toggleCheck("check2")}
-              />
-              <label
-                htmlFor="custom-checkbox2"
-                className="whitespace-nowrap text-gray-700 font-medium text-lg"
-              >
-                ค่าจดจำนอง
-              </label>
-            </div>
-
             <input
               type="text"
               id="additional-input2"
               placeholder="กรอกจำนวนเงิน"
               value={mortgageFee}
               onChange={handleMorgageFeeChange}
-              disabled={!check2} // Disable input when "check2" is false
-              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] ${
-                !check2 ? "bg-gray-200 text-gray-400 cursor-not-allowed" : ""
+              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] "
               }`}
             />
           </div>
