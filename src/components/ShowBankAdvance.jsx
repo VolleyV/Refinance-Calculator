@@ -71,27 +71,40 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
               </div>
             </div>
             <div className="text-sm space-y-2">
-              <p>
-                ผ่อนเงินต้นไป <br />
-                <span className="font-bold text-[#30A572]">
-                  {principalPortionAfterThreeYears.toLocaleString()}
-                </span>{" "}
-                บาท
-              </p>
-              <p>
-                ผ่อนดอกเบี้ยไป <br />{" "}
-                <span className="font-bold text-[#30A572]">
-                  {totalInterestThreeYears.toLocaleString()}
-                </span>{" "}
-                บาท
-              </p>
-              <p>
-                เหลือเงินต้นต้องผ่อนอีก <br />{" "}
-                <span className="font-bold text-[#30A572]">
-                  {totalLoanRemaining.toLocaleString()}
-                </span>{" "}
-                บาท
-              </p>
+              <div className="flex justify-between items-center">
+                <p className="mr-4">
+                  ผ่อนเงินต้นไป <br />
+                  <span className="font-bold text-[#30A572]">
+                    {principalPortionAfterThreeYears.toLocaleString()}
+                  </span>{" "}
+                  บาท
+                </p>
+                <p>
+                  ผ่อนดอกเบี้ยไป <br />
+                  <span className="font-bold text-[#30A572]">
+                    {totalInterestThreeYears.toLocaleString()}
+                  </span>{" "}
+                  บาท
+                </p>
+              </div>
+              <div className="flex justify-between items-start">
+                <p className="mr-4">
+                  ค่าดอกเบี้ยรวมค่าจดจำนองและค่าประกัน <br />{" "}
+                  <span className="font-bold text-[#30A572]">
+                    {totalLoanRemaining.toLocaleString()}
+                  </span>{" "}
+                  บาท
+                </p>
+
+                <p className="text-right ">
+                  เหลือเงินต้นต้องผ่อนอีก <br />{" "}
+                  <span className="font-bold text-[#30A572]">
+                    {totalLoanRemaining.toLocaleString()}
+                  </span>{" "}
+                  บาท
+                </p>
+
+              </div>
             </div>
           </div>
         </div>

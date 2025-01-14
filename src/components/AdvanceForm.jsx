@@ -201,8 +201,7 @@ const AdvanceForm = ({
 
         if (monthlyPaymentNum <= monthlyInterestOnly) {
           toast.error(
-            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
-              i + 1
+            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${i + 1
             } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`,
             {
               position: "top-center",
@@ -305,17 +304,21 @@ const AdvanceForm = ({
               className="text-gray-700 font-medium text-lg mb-2"
               htmlFor="Loan-Amount"
             >
-              จำนวนเงินที่กู้ (บาท)
+              จำนวนเงินที่กู้
             </label>
-            <input
-              type="text"
-              name="Loan-Amount"
-              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
-              onChange={handleLoanAmountChange}
-              value={loanAmount}
-              placeholder="1,500,000"
-            />
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
+              <input
+                type="text"
+                name="Loan-Amount"
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
+                onChange={handleLoanAmountChange}
+                value={loanAmount}
+                placeholder="1,500,000"
+              />
+              <span className="text-gray-700 font-medium text-lg ml-2">บาท</span>
+            </div>
           </div>
+
           <div
             className="flex flex-col justify-center"
             onClick={() =>
@@ -364,7 +367,7 @@ const AdvanceForm = ({
                     updatedStartTerm[index] = e.target.value;
                     setStartTerm(updatedStartTerm);
                   }}
-                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
+                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                 />
               </div>
 
@@ -380,54 +383,59 @@ const AdvanceForm = ({
                   type="text"
                   id={`end-term-${index}`}
                   value={endTerm[index]}
-                  placeholder="36"
+                  placeholder="ถึงงวดที่"
                   onChange={(e) => handleEndTermChange(index, e.target.value)}
-                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
+                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                 />
               </div>
 
               {/* อัตราดอกเบี้ย */}
-              <div className="flex flex-col justify-center">
+              <div className="flex flex-col justify-center relative">
                 <label
                   className="text-gray-700 font-medium text-lg mb-2"
                   htmlFor={`interest-rate-${index}`}
                 >
-                  อัตราดอกเบี้ย (%)
+                  อัตราดอกเบี้ย
                 </label>
-                <input
-                  type="text"
-                  id={`interest-rate-${index}`}
-                  value={interestRates[index]}
-                  placeholder="6.75"
-                  onChange={(e) =>
-                    handleInterestRateChange(index, e.target.value)
-                  }
-                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    id={`interest-rate-${index}`}
+                    value={interestRates[index]}
+                    placeholder="6.75"
+                    onChange={(e) => handleInterestRateChange(index, e.target.value)}
+                    className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
+                  />
+                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">%</span>
+                </div>
               </div>
 
               {/* จำนวนเงินที่จะผ่อน */}
-              <div className="flex flex-col justify-center">
+              <div className="flex flex-col justify-center relative">
                 <label
                   className="text-gray-700 font-medium text-lg mb-2"
                   htmlFor={`monthly-payment-${index}`}
                 >
                   จำนวนเงินที่จะผ่อน
                 </label>
-                <input
-                  type="text"
-                  id={`monthly-payment-${index}`}
-                  value={monthlyPayment[index]}
-                  placeholder="11,000"
-                  onChange={(e) =>
-                    handleMonthlyPaymentChange(index, e.target.value)
-                  }
-                  className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    id={`monthly-payment-${index}`}
+                    value={monthlyPayment[index]}
+                    placeholder="11,000"
+                    onChange={(e) => handleMonthlyPaymentChange(index, e.target.value)}
+                    className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
+                  />
+                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">บาท</span>
+                </div>
               </div>
             </div>
           ))}
         </div>
+
+
+
 
         {/* ปุ่มเพิ่ม/ลบบรรทัด */}
         <div className="flex space-x-4 mt-4">
@@ -452,31 +460,44 @@ const AdvanceForm = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <div className="flex items-center space-x-4">
-            <input
-              type="text"
-              id="insurance-input"
-              placeholder="กรอกจำนวนเงิน"
-              value={insurance}
-              onChange={handleInsuranceChange}
-              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] "
-              }`}
-            />
+          {/* ค่าประกัน */}
+          <div className="flex flex-col space-y-2">
+            <label className="text-gray-700 font-medium text-lg">ค่าประกัน</label>
+            <div className="relative">
+              <input
+                type="text"
+                id="insurance-input"
+                placeholder="กรอกจำนวนเงิน"
+                value={insurance}
+                onChange={handleInsuranceChange}
+                className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
+              />
+              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+                บาท
+              </span>
+            </div>
           </div>
 
           {/* ค่าจดจำนอง */}
-          <div className="flex items-center space-x-4">
-            <input
-              type="text"
-              id="additional-input2"
-              placeholder="กรอกจำนวนเงิน"
-              value={mortgageFee}
-              onChange={handleMorgageFeeChange}
-              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] "
-              }`}
-            />
+          <div className="flex flex-col space-y-2">
+            <label className="text-gray-700 font-medium text-lg">ค่าจดจำนอง</label>
+            <div className="relative">
+              <input
+                type="text"
+                id="additional-input2"
+                placeholder="กรอกจำนวนเงิน"
+                value={mortgageFee}
+                onChange={handleMorgageFeeChange}
+                className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
+              />
+              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+                บาท
+              </span>
+            </div>
           </div>
         </div>
+
+
 
         <div className="flex justify-between items-center mt-8">
           {/* ปุ่มล้างข้อมูล */}

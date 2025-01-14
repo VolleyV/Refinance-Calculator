@@ -174,7 +174,7 @@ function App() {
           <Route
             path="/"
             element={
-              <div>
+              <div className="bg-[#082044] h-80">
                 <InputForm
                   onSubmit={handleFormSubmit}
                   onReset={clearFormData}
