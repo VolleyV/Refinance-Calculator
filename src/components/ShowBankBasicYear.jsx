@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
