@@ -30,6 +30,8 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
     lastDayOfPaying,
   } = advanceCalculateSummary;
 
+  const totalInsuranceMortgage = insurance + mortgageFee;
+
   const remainingDateText = `ระยะเวลาผ่อนชำระ: ${totalYears} ปี ${totalMonths} เดือน`;
 
   const remainingInterestText = `ดอกเบี้ยสุทธิ: ${parseFloat(
@@ -91,7 +93,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                 <p className="mr-4">
                   ค่าดอกเบี้ยรวมค่าจดจำนองและค่าประกัน <br />{" "}
                   <span className="font-bold text-[#30A572]">
-                    {totalLoanRemaining.toLocaleString()}
+                    {totalInsuranceMortgage.toLocaleString()}
                   </span>{" "}
                   บาท
                 </p>
@@ -103,7 +105,6 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                   </span>{" "}
                   บาท
                 </p>
-
               </div>
             </div>
           </div>
