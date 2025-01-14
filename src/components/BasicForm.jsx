@@ -147,50 +147,51 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
   }, [initialInput]);
 
   return (
-
     <div>
       <h2 className="font-sans text-xl font-bold mb-4">
-    คำนวณแบบอัตราดอกเบี้ยเดียว
-  </h2>
-  <form onSubmit={handleSubmit}>
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-      {/* จำนวนเงินที่กู้ */}
-      <div className="flex flex-col justify-center">
-        <label
-          className="text-gray-700 font-medium text-lg mb-2"
-          htmlFor="Loan-Amount"
-        >
-          จำนวนเงินที่กู้ (บาท)
-        </label>
-        <input
-          type="text"
-          name="Loan-Amount"
-          className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
-          onChange={handleLoanAmountChange}
-          value={loanAmount}
-          placeholder="1,500,000"
-        />
-      </div>
+        คำนวณแบบอัตราดอกเบี้ยเดียว
+      </h2>
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* จำนวนเงินที่กู้ */}
+          <div className="flex flex-col justify-center">
+            <label
+              className="text-gray-700 font-medium text-lg mb-2"
+              htmlFor="Loan-Amount"
+            >
+              จำนวนเงินที่กู้ (บาท)
+            </label>
+            <input
+              type="text"
+              name="Loan-Amount"
+              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
+              onChange={handleLoanAmountChange}
+              value={loanAmount}
+              placeholder="1,500,000"
+            />
+          </div>
 
-      {/* วันที่เริ่ม */}
-      <div className="flex flex-col justify-center">
-        <label
-          className="text-gray-700 font-medium text-lg mb-2"
-          htmlFor="startDate"
-        >
-          วันที่เริ่ม ({dateText})
-        </label>
-        <input
-          type="date"
-          id="startDate"
-          name="startDate"
-          value={startDate}
-          ref={startDateRef}
-          onChange={handleStartDateChange}
-          className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
-        />
-      </div>
-    </div>
+          {/* วันที่เริ่ม */}
+          <div className="flex flex-col justify-center" onClick={() =>
+                startDateRef.current && startDateRef.current.showPicker?.()
+              }>
+            <label
+              className="text-gray-700 font-medium text-lg mb-2"
+              htmlFor="startDate"
+            >
+              วันที่เริ่ม ({dateText})
+            </label>
+            <input
+              type="date"
+              id="startDate"
+              name="startDate"
+              value={startDate}
+              ref={startDateRef}
+              onChange={handleStartDateChange}
+              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
+            />
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           <div className="flex flex-col">
@@ -246,7 +247,6 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
       </form>
       <ToastContainer />
     </div>
-
   );
 };
 

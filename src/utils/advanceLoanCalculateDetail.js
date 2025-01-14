@@ -27,7 +27,7 @@ export const advanceLoanCalculateDetail = (advanceData) => {
   }
 
   let loanAmountRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
-/*   let newInsurance= parseFloat(insurance.replace(/,/g, "")) || 0;
+  /*   let newInsurance= parseFloat(insurance.replace(/,/g, "")) || 0;
   loanAmountRemaining += newInsurance */
   if (isNaN(loanAmountRemaining) || loanAmountRemaining <= 0) {
     console.error("Invalid loanAmount:", loanAmount);

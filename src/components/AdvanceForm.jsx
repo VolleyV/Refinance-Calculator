@@ -217,7 +217,8 @@ const AdvanceForm = ({
 
         if (monthlyPaymentNum <= monthlyInterestOnly) {
           toast.error(
-            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${i + 1
+            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
+              i + 1
             } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`,
             {
               position: "top-center",
@@ -338,7 +339,12 @@ const AdvanceForm = ({
               startDateRef.current && startDateRef.current.showPicker?.()
             }
           >
-            <label htmlFor="start-date-advance" className="text-gray-700 font-medium text-lg mb-2">วันที่เริ่ม ({dateText})</label>
+            <label
+              htmlFor="start-date-advance"
+              className="text-gray-700 font-medium text-lg mb-2"
+            >
+              วันที่เริ่ม ({dateText})
+            </label>
             <input
               type="date"
               name="start-date-advance"
@@ -410,7 +416,9 @@ const AdvanceForm = ({
                   id={`interest-rate-${index}`}
                   value={interestRates[index]}
                   placeholder="6.75"
-                  onChange={(e) => handleInterestRateChange(index, e.target.value)}
+                  onChange={(e) =>
+                    handleInterestRateChange(index, e.target.value)
+                  }
                   className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
                 />
               </div>
@@ -428,14 +436,15 @@ const AdvanceForm = ({
                   id={`monthly-payment-${index}`}
                   value={monthlyPayment[index]}
                   placeholder="11,000"
-                  onChange={(e) => handleMonthlyPaymentChange(index, e.target.value)}
+                  onChange={(e) =>
+                    handleMonthlyPaymentChange(index, e.target.value)
+                  }
                   className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px]"
                 />
               </div>
             </div>
           ))}
         </div>
-
 
         {/* ปุ่มเพิ่ม/ลบบรรทัด */}
         <div className="flex space-x-4 mt-4">
@@ -469,7 +478,10 @@ const AdvanceForm = ({
                 checked={check}
                 onChange={() => toggleCheck("check")}
               />
-              <label htmlFor="custom-checkbox" className="whitespace-nowrap text-gray-700 font-medium text-lg">
+              <label
+                htmlFor="custom-checkbox"
+                className="whitespace-nowrap text-gray-700 font-medium text-lg"
+              >
                 ค่าประกันอัคคีภัย
               </label>
             </div>
@@ -481,7 +493,9 @@ const AdvanceForm = ({
               value={insurance}
               onChange={handleInsuranceChange}
               disabled={!check} // Disable input when "check" is false
-              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] ${!check ? "bg-gray-200 text-gray-400 cursor-not-allowed" : ""}`}
+              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] ${
+                !check ? "bg-gray-200 text-gray-400 cursor-not-allowed" : ""
+              }`}
             />
           </div>
 
@@ -494,7 +508,10 @@ const AdvanceForm = ({
                 checked={check2}
                 onChange={() => toggleCheck("check2")}
               />
-              <label htmlFor="custom-checkbox2" className="whitespace-nowrap text-gray-700 font-medium text-lg">
+              <label
+                htmlFor="custom-checkbox2"
+                className="whitespace-nowrap text-gray-700 font-medium text-lg"
+              >
                 ค่าจดจำนอง
               </label>
             </div>
@@ -506,11 +523,12 @@ const AdvanceForm = ({
               value={mortgageFee}
               onChange={handleMorgageFeeChange}
               disabled={!check2} // Disable input when "check2" is false
-              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] ${!check2 ? "bg-gray-200 text-gray-400 cursor-not-allowed" : ""}`}
+              className={`w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none p-2 h-[48px] ${
+                !check2 ? "bg-gray-200 text-gray-400 cursor-not-allowed" : ""
+              }`}
             />
           </div>
         </div>
-
 
         <div className="flex justify-between items-center mt-8">
           {/* ปุ่มล้างข้อมูล */}
@@ -535,7 +553,6 @@ const AdvanceForm = ({
             คำนวณ
           </button>
         </div>
-
       </form>
       <ToastContainer />
     </div>
