@@ -1,5 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const ShowBankAdvance = ({ advanceCalculateSummary }) => {
   const navigate = useNavigate();
@@ -27,6 +31,46 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
     totalInterestPaid,
     lastDayOfPaying,
   } = advanceCalculateSummary;
+
+  const circleThreeYears = {
+    labels: ["เงินต้น", "ดอกเบี้ย"],
+    datasets: [
+      {
+        label: "# of Votes",
+        data: [totalInterestThreeYears, principalPortionAfterThreeYears],
+        backgroundColor: ["#082044", "#82828E"],
+       
+      },
+    ],
+  };
+  const circleAllYears = {
+    labels: ["เงินต้น", "ดอกเบี้ย"],
+    datasets: [
+      {
+        label: "# of Votes",
+        data: [totalInterestThreeYears, totalInterestPaid],
+        backgroundColor: ["#082044", "#82828E"],
+       
+      },
+    ],
+  };
+  
+  const options= {
+    cutout: "65%",
+    plugins: {
+      legend: {
+        position: "bottom", // Moves labels below the chart
+        labels: {
+          font: {
+            size: 14,  // Adjust font size for the legend
+            family: "'Noto Sans Thai', sans-serif",
+          },
+          padding: 20, // Adjust spacing between legend items
+          boxWidth: 15, // Adjust box size (color boxes in the legend)
+        },
+      },
+    },
+  }
 
   const remainingDateText = `ระยะเวลาผ่อนชำระ: ${totalYears} ปี ${totalMonths} เดือน`;
 
@@ -60,14 +104,10 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-6">
             <div className="flex justify-center">
               {/* วงกลม */}
-              <div className="relative w-32 h-32">
-                <div className="w-full h-full rounded-full border-[6px] border-[#082044] border-b-[#D3D8E2]"></div>
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-sm">
-                  <p className="text-[#082044] font-bold">ดอกเบี้ย</p>
-                  <p className="text-[#82828E]">เงินต้น</p>
-                </div>
+              <div className="relative w-48 h-48">
+                <Doughnut data={circleThreeYears} options={options}/>
               </div>
-            </div>
+            </div>      
             <div className="text-sm space-y-2">
               <p>
                 ผ่อนเงินต้นไป <br />
@@ -106,12 +146,8 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-6">
           <div className="flex justify-center">
             {/* วงกลม */}
-            <div className="relative w-32 h-32">
-              <div className="w-full h-full rounded-full border-[6px] border-[#082044] border-b-[#D3D8E2]"></div>
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-sm">
-                <p className="text-[#082044] font-bold">ดอกเบี้ย</p>
-                <p className="text-[#82828E]">เงินต้น</p>
-              </div>
+            <div className="relative w-48 h-48">
+            <Doughnut data={circleAllYears} options={options}/>
             </div>
           </div>
           <div className="text-sm space-y-2">
