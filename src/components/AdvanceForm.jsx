@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { ToastContainer, toast, Bounce } from "react-toastify";
+import { IoReload } from "react-icons/io5";
 
 const AdvanceForm = ({
   onAdvanceSubmit,
@@ -295,23 +296,23 @@ const AdvanceForm = ({
   return (
     <div>
       <h2 className="font-sans text-xl font-bold mb-4">
-        คำนวณแบบหลายอัตราดอกเบี้ย
+        คำนวณแบบอัตราดอกเบี้ยเดียว
       </h2>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* จำนวนเงินที่กู้ */}
-          <div className="flex flex-col justify-center relative">
+          <div className="flex flex-col justify-center">
             <label
               className="text-gray-700 font-medium text-lg mb-2"
               htmlFor="Loan-Amount"
             >
               จำนวนเงินที่กู้
             </label>
-            <div className="relative">
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
               <input
                 type="text"
                 name="Loan-Amount"
-                className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px] pr-8"
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
                 onChange={handleLoanAmountChange}
                 value={loanAmount}
                 placeholder="1,500,000"
@@ -405,7 +406,7 @@ const AdvanceForm = ({
                     type="text"
                     id={`interest-rate-${index}`}
                     value={interestRates[index]}
-                    placeholder="6.75"
+                    placeholder="3.25"
                     onChange={(e) =>
                       handleInterestRateChange(index, e.target.value)
                     }
@@ -430,7 +431,7 @@ const AdvanceForm = ({
                     type="text"
                     id={`monthly-payment-${index}`}
                     value={monthlyPayment[index]}
-                    placeholder="11,000"
+                    placeholder="12,000"
                     onChange={(e) =>
                       handleMonthlyPaymentChange(index, e.target.value)
                     }
@@ -441,7 +442,6 @@ const AdvanceForm = ({
                   </span>
                 </div>
               </div>
-
             </div>
           ))}
         </div>
@@ -518,6 +518,7 @@ const AdvanceForm = ({
               onClick={resetFields}
               className="flex items-center text-gray-600 hover:text-gray-800 text-sm font-medium"
             >
+              <IoReload />
               ล้างข้อมูล
             </button>
           </div>

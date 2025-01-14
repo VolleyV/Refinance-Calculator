@@ -23,6 +23,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
     totalInterestThreeYears,
     principalPortionAfterThreeYears,
     totalMonthlyPaymentThreeYears,
+    monthlyPayment,
     totalYears,
     totalMonths,
     totalInterestPaid,
@@ -32,12 +33,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
 
   const remainingDateText = `ระยะเวลาผ่อนชำระ ${totalYears} ปี ${totalMonths} เดือน`;
 
-  const remainingInterestText = `ดอกเบี้ยสุทธิ ${parseFloat(
-    totalInterestPaid
-  ).toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })} บาท`;
+  const remainingInterestText = `${totalInterestPaid.toLocaleString()}`;
 
   const lastPaymentText = `สิ้นสุดการชำระ ณ วันที่: ${new Date(
     lastDayOfPaying
@@ -91,8 +87,8 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
       <div className="flex flex-col gap-8">
         {/* ส่วนข้อมูลระยะเวลา 3 ปีแรก */}
         <div className="p-6 border-b border-[#D3D8E2]">
-          <h2 className="text-3xl font-bold text-[#082044] text-center">
-            ผ่อน 3 ปี แรก
+          <h2 className="text-lg font-bold text-[#082044] text-center">
+            ผ่อน 3 ปี แรก ({monthlyPayment.toLocaleString()} บาท/เดือน)
           </h2>
           <p className="text-[#82828E] text-sm text-center mt-1">
             (จำนวนเงิน {totalMonthlyPaymentThreeYears.toLocaleString()} บาท)
@@ -107,37 +103,37 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               </div>
             </div>
             <div className="text-sm space-y-2">
-              <label className="text-xl">
+              <p>
                 ผ่อนเงินต้นไป <br />
-                <span className="font-bold text-[#30A572] text-xl">
+                <span className="font-bold text-[#30A572]">
                   {principalPortionAfterThreeYears.toLocaleString()}
                 </span>{" "}
                 บาท
-              </label><br/>
-              <label className="text-xl">
+              </p>
+              <p>
                 ผ่อนดอกเบี้ยไป <br />{" "}
                 <span className="font-bold text-[#30A572]">
                   {totalInterestThreeYears.toLocaleString()}
                 </span>{" "}
                 บาท
-              </label><br/>
-              <label className="text-xl">
+              </p>
+              <p>
                 เหลือเงินต้นต้องผ่อนอีก <br />{" "}
                 <span className="font-bold text-[#30A572]">
                   {principalAfterThreeYears.toLocaleString()}
                 </span>{" "}
                 บาท
-              </label>
+              </p>
             </div>
           </div>
         </div>
 
         {/* ส่วนข้อมูลจนถึงสิ้นสุดการชำระ */}
         <div className="p-6">
-          <h2 className="text-3xl font-bold text-[#082044] text-center">
+          <h2 className="text-lg font-bold text-[#082044] text-center">
             จะผ่อนหมดต้องใช้เวลา {remainingDateText}
           </h2>
-          <p className="text-[#82828E] text-xl text-center mt-1">
+          <p className="text-[#82828E] text-sm text-center mt-1">
             ({lastPaymentText})
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-6">
@@ -150,22 +146,22 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               </div>
             </div>
             <div className="text-sm space-y-2">
-              <label className="text-[#35373F] text-xl">
+              <p className="text-[#35373F]">
                 รวมเงินผ่อนทั้งหมด
                 <br />
                 <span className="font-bold text-[#30A572]">
                   {totalMonthlyPayment.toLocaleString()}
                 </span>
                 <span> บาท</span>
-              </label><br/>
+              </p>
 
-              <label className="text-xl">
+              <p>
                 รวมค่าดอกเบี้ยตลอดระยะเวลาผ่อน <br />
                 <span className="font-bold text-[#30A572]">
                   {remainingInterestText.toLocaleString()}
                 </span>
                 <span> บาท</span>
-              </label>
+              </p>
             </div>
           </div>
         </div>

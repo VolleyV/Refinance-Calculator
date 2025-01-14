@@ -31,12 +31,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
 
   const remainingDateText = `ระยะเวลาผ่อนชำระ: ${totalYears} ปี ${totalMonths} เดือน`;
 
-  const remainingInterestText = `ดอกเบี้ยสุทธิ: ${parseFloat(
-    totalInterestPaid
-  ).toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })} บาท`;
+  const remainingInterestText = `${totalInterestPaid.toLocaleString()} `;
 
   const lastPaymentText = `สิ้นสุดการชำระ ณ วันที่: ${new Date(
     lastDayOfPaying
@@ -133,10 +128,10 @@ const ShowBank = ({ basicCalculateSummary }) => {
 
         {/* ส่วนข้อมูลจนถึงสิ้นสุดการชำระ */}
         <div className="p-6">
-          <h2 className="text-3xl font-bold text-[#082044] text-center">
+          <h2 className="text-lg font-bold text-[#082044] text-center">
             จะผ่อนหมดต้องใช้เวลา {remainingDateText}
           </h2>
-          <p className="text-[#82828E] text-center text-xl mt-1">
+          <p className="text-[#82828E] text-sm text-center mt-1">
             ({lastPaymentText})
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-6">
@@ -149,22 +144,22 @@ const ShowBank = ({ basicCalculateSummary }) => {
               </div>
             </div>
             <div className="text-sm space-y-2">
-              <label className="text-[#35373F] text-xl">
+              <p className="text-[#35373F]">
                 รวมเงินผ่อนทั้งหมด
                 <br />
                 <span className="font-bold text-[#30A572]">
                   {totalMonthlyPayment.toLocaleString()}
                 </span>
                 <span> บาท</span>
-              </label><br/>
+              </p>
 
-              <label className="text-[#35373F] text-xl">
+              <p>
                 รวมค่าดอกเบี้ยตลอดระยะเวลาผ่อน <br />
                 <span className="font-bold text-[#30A572]">
                   {remainingInterestText.toLocaleString()}
                 </span>
                 <span> บาท</span>
-              </label><br />
+              </p>
             </div>
           </div>
         </div>
