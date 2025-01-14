@@ -44,6 +44,19 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
+    });
+  };
+
+  useEffect(() => {
+    if (basicFormData || basicFormYearData || advanceFormData) {
+      scrollToBottom();
+    }
+  }, [basicFormData, basicFormYearData, advanceFormData]);
+
   //submit
   const handleFormSubmit = (data) => {
     setIsLoading(true);

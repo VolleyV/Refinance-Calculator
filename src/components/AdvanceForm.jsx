@@ -201,7 +201,8 @@ const AdvanceForm = ({
 
         if (monthlyPaymentNum <= monthlyInterestOnly) {
           toast.error(
-            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${i + 1
+            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
+              i + 1
             } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`,
             {
               position: "top-center",
@@ -315,7 +316,9 @@ const AdvanceForm = ({
                 value={loanAmount}
                 placeholder="1,500,000"
               />
-              <span className="text-gray-700 font-medium text-lg ml-2">บาท</span>
+              <span className="text-gray-700 font-medium text-lg ml-2">
+                บาท
+              </span>
             </div>
           </div>
 
@@ -403,10 +406,14 @@ const AdvanceForm = ({
                     id={`interest-rate-${index}`}
                     value={interestRates[index]}
                     placeholder="6.75"
-                    onChange={(e) => handleInterestRateChange(index, e.target.value)}
+                    onChange={(e) =>
+                      handleInterestRateChange(index, e.target.value)
+                    }
                     className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                   />
-                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">%</span>
+                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+                    %
+                  </span>
                 </div>
               </div>
 
@@ -424,18 +431,19 @@ const AdvanceForm = ({
                     id={`monthly-payment-${index}`}
                     value={monthlyPayment[index]}
                     placeholder="11,000"
-                    onChange={(e) => handleMonthlyPaymentChange(index, e.target.value)}
+                    onChange={(e) =>
+                      handleMonthlyPaymentChange(index, e.target.value)
+                    }
                     className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                   />
-                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">บาท</span>
+                  <span className="absolute righ  t-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+                    บาท
+                  </span>
                 </div>
               </div>
             </div>
           ))}
         </div>
-
-
-
 
         {/* ปุ่มเพิ่ม/ลบบรรทัด */}
         <div className="flex space-x-4 mt-4">
@@ -462,7 +470,9 @@ const AdvanceForm = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           {/* ค่าประกัน */}
           <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg">ค่าประกัน</label>
+            <label className="text-gray-700 font-medium text-lg">
+              ค่าประกัน
+            </label>
             <div className="relative">
               <input
                 type="text"
@@ -480,7 +490,9 @@ const AdvanceForm = ({
 
           {/* ค่าจดจำนอง */}
           <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg">ค่าจดจำนอง</label>
+            <label className="text-gray-700 font-medium text-lg">
+              ค่าจดจำนอง
+            </label>
             <div className="relative">
               <input
                 type="text"
@@ -497,30 +509,27 @@ const AdvanceForm = ({
           </div>
         </div>
 
-
-
-        <div className="flex justify-between items-center mt-8">
+        <div className="mt-8 flex flex-wrap justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}
-          <button
-            type="button"
-            onClick={resetFields}
-            className="flex items-center text-gray-600 hover:text-gray-800 text-sm font-medium"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4.5 12a7.5 7.5 0 1113.91 3.06M9 11.25L4.5 12l2.25-4.5M16.5 12l-2.25 4.5M12 12h.008v.008H12v-.008z"
-            />
-            ล้างข้อมูล
-          </button>
+          <div className="flex-1 flex justify-start">
+            <button
+              type="button"
+              onClick={resetFields}
+              className="flex items-center text-gray-600 hover:text-gray-800 text-sm font-medium"
+            >
+              ล้างข้อมูล
+            </button>
+          </div>
 
           {/* ปุ่มคำนวณ */}
-          <button
-            type="submit"
-            className="inline-block w-full sm:w-auto rounded-full bg-[#30A572] px-6 py-2 text-sm font-bold text-white hover:bg-green-600"
-          >
-            คำนวณ
-          </button>
+          <div className="flex-1 flex justify-end">
+            <button
+              type="submit"
+              className="inline-block w-full sm:w-auto rounded-full bg-[#30A572] px-6 py-2 text-sm font-bold text-white hover:bg-green-600"
+            >
+              คำนวณ
+            </button>
+          </div>
         </div>
       </form>
       <ToastContainer />
