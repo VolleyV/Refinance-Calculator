@@ -295,23 +295,23 @@ const AdvanceForm = ({
   return (
     <div>
       <h2 className="font-sans text-xl font-bold mb-4">
-        คำนวณแบบอัตราดอกเบี้ยเดียว
+        คำนวณแบบหลายอัตราดอกเบี้ย
       </h2>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* จำนวนเงินที่กู้ */}
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center relative">
             <label
               className="text-gray-700 font-medium text-lg mb-2"
               htmlFor="Loan-Amount"
             >
               จำนวนเงินที่กู้
             </label>
-            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
+            <div className="relative">
               <input
                 type="text"
                 name="Loan-Amount"
-                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
+                className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px] pr-8"
                 onChange={handleLoanAmountChange}
                 value={loanAmount}
                 placeholder="1,500,000"
@@ -441,6 +441,7 @@ const AdvanceForm = ({
                   </span>
                 </div>
               </div>
+
             </div>
           ))}
         </div>
