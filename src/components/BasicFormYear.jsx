@@ -176,7 +176,7 @@ const BasicFormYear = ({
 
 
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           {/* อัตราดอกเบี้ย (%) */}
           <div className="flex flex-col">
             <label className="text-gray-700 font-medium text-lg mb-1">
@@ -203,19 +203,21 @@ const BasicFormYear = ({
             >
               เลือกระยะเวลาในการผ่อน
             </label>
-            <select
-              id="payment-duration"
-              name="payment-duration"
-              onChange={handleDurationChange}
-              value={paymentDuration}
-              className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none h-[48px] px-2 box-border appearance-none"
-            >
-              {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
-                <option key={year} value={year}>
-                  {year} ปี
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
+              <select
+                id="payment-duration"
+                name="payment-duration"
+                onChange={handleDurationChange}
+                value={paymentDuration}
+                className="w-full text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full appearance-none"
+              >
+                {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
+                  <option key={year} value={year}>
+                    {year} ปี
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 

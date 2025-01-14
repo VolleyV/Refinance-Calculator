@@ -203,13 +203,13 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
             <label className="text-gray-700 font-medium text-lg mb-1">
               อัตราดอกเบี้ย (%)
             </label>
-            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500">
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
               <input
                 type="number"
                 name="interestRate"
                 value={interestRate}
                 onChange={handleInterestRateChange}
-                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none py-2"
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
                 placeholder="6.75"
               />
               <span className="text-gray-700 font-medium text-lg ml-2">%</span>
@@ -221,19 +221,20 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
             <label className="text-gray-700 font-medium text-lg mb-1">
               เงินผ่อนต่อเดือน (บาท)
             </label>
-            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500">
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
               <input
                 type="text"
                 name="monthly-payment"
                 value={monthlyPayment}
                 onChange={handleMonthlyPaymentChange}
-                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none py-2"
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
                 placeholder="11,000"
               />
               <span className="text-gray-700 font-medium text-lg ml-2">บาท</span>
             </div>
           </div>
         </div>
+
 
 
         <div className="mt-8 flex flex-wrap justify-between items-center gap-4">
