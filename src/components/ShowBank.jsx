@@ -1,4 +1,3 @@
-
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
@@ -20,9 +19,11 @@ const ShowBank = ({ basicCalculateSummary }) => {
     principalAfterThreeYears,
     totalInterestThreeYears,
     principalPortionAfterThreeYears,
+    totalMonthlyPaymentThreeYears,
     totalYears,
     totalMonths,
     totalInterestPaid,
+    totalMonthlyPayment,
     lastDayOfPaying,
   } = basicCalculateSummary;
 
@@ -49,8 +50,12 @@ const ShowBank = ({ basicCalculateSummary }) => {
       <div className="flex flex-col gap-8">
         {/* ส่วนข้อมูลระยะเวลา 3 ปีแรก */}
         <div className="p-6 border-b border-[#D3D8E2]">
-          <h2 className="text-lg font-bold text-[#082044] text-center">ผ่อน 3 ปี แรก</h2>
-          <p className="text-[#82828E] text-sm text-center mt-1">(จำนวนเงิน 396,000 บาท)</p>
+          <h2 className="text-lg font-bold text-[#082044] text-center">
+            ผ่อน 3 ปี แรก
+          </h2>
+          <p className="text-[#82828E] text-sm text-center mt-1">
+            (จำนวนเงิน {totalMonthlyPaymentThreeYears.toLocaleString()} บาท)
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-6">
             <div className="flex justify-center">
               {/* วงกลม */}
@@ -64,17 +69,25 @@ const ShowBank = ({ basicCalculateSummary }) => {
             </div>
             <div className="text-sm space-y-2">
               <p>
-                ผ่อนเงินต้นไป{" "}
-                <br/> 
-                <span className="font-bold text-[#30A572]">{principalPortionAfterThreeYears.toLocaleString()}</span> บาท
+                ผ่อนเงินต้นไป <br />
+                <span className="font-bold text-[#30A572]">
+                  {principalPortionAfterThreeYears.toLocaleString()}
+                </span>{" "}
+                บาท
               </p>
               <p>
-                ผ่อนดอกเบี้ยไป{" "}
-                <br/>  <span className="font-bold text-[#30A572]">{totalInterestThreeYears.toLocaleString()}</span> บาท
+                ผ่อนดอกเบี้ยไป <br />{" "}
+                <span className="font-bold text-[#30A572]">
+                  {totalInterestThreeYears.toLocaleString()}
+                </span>{" "}
+                บาท
               </p>
               <p>
-                เหลือเงินต้นต้องผ่อนอีก{" "}
-                <br/> <span className="font-bold text-[#30A572]">{principalAfterThreeYears.toLocaleString()}</span> บาท
+                เหลือเงินต้นต้องผ่อนอีก <br />{" "}
+                <span className="font-bold text-[#30A572]">
+                  {principalAfterThreeYears.toLocaleString()}
+                </span>{" "}
+                บาท
               </p>
             </div>
           </div>
@@ -103,17 +116,19 @@ const ShowBank = ({ basicCalculateSummary }) => {
               <p className="text-[#35373F]">
                 รวมเงินผ่อนทั้งหมด
                 <br />
-                <span className="font-bold text-[#30A572]">1,650,000</span>
+                <span className="font-bold text-[#30A572]">
+                  {totalMonthlyPayment.toLocaleString()}
+                </span>
                 <span> บาท</span>
               </p>
 
               <p>
-                รวมค่าดอกเบี้ยตลอดระยะเวลาผ่อน{" "}
-                <br/>
-                <span className="font-bold text-[#30A572]">{remainingInterestText.toLocaleString()}</span>
+                รวมค่าดอกเบี้ยตลอดระยะเวลาผ่อน <br />
+                <span className="font-bold text-[#30A572]">
+                  {remainingInterestText.toLocaleString()}
+                </span>
                 <span> บาท</span>
               </p>
-
             </div>
           </div>
         </div>
@@ -129,7 +144,6 @@ const ShowBank = ({ basicCalculateSummary }) => {
         </button>
       </div>
     </div>
-
   );
 };
 
@@ -138,9 +152,11 @@ ShowBank.propTypes = {
     principalAfterThreeYears: PropTypes.number.isRequired,
     totalInterestThreeYears: PropTypes.number.isRequired,
     principalPortionAfterThreeYears: PropTypes.number.isRequired,
+    totalMonthlyPaymentThreeYears: PropTypes.number.isRequired,
     totalYears: PropTypes.number.isRequired,
     totalMonths: PropTypes.number.isRequired,
     totalInterestPaid: PropTypes.number.isRequired,
+    totalMonthlyPayment: PropTypes.number.isRequired,
     lastDayOfPaying: PropTypes.string.isRequired,
   }).isRequired,
 };

@@ -19,14 +19,18 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
     advanceCalculateSummary.totalInterestThreeYears;
   const {
     principalPortionAfterThreeYears,
+    totalMonthlyPaymentThreeYears,
     insurance,
     mortgageFee,
     total,
     totalYears,
     totalMonths,
     totalInterestPaid,
+    totalMonthlyPayment,
     lastDayOfPaying,
   } = advanceCalculateSummary;
+
+  const totalInsuranceMortgage = insurance + mortgageFee;
 
   const remainingDateText = `ระยะเวลาผ่อนชำระ: ${totalYears} ปี ${totalMonths} เดือน`;
 
@@ -55,7 +59,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
             ผ่อน 3 ปี แรก
           </h2>
           <p className="text-[#82828E] text-sm text-center mt-1">
-            (จำนวนเงิน 396,000 บาท)
+            (จำนวนเงิน {totalMonthlyPaymentThreeYears.toLocaleString()} บาท)
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-6">
             <div className="flex justify-center">
@@ -69,27 +73,39 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
               </div>
             </div>
             <div className="text-sm space-y-2">
-              <p>
-                ผ่อนเงินต้นไป <br />
-                <span className="font-bold text-[#30A572]">
-                  {principalPortionAfterThreeYears.toLocaleString()}
-                </span>{" "}
-                บาท
-              </p>
-              <p>
-                ผ่อนดอกเบี้ยไป <br />{" "}
-                <span className="font-bold text-[#30A572]">
-                  {totalInterestThreeYears.toLocaleString()}
-                </span>{" "}
-                บาท
-              </p>
-              <p>
-                เหลือเงินต้นต้องผ่อนอีก <br />{" "}
-                <span className="font-bold text-[#30A572]">
-                  {totalLoanRemaining.toLocaleString()}
-                </span>{" "}
-                บาท
-              </p>
+              <div className="flex justify-between items-center">
+                <p className="mr-4">
+                  ผ่อนเงินต้นไป <br />
+                  <span className="font-bold text-[#30A572]">
+                    {principalPortionAfterThreeYears.toLocaleString()}
+                  </span>{" "}
+                  บาท
+                </p>
+                <p>
+                  ผ่อนดอกเบี้ยไป <br />
+                  <span className="font-bold text-[#30A572]">
+                    {totalInterestThreeYears.toLocaleString()}
+                  </span>{" "}
+                  บาท
+                </p>
+              </div>
+              <div className="flex justify-between items-start">
+                <p className="mr-4">
+                  ค่าดอกเบี้ยรวมค่าจดจำนองและค่าประกัน <br />{" "}
+                  <span className="font-bold text-[#30A572]">
+                    {totalInsuranceMortgage.toLocaleString()}
+                  </span>{" "}
+                  บาท
+                </p>
+
+                <p className="text-right ">
+                  เหลือเงินต้นต้องผ่อนอีก <br />{" "}
+                  <span className="font-bold text-[#30A572]">
+                    {totalLoanRemaining.toLocaleString()}
+                  </span>{" "}
+                  บาท
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -118,7 +134,9 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
             <p className="text-[#35373F]">
               รวมเงินผ่อนทั้งหมด
               <br />
-              <span className="font-bold text-[#30A572]">1,650,000</span>
+              <span className="font-bold text-[#30A572]">
+                {totalMonthlyPayment.toLocaleString()}
+              </span>
               <span> บาท</span>
             </p>
 
@@ -151,9 +169,11 @@ ShowBankAdvance.propTypes = {
     loanAmountAfterThreeYears: PropTypes.number.isRequired,
     totalInterestThreeYears: PropTypes.number.isRequired,
     principalPortionAfterThreeYears: PropTypes.number.isRequired,
+    totalMonthlyPaymentThreeYears: PropTypes.number.isRequired,
     totalYears: PropTypes.number.isRequired,
     totalMonths: PropTypes.number.isRequired,
     totalInterestPaid: PropTypes.number.isRequired,
+    totalMonthlyPayment: PropTypes.number.isRequired,
     lastDayOfPaying: PropTypes.string.isRequired,
   }).isRequired,
 };
