@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
 
 const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
   const navigate = useNavigate();
@@ -45,6 +47,44 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
     day: "2-digit",
   })}`;
 
+  const circleThreeYears = {
+    labels: ["เงินต้น", "ดอกเบี้ย"],
+    datasets: [
+      {
+        label: "# of Votes",
+        data: [principalPortionAfterThreeYears,totalInterestThreeYears],
+        backgroundColor: ["#082044", "#82828E"],
+      },
+    ],
+  };
+  const circleAllYears = {
+    labels: ["เงินต้น", "ดอกเบี้ย"],
+    datasets: [
+      {
+        label: "# of Votes",
+        data: [totalMonthlyPayment, totalInterestPaid],
+        backgroundColor: ["#082044", "#82828E"],
+      },
+    ],
+  };
+
+  const options = {
+    cutout: "65%",
+    plugins: {
+      legend: {
+        position: "bottom", // Moves labels below the chart
+        labels: {
+          font: {
+            size: 14, // Adjust font size for the legend
+            family: "'Noto Sans Thai', sans-serif",
+          },
+          padding: 20, // Adjust spacing between legend items
+          boxWidth: 15, // Adjust box size (color boxes in the legend)
+        },
+      },
+    },
+  };
+
   return (
     <div className="relative p-6 max-w-4xl mx-auto rounded-lg mt-8 bg-white">
       {/* ส่วนข้อมูล */}
@@ -61,10 +101,8 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
             <div className="flex justify-center">
               {/* วงกลม */}
               <div className="relative w-32 h-32">
-                <div className="w-full h-full rounded-full border-[6px] border-[#082044] border-b-[#D3D8E2]"></div>
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-sm">
-                  <p className="text-[#082044] font-bold">ดอกเบี้ย</p>
-                  <p className="text-[#82828E]">เงินต้น</p>
+                <div className="relative w-48 h-48">
+                  <Doughnut data={circleThreeYears} options={options} />
                 </div>
               </div>
             </div>
@@ -106,10 +144,8 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
             <div className="flex justify-center">
               {/* วงกลม */}
               <div className="relative w-32 h-32">
-                <div className="w-full h-full rounded-full border-[6px] border-[#082044] border-b-[#D3D8E2]"></div>
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-sm">
-                  <p className="text-[#082044] font-bold">ดอกเบี้ย</p>
-                  <p className="text-[#82828E]">เงินต้น</p>
+                <div className="relative w-48 h-48">
+                  <Doughnut data={circleAllYears} options={options} />
                 </div>
               </div>
             </div>
