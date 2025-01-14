@@ -499,28 +499,27 @@ const AdvanceForm = ({
 
 
 
-        <div className="flex justify-between items-center mt-8">
+        <div className="mt-8 flex flex-wrap justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}
-          <button
-            type="button"
-            onClick={resetFields}
-            className="flex items-center text-gray-600 hover:text-gray-800 text-sm font-medium"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4.5 12a7.5 7.5 0 1113.91 3.06M9 11.25L4.5 12l2.25-4.5M16.5 12l-2.25 4.5M12 12h.008v.008H12v-.008z"
-            />
-            ล้างข้อมูล
-          </button>
+          <div className="flex-1 flex justify-start">
+            <button
+              type="button"
+              onClick={resetFields}
+              className="flex items-center text-gray-600 hover:text-gray-800 text-sm font-medium"
+            >
+              ล้างข้อมูล
+            </button>
+          </div>
 
           {/* ปุ่มคำนวณ */}
-          <button
-            type="submit"
-            className="inline-block w-full sm:w-auto rounded-full bg-[#30A572] px-6 py-2 text-sm font-bold text-white hover:bg-green-600"
-          >
-            คำนวณ
-          </button>
+          <div className="flex-1 flex justify-end">
+            <button
+              type="submit"
+              className="inline-block w-full sm:w-auto rounded-full bg-[#30A572] px-6 py-2 text-sm font-bold text-white hover:bg-green-600"
+            >
+              คำนวณ
+            </button>
+          </div>
         </div>
       </form>
       <ToastContainer />
