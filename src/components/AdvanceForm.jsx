@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { ToastContainer, toast, Bounce } from "react-toastify";
+import { IoReload } from "react-icons/io5";
 
 const AdvanceForm = ({
   onAdvanceSubmit,
@@ -405,7 +406,7 @@ const AdvanceForm = ({
                     type="text"
                     id={`interest-rate-${index}`}
                     value={interestRates[index]}
-                    placeholder="6.75"
+                    placeholder="3.25"
                     onChange={(e) =>
                       handleInterestRateChange(index, e.target.value)
                     }
@@ -430,7 +431,7 @@ const AdvanceForm = ({
                     type="text"
                     id={`monthly-payment-${index}`}
                     value={monthlyPayment[index]}
-                    placeholder="11,000"
+                    placeholder="12,000"
                     onChange={(e) =>
                       handleMonthlyPaymentChange(index, e.target.value)
                     }
@@ -517,6 +518,7 @@ const AdvanceForm = ({
               onClick={resetFields}
               className="flex items-center text-gray-600 hover:text-gray-800 text-sm font-medium"
             >
+              <IoReload />
               ล้างข้อมูล
             </button>
           </div>

@@ -80,10 +80,12 @@ export const calculateThreeYearSummary = (details) => {
   );
 
   return {
-    principalAfterThreeYears,
-    totalInterestThreeYears,
-    principalPortionAfterThreeYears,
-    totalMonthlyPaymentThreeYears,
+    principalAfterThreeYears: Math.trunc(principalAfterThreeYears),
+    totalInterestThreeYears: Math.trunc(totalInterestThreeYears),
+    principalPortionAfterThreeYears: Math.trunc(
+      principalPortionAfterThreeYears
+    ),
+    totalMonthlyPaymentThreeYears: Math.trunc(totalMonthlyPaymentThreeYears),
   };
 };
 
@@ -133,8 +135,8 @@ export const remainingToLast = (details) => {
   return {
     totalYears,
     totalMonths: totalMonthsRemainder,
-    totalInterestPaid: parseFloat(totalInterestPaid.toFixed(2)),
-    totalMonthlyPayment,
+    totalInterestPaid: Math.trunc(totalInterestPaid),
+    totalMonthlyPayment: Math.trunc(totalMonthlyPayment),
     lastDayOfPaying: lastDate.toLocaleDateString("en-EN", {
       year: "numeric",
       month: "long",
