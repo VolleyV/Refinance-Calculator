@@ -387,7 +387,7 @@ const AdvanceForm = ({
                   ถึงงวดที่
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   id={`end-term-${index}`}
                   value={endTerm[index]}
                   placeholder="ถึงงวดที่"

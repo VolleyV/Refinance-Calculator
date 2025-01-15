@@ -64,18 +64,10 @@ const ShowBank = ({ basicCalculateSummary }) => {
   };
 
   const options = {
-    cutout: "65%",
+    cutout: "70%",
     plugins: {
       legend: {
-        position: "bottom", // Moves labels below the chart
-        labels: {
-          font: {
-            size: 14, // Adjust font size for the legend
-            family: "'Noto Sans Thai', sans-serif",
-          },
-          padding: 20, // Adjust spacing between legend items
-          boxWidth: 15, // Adjust box size (color boxes in the legend)
-        },
+        display: false, // Disable the built-in legend
       },
     },
   };
@@ -93,10 +85,27 @@ const ShowBank = ({ basicCalculateSummary }) => {
             (จำนวนเงิน {totalMonthlyPaymentThreeYears.toLocaleString()} บาท)
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-8">
-            {/* วงกลม */}
+            {/* วงกลม 3 ปี */}
             <div className="flex justify-center">
-              <div className="w-36 h-36">
-                <div className="w-56 h-56">
+              <div className="flex items-center">
+                {/* Legend (left side) */}
+                <div className="space-y-2 mr-4">
+                  {circleThreeYears.labels.map((label, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <div
+                        className="w-4 h-4"
+                        style={{
+                          backgroundColor:
+                            circleThreeYears.datasets[0].backgroundColor[index],
+                        }}
+                      ></div>
+                      <span className="text-sm font-medium">{label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Chart (right side) */}
+                <div className="w-48 h-48">
                   <Doughnut data={circleThreeYears} options={options} />
                 </div>
               </div>
@@ -142,12 +151,31 @@ const ShowBank = ({ basicCalculateSummary }) => {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-8">
             <div className="flex justify-center">
-              {/* วงกลม */}
-              <div className="relative w-36 h-36">
-                <div className="relative w-56 h-56">
+             {/* วงกลม ทุกปี*/}
+            <div className="flex justify-center">
+              <div className="flex items-center">
+                {/* Legend (left side) */}
+                <div className="space-y-2 mr-4">
+                  {circleAllYears.labels.map((label, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <div
+                        className="w-4 h-4"
+                        style={{
+                          backgroundColor:
+                            circleAllYears.datasets[0].backgroundColor[index],
+                        }}
+                      ></div>
+                      <span className="text-sm font-medium">{label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Chart (right side) */}
+                <div className="w-48 h-48">
                   <Doughnut data={circleAllYears} options={options} />
                 </div>
               </div>
+            </div>
             </div>
             <div className="text-lg space-y-4">
               <p className="text-[#35373F]">
