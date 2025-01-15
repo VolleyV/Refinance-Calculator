@@ -209,9 +209,9 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
             <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
               <input
                 type="number"
-                step="0.1"
                 name="interestRate"
                 value={interestRate}
+                step={0.1}
                 onChange={handleInterestRateChange}
                 className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
                 placeholder="3.25"
