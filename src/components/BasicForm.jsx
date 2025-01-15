@@ -211,6 +211,7 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
                 type="number"
                 name="interestRate"
                 value={interestRate}
+                step={0.1}
                 onChange={handleInterestRateChange}
                 className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
                 placeholder="3.25"

@@ -131,7 +131,7 @@ const BasicFormYear = ({
         คำนวณแบบอัตราดอกเบี้ยเดียว
       </h2>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
           {/* จำนวนเงินที่กู้ */}
           <div className="flex flex-col">
             <label
@@ -187,6 +187,7 @@ const BasicFormYear = ({
               <input
                 type="number"
                 name="interestRate"
+                step={0.1}
                 value={interestRate}
                 onChange={handleInterestRateChange}
                 className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
@@ -210,7 +211,7 @@ const BasicFormYear = ({
                 name="payment-duration"
                 onChange={handleDurationChange}
                 value={paymentDuration}
-                className="w-full text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full appearance-none"
+                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
               >
                 {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
                   <option key={year} value={year}>
