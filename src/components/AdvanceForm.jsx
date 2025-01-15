@@ -400,7 +400,7 @@ const AdvanceForm = ({
                   className="text-gray-700 font-medium text-lg mb-2"
                   htmlFor={`interest-rate-${index}`}
                 >
-                  อัตราดอกเบี้ย (%)
+                  อัตราดอกเบี้ย
                 </label>
                 <div className="relative">
                   <input
@@ -421,7 +421,7 @@ const AdvanceForm = ({
                       left: -20px; /* Move arrow buttons left */
                     }
                   `}</style>
-                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+                  <span className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                     %
                   </span>
                 </div>
@@ -446,7 +446,7 @@ const AdvanceForm = ({
                     }
                     className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                   />
-                  <span className="absolute righ  t-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                     บาท
                   </span>
                 </div>
