@@ -183,9 +183,10 @@ const BasicFormYear = ({
             <label className="text-gray-700 font-medium text-lg mb-1">
               อัตราดอกเบี้ย (%)
             </label>
-            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
+            <div className="flex item s-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
               <input
                 type="number"
+                step="0.1"
                 name="interestRate"
                 value={interestRate}
                 onChange={handleInterestRateChange}
