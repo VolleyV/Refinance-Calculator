@@ -403,7 +403,7 @@ const AdvanceForm = ({
                 </label>
                 <div className="relative">
                   <input
-                    type="text"
+                    type="number"
                     id={`interest-rate-${index}`}
                     value={interestRates[index]}
                     placeholder="3.25"
