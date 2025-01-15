@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { ToastContainer, toast, Bounce } from "react-toastify";
