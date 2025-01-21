@@ -93,19 +93,19 @@ const BasicYearTable = ({ basicYearData }) => {
   };
   return (
     <div className="container mx-auto mt-10 px-4">
-      <div className="relative flex items-center mb-5">
+      <div className="flex items-center justify-between w-full ">
         <button
           onClick={goBack}
-          className="absolute left-0 mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
         >
           ย้อนกลับ
         </button>
-        <h2 className="text-lg font-bold mx-auto">ตารางการคำนวณ</h2>
-      </div>
-      <div>
+        <h2 className="text-lg font-bold flex-grow text-center">
+          ตารางการคำนวณ
+        </h2>
         <button
           onClick={printPDF}
-          className="bg-blue-500 text-white p-2 rounded"
+          className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
         >
           Export PDF
         </button>
