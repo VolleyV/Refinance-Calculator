@@ -117,36 +117,37 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                 </div>
               </div>
             </div>
-            <div className="text-lg space-y-4">
-              <div className="flex justify-between items-start">
-                <p>
-                  ผ่อนเงินต้นไป <br />
-                  <span className="font-bold text-[#30A572] text-xl">
-                    {principalPortionAfterThreeYears.toLocaleString()}
-                  </span>{" "}
-                  <b>บาท</b>
-                </p>
-                <p className="text-right">
+            <div className="text-lg grid grid-cols-2 gap-8">
+              <div className="flex flex-col items-start space-y-4">
+                <p className="relative sm:pl-0 pl-5 sm:before:content-none before:content-['➤'] before:absolute before:left-0 before:text-[#30A572] before:text-xl">
                   ผ่อนดอกเบี้ยไป <br />
-                  <span className="font-bold text-[#30A572] text-xl">
+                  <span className="font-bold text-[#30A572] text-2xl">
                     {totalInterestThreeYears.toLocaleString()}
                   </span>{" "}
                   <b>บาท</b>
                 </p>
-              </div>
-              <div className="flex justify-between items-start">
-                <p>
-                  ค่าดอกเบี้ย
-                  <br />
-                  รวมค่าจดจำนองและค่าประกัน <br />
-                  <span className="font-bold text-[#30A572] text-xl">
+                <p className="relative sm:pl-0 pl-5 sm:before:content-none before:content-['➤'] before:absolute before:left-0 before:text-[#30A572] before:text-xl">
+                  ค่าดอกเบี้ยรวมค่า <br />
+                  จดจำนองและค่าประกัน <br />
+                  <span className="font-bold text-[#30A572] text-2xl">
                     {totalInsuranceMortgage.toLocaleString()}
                   </span>{" "}
                   <b>บาท</b>
                 </p>
-                <p className="text-right">
+              </div>
+
+              <div className="flex flex-col items-start space-y-4">
+                <p className="relative sm:pl-0 pl-5 sm:before:content-none before:content-['➤'] before:absolute before:left-0 before:text-[#30A572] before:text-xl">
+                  ผ่อนเงินต้นไป <br />
+                  <span className="font-bold text-[#30A572] text-2xl">
+                    {principalPortionAfterThreeYears.toLocaleString()}
+                  </span>{" "}
+                  <b>บาท</b>
+                </p>
+
+                <p className="relative sm:pl-0 pl-5 sm:before:content-none before:content-['➤'] before:absolute before:left-0 before:text-[#30A572] before:text-xl">
                   เหลือเงินต้นต้องผ่อนอีก <br />
-                  <span className="font-bold text-[#30A572]">
+                  <span className="font-bold text-[#30A572] text-2xl">
                     {totalLoanRemaining.toLocaleString()}
                   </span>{" "}
                   <b>บาท</b>

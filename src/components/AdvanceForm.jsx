@@ -316,7 +316,6 @@ const AdvanceForm = ({
                 className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                 onChange={handleLoanAmountChange}
                 value={loanAmount}
-                placeholder="1,500,000"
               />
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                 บาท
@@ -368,7 +367,6 @@ const AdvanceForm = ({
                   type="text"
                   id={`start-term-${index}`}
                   value={startTerm[index]}
-                  placeholder="งวดที่เริ่ม"
                   onChange={(e) => {
                     const updatedStartTerm = [...startTerm];
                     updatedStartTerm[index] = e.target.value;
@@ -390,7 +388,6 @@ const AdvanceForm = ({
                   type="number"
                   id={`end-term-${index}`}
                   value={endTerm[index]}
-                  placeholder="ถึงงวดที่"
                   onChange={(e) => handleEndTermChange(index, e.target.value)}
                   className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                 />
@@ -410,7 +407,6 @@ const AdvanceForm = ({
                     step="0.1"
                     id={`interest-rate-${index}`}
                     value={interestRates[index]}
-                    placeholder="3.25"
                     onChange={(e) =>
                       handleInterestRateChange(index, e.target.value)
                     }
@@ -442,7 +438,6 @@ const AdvanceForm = ({
                     type="text"
                     id={`monthly-payment-${index}`}
                     value={monthlyPayment[index]}
-                    placeholder="12,000"
                     onChange={(e) =>
                       handleMonthlyPaymentChange(index, e.target.value)
                     }
@@ -489,7 +484,6 @@ const AdvanceForm = ({
               <input
                 type="text"
                 id="insurance-input"
-                placeholder="กรอกจำนวนเงิน"
                 value={insurance}
                 onChange={handleInsuranceChange}
                 className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
@@ -509,7 +503,6 @@ const AdvanceForm = ({
               <input
                 type="text"
                 id="additional-input2"
-                placeholder="กรอกจำนวนเงิน"
                 value={mortgageFee}
                 onChange={handleMorgageFeeChange}
                 className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
@@ -546,6 +539,14 @@ const AdvanceForm = ({
         </div>
       </form>
       <ToastContainer />
+      <div className="flex items-center justify-between w-full mt-4">
+        <button className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+          ย้อนกลับ
+        </button>
+        <button className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+          เปลี่ยนหน้า
+        </button>
+      </div>
     </div>
   );
 };

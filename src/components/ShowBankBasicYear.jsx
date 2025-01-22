@@ -117,25 +117,25 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               <div className="flex justify-between items-center">
                 <p>
                   ผ่อนเงินต้นไป <br />
-                  <span className="font-bold text-[#30A572] text-xl">
+                  <span className="font-bold text-[#30A572] text-2xl">
                     {principalPortionAfterThreeYears.toLocaleString()}
                   </span>{" "}
-                  บาท
+                  <b>บาท</b>
                 </p>
                 <p>
                   ผ่อนดอกเบี้ยไป <br />
-                  <span className="font-bold text-[#30A572] text-xl">
+                  <span className="font-bold text-[#30A572] text-2xl">
                     {totalInterestThreeYears.toLocaleString()}
                   </span>{" "}
-                  บาท
+                  <b>บาท</b>
                 </p>
               </div>
               <p>
                 เหลือเงินต้นต้องผ่อนอีก <br />
-                <span className="font-bold text-[#30A572] text-xl">
+                <span className="font-bold text-[#30A572] text-2xl">
                   {principalAfterThreeYears.toLocaleString()}
                 </span>{" "}
-                บาท
+                <b>บาท</b>
               </p>
             </div>
           </div>
@@ -182,17 +182,17 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               <p className="text-[#35373F]">
                 รวมเงินผ่อนทั้งหมด
                 <br />
-                <span className="font-bold text-[#30A572] text-xl">
+                <span className="font-bold text-[#30A572] text-2xl">
                   {totalMonthlyPayment.toLocaleString()}
-                </span>
-                <span> บาท</span>
+                </span>{" "}
+                <b>บาท</b>
               </p>
               <p>
                 รวมค่าดอกเบี้ยตลอดระยะเวลาผ่อน <br />
-                <span className="font-bold text-[#30A572] text-xl">
+                <span className="font-bold text-[#30A572] text-2xl">
                   {remainingInterestText.toLocaleString()}
-                </span>
-                <span> บาท</span>
+                </span>{" "}
+                <b>บาท</b>
               </p>
             </div>
           </div>
