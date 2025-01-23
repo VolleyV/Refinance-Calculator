@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { ToastContainer, toast, Bounce } from "react-toastify";
@@ -131,40 +132,38 @@ const BasicFormYear = ({
         คำนวณแบบอัตราดอกเบี้ยเดียว
       </h2>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* จำนวนเงินที่กู้ */}
-          <div className="flex flex-col">
+          <div className="flex flex-col space-y-2">
             <label
-              className="text-gray-700 font-medium text-lg mb-2"
+              className="text-gray-700 font-medium text-lg"
               htmlFor="Loan-Amount"
             >
               จำนวนเงินที่กู้ (บาท)
             </label>
-            <div className="relative border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
+            <div className="relative">
               <input
                 type="text"
                 name="Loan-Amount"
-                className="w-full text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full pr-8"
+                className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                 onChange={handleLoanAmountChange}
                 value={loanAmount}
-                placeholder="1,500,000"
               />
-              <span className="text-gray-700 font-medium text-lg ml-2">
+              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                 บาท
               </span>
             </div>
           </div>
 
-
           {/* วันที่เริ่ม */}
-          <div className="flex flex-col">
+          <div className="flex flex-col space-y-2">
             <label
-              className="text-gray-700 font-medium text-lg mb-2"
+              className="text-gray-700 font-medium text-lg"
               htmlFor="startDate"
             >
               วันที่เริ่ม ({dateText})
             </label>
-            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500">
+            <div className="relative">
               <input
                 type="date"
                 id="startDate"
@@ -172,26 +171,26 @@ const BasicFormYear = ({
                 value={startDate}
                 ref={startDateRef}
                 onChange={handleStartDateChange}
-                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 py-2 h-[48px]"
+                className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
               />
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           {/* อัตราดอกเบี้ย (%) */}
-          <div className="flex flex-col">
-            <label className="text-gray-700 font-medium text-lg mb-1">
+          <div className="flex flex-col space-y-2">
+            <label className="text-gray-700 font-medium text-lg">
               อัตราดอกเบี้ย (%)
             </label>
-            <div className="relative border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
+            <div className="relative">
               <input
                 type="number"
                 name="interestRate"
+                step={0.1}
                 value={interestRate}
                 onChange={handleInterestRateChange}
-                className="flex-grow text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full"
-                placeholder="3.25"
+                className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
               />
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                 %
@@ -200,21 +199,28 @@ const BasicFormYear = ({
           </div>
 
           {/* เลือกระยะเวลาในการผ่อน */}
-          <div className="flex flex-col">
+          <div className="flex flex-col space-y-2">
             <label
               htmlFor="payment-duration"
-              className="text-gray-700 font-medium text-lg mb-1"
+              className="text-gray-700 font-medium text-lg"
             >
               เลือกระยะเวลาในการผ่อน
             </label>
-            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 h-[48px]">
+            <div className="relative">
               <select
                 id="payment-duration"
                 name="payment-duration"
                 onChange={handleDurationChange}
                 value={paymentDuration}
-                className="w-full text-2xl font-bold text-gray-900 focus:outline-none px-2 h-full appearance-none"
+                className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
               >
+                <style jsx>{`
+                  input[type="number"]::-webkit-inner-spin-button,
+                  input[type="number"]::-webkit-outer-spin-button {
+                    position: relative;
+                    left: -20px; /* Move arrow buttons left */
+                  }
+                `}</style>
                 {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
                   <option key={year} value={year}>
                     {year} ปี
@@ -254,7 +260,6 @@ const BasicFormYear = ({
           </div>
         </div>
       </form>
-
       <ToastContainer />
     </div>
   );
