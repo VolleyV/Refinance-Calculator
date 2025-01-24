@@ -215,7 +215,15 @@ function App() {
                   />
                 )}
                 {!isLoading && advanceFormData && (
-                  <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
+                  <>
+                    <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
+                    <div className="bg-[#D3D8E2] p-4 text-center mt-4 w-full">
+                      <p>
+                        หากต้องการเปรียบเทียบผลการคำนวณ กรุณาคลิกที่นี่
+                        เพื่อทำการบันทึกผลไว้ในตาราง
+                      </p>
+                    </div>
+                  </>
                 )}
               </div>
             }

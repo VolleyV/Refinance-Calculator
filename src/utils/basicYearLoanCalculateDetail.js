@@ -66,6 +66,7 @@ export const basicYearLoanCalculateDetail = (basicYearData) => {
       month: monthsElapsed + 1,
       date: initialStartDate.toISOString(),
       interest: parseFloat(monthlyInterest.toFixed(2)),
+      paymentDuration: paymentDuration,
       principalPortion: parseFloat(principalPortion.toFixed(2)),
       remainingPrincipal: parseFloat(principalRemaining.toFixed(2)),
       monthlyPayment: parseFloat(calculatedMonthlyPayment.toFixed(2)),
@@ -83,6 +84,7 @@ export const basicYearLoanCalculateDetail = (basicYearData) => {
 export const calculateBasicYearThreeYearSummary = (details) => {
   const threeYears = 3 * 12;
   const limitedDetails = details.slice(0, threeYears);
+  const paymentDuration = details[0]?.paymentDuration || 0;
 
   const principalAfterThreeYears =
     limitedDetails[limitedDetails.length - 1]?.remainingPrincipal || 0;
@@ -105,6 +107,7 @@ export const calculateBasicYearThreeYearSummary = (details) => {
   return {
     principalAfterThreeYears: Math.trunc(principalAfterThreeYears),
     totalInterestThreeYears: Math.trunc(totalInterestThreeYears),
+    paymentDuration: paymentDuration,
     principalPortionAfterThreeYears: Math.trunc(
       principalPortionAfterThreeYears
     ),
