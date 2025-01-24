@@ -112,27 +112,37 @@ const ShowBank = ({ basicCalculateSummary }) => {
             </div>
             <div className="text-lg space-y-4">
               <div className="flex justify-between items-center">
+                {/*เส้นปะ*/}
+                {/* <div className="border-2 border-dashed  rounded-lg border-gray-500 p-4 w-1/2">
+                  <p>
+                    ผ่อนเงินต้นไป <br />
+                    <span className="font-bold text-[#30A572] text-xl">
+                      {principalPortionAfterThreeYears.toLocaleString()}
+                    </span>{" "}
+                    บาท
+                  </p>
+                </div> */}
                 <p>
+                  <p>
+                    ผ่อนดอกเบี้ยไป <br />{" "}
+                    <span className="font-bold text-[#30A572] text-2xl">
+                      {totalInterestThreeYears.toLocaleString()}
+                    </span>{" "}
+                    <b>บาท</b>
+                  </p>
                   ผ่อนเงินต้นไป <br />
-                  <span className="font-bold text-[#30A572] text-xl">
+                  <span className="font-bold text-[#30A572] text-2xl">
                     {principalPortionAfterThreeYears.toLocaleString()}
                   </span>{" "}
-                  บาท
-                </p>
-                <p>
-                  ผ่อนดอกเบี้ยไป <br />{" "}
-                  <span className="font-bold text-[#30A572] text-xl">
-                    {totalInterestThreeYears.toLocaleString()}
-                  </span>{" "}
-                  บาท
+                  <b>บาท</b>
                 </p>
               </div>
               <p>
                 เหลือเงินต้นต้องผ่อนอีก <br />{" "}
-                <span className="font-bold text-[#30A572] text-xl">
+                <span className="font-bold text-[#30A572] text-2xl">
                   {principalAfterThreeYears.toLocaleString()}
                 </span>{" "}
-                บาท
+                <b>บาท</b>
               </p>
             </div>
           </div>
@@ -151,48 +161,67 @@ const ShowBank = ({ basicCalculateSummary }) => {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-8">
             <div className="flex justify-center">
-             {/* วงกลม ทุกปี*/}
-            <div className="flex justify-center">
-              <div className="flex items-center">
-                {/* Legend (left side) */}
-                <div className="space-y-2 mr-4">
-                  {circleAllYears.labels.map((label, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <div
-                        className="w-4 h-4"
-                        style={{
-                          backgroundColor:
-                            circleAllYears.datasets[0].backgroundColor[index],
-                        }}
-                      ></div>
-                      <span className="text-sm font-medium">{label}</span>
-                    </div>
-                  ))}
-                </div>
+              {/* วงกลม ทุกปี*/}
+              <div className="flex justify-center">
+                <div className="flex items-center">
+                  {/* Legend (left side) */}
+                  <div className="space-y-2 mr-4">
+                    {circleAllYears.labels.map((label, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <div
+                          className="w-4 h-4"
+                          style={{
+                            backgroundColor:
+                              circleAllYears.datasets[0].backgroundColor[index],
+                          }}
+                        ></div>
+                        <span className="text-sm font-medium">{label}</span>
+                      </div>
+                    ))}
+                  </div>
 
-                {/* Chart (right side) */}
-                <div className="w-48 h-48">
-                  <Doughnut data={circleAllYears} options={options} />
+                  {/* Chart (right side) */}
+                  <div className="w-48 h-48">
+                    <Doughnut data={circleAllYears} options={options} />
+                  </div>
                 </div>
               </div>
             </div>
-            </div>
             <div className="text-lg space-y-4">
+              {/* เส้นปะ */}
+              {/* <div className="border-2 border-dashed  rounded-lg border-gray-500 p-3 w-2/3">
+                <p>
+                  ค่าดอกเบี้ยตลอดการผ่อน <br />
+                  <span className="font-bold text-[#30A572] text-xl">
+                    {remainingInterestText.toLocaleString()}
+                  </span>
+                  <span> บาท</span>
+                </p>
+              </div>
+              <div className="p-3">
+                <p className="text-[#35373F]">
+                  รวมเงินผ่อนทั้งหมด
+                  <br />
+                  <span className="font-bold text-[#30A572] text-xl">
+                    {totalMonthlyPayment.toLocaleString()}
+                  </span>
+                  <span> บาท</span>
+                </p>
+              </div> */}
+              <p>
+                ค่าดอกเบี้ยตลอดการผ่อน <br />
+                <span className="font-bold text-[#30A572] text-2xl">
+                  {remainingInterestText.toLocaleString()}
+                </span>
+                <b>บาท</b>
+              </p>
               <p className="text-[#35373F]">
                 รวมเงินผ่อนทั้งหมด
                 <br />
-                <span className="font-bold text-[#30A572] text-xl">
+                <span className="font-bold text-[#30A572] text-2xl">
                   {totalMonthlyPayment.toLocaleString()}
                 </span>
-                <span> บาท</span>
-              </p>
-
-              <p>
-                รวมค่าดอกเบี้ยตลอดระยะเวลาผ่อน <br />
-                <span className="font-bold text-[#30A572] text-xl">
-                  {remainingInterestText.toLocaleString()}
-                </span>
-                <span> บาท</span>
+                <b>บาท</b>
               </p>
             </div>
           </div>
