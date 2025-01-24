@@ -203,7 +203,8 @@ const AdvanceForm = ({
 
         if (monthlyPaymentNum <= monthlyInterestOnly) {
           toast.error(
-            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${i + 1
+            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
+              i + 1
             } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`,
             {
               position: "top-center",
@@ -348,7 +349,7 @@ const AdvanceForm = ({
           </div>
         </div>
 
-        <div className="relative border border-[#082044] rounded-md p-4 mt-8">
+        <div className="relative border-2 border-dashed border-[#bbbbbb] rounded-md p-4 mt-8">
           <div className="absolute -top-3 left-4 bg-white px-4 text-gray-700 font-medium">
             อัตราดอกเบี้ย
           </div>
@@ -356,7 +357,7 @@ const AdvanceForm = ({
             {Array.from({ length: visibleRows }).map((_, index) => (
               <div
                 key={index}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center relative"
+                className="grid grid-cols- sm:grid-cols-4 lg:grid-cols-4 gap-4 items-center relative whitespace-nowrap"
               >
                 {/* อัตราดอกเบี้ยที่ */}
                 {/* สำหรับ PC และ Tablet */}
@@ -365,14 +366,14 @@ const AdvanceForm = ({
                     className="text-gray-700 font-medium text-lg absolute bottom-[-50px]"
                     htmlFor={`start-term-${index}`}
                   >
-                    อัตราดอกเบี้ยที่1
+                    อัตราดอกเบี้ยที่{index + 1}
                   </label>
                 </div>
 
                 {/* สำหรับ Mobile */}
                 <div className="flex items-center sm:hidden">
                   <div className="bg-blue-900 text-white font-medium py-1 px-4 rounded-md relative">
-                    อัตราที่ 1
+                    อัตราที่ {index + 1}
                     <hr className="border-gray-300 absolute bottom-0 left-1 w-[350%] border-[#082044]" />
                   </div>
                 </div>
@@ -397,12 +398,12 @@ const AdvanceForm = ({
                       className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                     />
                     <style jsx>{`
-              input[type="number"]::-webkit-inner-spin-button,
-              input[type="number"]::-webkit-outer-spin-button {
-                position: relative;
-                left: -20px; /* Move arrow buttons left */
-              }
-            `}</style>
+                      input[type="number"]::-webkit-inner-spin-button,
+                      input[type="number"]::-webkit-outer-spin-button {
+                        position: relative;
+                        left: -20px; /* Move arrow buttons left */
+                      }
+                    `}</style>
                     <span className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                       %
                     </span>
@@ -436,7 +437,7 @@ const AdvanceForm = ({
                     className="text-gray-700 font-medium text-lg mb-2"
                     htmlFor={`monthly-payment-${index}`}
                   >
-                    จำนวนเงินที่จะผ่อน
+                    เงินผ่อนต่อเดือน
                   </label>
                   <div className="relative">
                     <input
@@ -479,40 +480,36 @@ const AdvanceForm = ({
 
             {/* ปุ่มสำหรับ Mobile */}
             <div className="grid grid-cols-1 gap-6 mt-6">
-  {/* ปุ่ม +/- สำหรับ Mobile */}
-  <div className="relative sm:hidden mt-4">
-    <div className="absolute inset-x-0 bottom-[-32px] flex justify-center">
-      {visibleRows < 5 && (
-        <div className="relative">
-          {/* เส้นสีขาว */}
-          <div
-            className="absolute top-1/2 left-[-12px] right-[-12px] h-[2px] bg-white z-10 transform -translate-y-1/2"
-          ></div>
-          {/* ปุ่ม + */}
-          <button
-            type="button"
-            className="relative bg-[#082044] text-white w-8 h-8 rounded-md flex items-center justify-center z-20"
-            onClick={addRow}
-          >
-            +
-          </button>
-        </div>
-      )}
-      {visibleRows > 1 && (
-        <div className="relative ml-2">
-          {/* เส้นสีขาว */}
-          <div
-            className="absolute top-1/2 left-[-12px] right-[-12px] h-[2px] bg-white z-10 transform -translate-y-1/2"
-          ></div>
-          {/* ปุ่ม - */}
-          <button
-            type="button"
-            className="relative bg-[#82828E] text-white w-8 h-8 rounded-md flex items-center justify-center z-20"
-            onClick={removeRow}
-          >
-            -
-          </button>
-        </div>
+              {/* ปุ่ม +/- สำหรับ Mobile */}
+              <div className="relative sm:hidden mt-4">
+                <div className="absolute inset-x-0 bottom-[-32px] flex justify-center">
+                  {visibleRows < 5 && (
+                    <div className="relative">
+                      {/* เส้นสีขาว */}
+                      <div className="absolute top-1/2 left-[-12px] right-[-12px] h-[2px] bg-white z-10 transform -translate-y-1/2"></div>
+                      {/* ปุ่ม + */}
+                      <button
+                        type="button"
+                        className="relative bg-[#082044] text-white w-8 h-8 rounded-md flex items-center justify-center z-20"
+                        onClick={addRow}
+                      >
+                        +
+                      </button>
+                    </div>
+                  )}
+                  {visibleRows > 1 && (
+                    <div className="relative ml-2">
+                      {/* เส้นสีขาว */}
+                      <div className="absolute top-1/2 left-[-12px] right-[-12px] h-[2px] bg-white z-10 transform -translate-y-1/2"></div>
+                      {/* ปุ่ม - */}
+                      <button
+                        type="button"
+                        className="relative bg-[#82828E] text-white w-8 h-8 rounded-md flex items-center justify-center z-20"
+                        onClick={removeRow}
+                      >
+                        -
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
@@ -520,14 +517,13 @@ const AdvanceForm = ({
           </div>
         </div>
 
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <div className="flex gap-4 mt-4">
           {/* ค่าประกัน */}
-          <div className="flex flex-col space-y-2">
+          <div className="flex-1">
             <label className="text-gray-700 font-medium text-lg">
               ค่าประกัน
             </label>
-            <div className="relative">
+            <div className="relative mt-2">
               <input
                 type="text"
                 id="insurance-input"
@@ -542,11 +538,11 @@ const AdvanceForm = ({
           </div>
 
           {/* ค่าจดจำนอง */}
-          <div className="flex flex-col space-y-2">
+          <div className="flex-1">
             <label className="text-gray-700 font-medium text-lg">
               ค่าจดจำนอง
             </label>
-            <div className="relative">
+            <div className="relative mt-2">
               <input
                 type="text"
                 id="additional-input2"
@@ -584,8 +580,6 @@ const AdvanceForm = ({
             </button>
           </div>
         </div>
-
-
       </form>
       <ToastContainer />
       <div className="flex items-center justify-between w-full mt-4">
