@@ -60,6 +60,7 @@ export const basicLoanCalculateDetail = (data) => {
 export const calculateThreeYearSummary = (details) => {
   const threeYears = 3 * 12;
   const limitedDetails = details.slice(0, threeYears);
+  const monthlyPayment = details[0]?.monthlyPayment || 0;
 
   const principalAfterThreeYears =
     limitedDetails[limitedDetails.length - 1]?.remainingPrincipal || 0;
@@ -82,6 +83,7 @@ export const calculateThreeYearSummary = (details) => {
   return {
     principalAfterThreeYears: Math.trunc(principalAfterThreeYears),
     totalInterestThreeYears: Math.trunc(totalInterestThreeYears),
+    monthlyPayment: Math.trunc(monthlyPayment),
     principalPortionAfterThreeYears: Math.trunc(
       principalPortionAfterThreeYears
     ),

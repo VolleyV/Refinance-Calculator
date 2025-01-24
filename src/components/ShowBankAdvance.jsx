@@ -117,16 +117,27 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                 </div>
               </div>
             </div>
-            <div className="text-lg grid grid-cols-2 gap-8">
-              <div className="flex flex-col items-start space-y-4">
-                <p className="relative sm:pl-0 pl-5 sm:before:content-none before:content-['➤'] before:absolute before:left-0 before:text-[#30A572] before:text-xl">
+            <div className="text-lg space-y-4">
+              <div className="flex justify-between items-center">
+                <p className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md">
                   ผ่อนดอกเบี้ยไป <br />
                   <span className="font-bold text-[#30A572] text-2xl">
                     {totalInterestThreeYears.toLocaleString()}
                   </span>{" "}
                   <b>บาท</b>
                 </p>
-                <p className="relative sm:pl-0 pl-5 sm:before:content-none before:content-['➤'] before:absolute before:left-0 before:text-[#30A572] before:text-xl">
+
+                <p className="flex-col p-4">
+                  ผ่อนเงินต้นไป <br />
+                  <span className="font-bold text-[#30A572] text-2xl">
+                    {principalPortionAfterThreeYears.toLocaleString()}
+                  </span>{" "}
+                  <b>บาท</b>
+                </p>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <p className="p-4">
                   ค่าดอกเบี้ยรวมค่า <br />
                   จดจำนองและค่าประกัน <br />
                   <span className="font-bold text-[#30A572] text-2xl">
@@ -134,18 +145,8 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                   </span>{" "}
                   <b>บาท</b>
                 </p>
-              </div>
 
-              <div className="flex flex-col items-start space-y-4">
-                <p className="relative sm:pl-0 pl-5 sm:before:content-none before:content-['➤'] before:absolute before:left-0 before:text-[#30A572] before:text-xl">
-                  ผ่อนเงินต้นไป <br />
-                  <span className="font-bold text-[#30A572] text-2xl">
-                    {principalPortionAfterThreeYears.toLocaleString()}
-                  </span>{" "}
-                  <b>บาท</b>
-                </p>
-
-                <p className="relative sm:pl-0 pl-5 sm:before:content-none before:content-['➤'] before:absolute before:left-0 before:text-[#30A572] before:text-xl">
+                <p className="flex-col mt-7">
                   เหลือเงินต้นต้องผ่อนอีก <br />
                   <span className="font-bold text-[#30A572] text-2xl">
                     {totalLoanRemaining.toLocaleString()}
@@ -166,7 +167,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
             จะผ่อนหมดต้องใช้เวลา {remainingDateText}
           </h2>
           <p className="text-[#82828E] text-lg text-center mt-2">
-            ({lastPaymentText})
+            (จะผ่อนเสร็จวันที่ {lastPaymentText})
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-8">
             <div className="flex justify-center">
@@ -197,6 +198,15 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
               </div>
             </div>
             <div className="text-lg space-y-4">
+              <p className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md w-60">
+                ค่าดอกเบี้ยตลอดการผ่อน <br />
+                <span className="font-bold text-[#30A572] text-xl">
+                  {remainingInterestText.toLocaleString()}
+                </span>
+                <span>
+                  <b>บาท</b>
+                </span>
+              </p>
               <p>
                 รวมเงินผ่อนทั้งหมด
                 <br />
@@ -205,15 +215,6 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                 </span>
                 <span>
                   {" "}
-                  <b>บาท</b>
-                </span>
-              </p>
-              <p>
-                รวมค่าดอกเบี้ยตลอดระยะเวลาผ่อน <br />
-                <span className="font-bold text-[#30A572] text-xl">
-                  {remainingInterestText.toLocaleString()}
-                </span>
-                <span>
                   <b>บาท</b>
                 </span>
               </p>

@@ -25,6 +25,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
     totalInterestThreeYears,
     principalPortionAfterThreeYears,
     totalMonthlyPaymentThreeYears,
+    paymentDuration,
     monthlyPayment,
     totalYears,
     totalMonths,
@@ -77,14 +78,26 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
 
   return (
     <div className="relative p-6 max-w-4xl mx-auto rounded-lg mt-8 bg-white">
+      <div>
+        <h2 className="text-xl text-[#082044] text-center">
+          หากต้องการผ่อนหมดภายใน {paymentDuration} ปี
+        </h2>
+        <h2 className="text-4xl font-bold text-[#082044] text-center mt-4">
+          ต้องผ่อนอย่างน้อยเดือนละ {monthlyPayment.toLocaleString()} บาท
+        </h2>
+      </div>
+
+      {/* เส้นแบ่ง */}
+      <div className="border-t-[3px] border-[#082044] my-20 mt-10 mb-10"></div>
+
       {/* ส่วนข้อมูล */}
       <div className="flex flex-col">
         {/* ส่วนข้อมูลระยะเวลา 3 ปีแรก */}
         <div>
           <h2 className="text-2xl font-bold text-[#082044] text-center">
-            ผ่อน 3 ปี แรก ({monthlyPayment.toLocaleString()} บาท/เดือน)
+            ผ่อน 3 ปี แรก
           </h2>
-          <p className="text-[#82828E] text-lg text-center mt-2">
+          <p className="text-[#082044] text-lg text-center mt-2">
             (จำนวนเงิน {totalMonthlyPaymentThreeYears.toLocaleString()} บาท)
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-8">
@@ -115,28 +128,40 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
             </div>
             <div className="text-lg space-y-4">
               <div className="flex justify-between items-center">
-                <p>
+                <p className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md">
+                  ผ่อนดอกเบี้ยไป <br />{" "}
+                  <span className="font-bold text-[#30A572] text-2xl">
+                    {totalInterestThreeYears.toLocaleString()}
+                  </span>{" "}
+                  <b>บาท</b>
+                </p>
+
+                <p className="p-4">
                   ผ่อนเงินต้นไป <br />
                   <span className="font-bold text-[#30A572] text-2xl">
                     {principalPortionAfterThreeYears.toLocaleString()}
                   </span>{" "}
                   <b>บาท</b>
                 </p>
-                <p>
-                  ผ่อนดอกเบี้ยไป <br />
+              </div>
+              <div className="flex justify-between items-center">
+                <p className="flex-col p-4">
+                  ดอกเบี้ยรวมค่า
+                  <br />
+                  จดจำนองและค่าประกัน <br />{" "}
                   <span className="font-bold text-[#30A572] text-2xl">
-                    {totalInterestThreeYears.toLocaleString()}
+                    {principalAfterThreeYears.toLocaleString()}
+                  </span>{" "}
+                  <b>บาท</b>
+                </p>
+                <p className="flex-col mt-7">
+                  เหลือเงินต้นต้องผ่อนอีก <br />{" "}
+                  <span className="font-bold text-[#30A572] text-2xl">
+                    {principalAfterThreeYears.toLocaleString()}
                   </span>{" "}
                   <b>บาท</b>
                 </p>
               </div>
-              <p>
-                เหลือเงินต้นต้องผ่อนอีก <br />
-                <span className="font-bold text-[#30A572] text-2xl">
-                  {principalAfterThreeYears.toLocaleString()}
-                </span>{" "}
-                <b>บาท</b>
-              </p>
             </div>
           </div>
         </div>
@@ -147,10 +172,10 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
         {/* ส่วนข้อมูลจนถึงสิ้นสุดการชำระ */}
         <div>
           <h2 className="text-2xl font-bold text-[#082044] text-center">
-            จะผ่อนหมดต้องใช้เวลา {remainingDateText}
+            ผ่อนจนเสร็จสิ้น
           </h2>
-          <p className="text-[#82828E] text-lg text-center mt-2">
-            ({lastPaymentText})
+          <p className="text-[#082044] text-lg text-center mt-2">
+            (จำนวณเงิน {remainingInterestText.toLocaleString()} บาท)
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-8">
             {/* วงกลม ทุกปี*/}
@@ -179,20 +204,18 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               </div>
             </div>
             <div className="text-lg space-y-4">
-              <p className="text-[#35373F]">
-                รวมเงินผ่อนทั้งหมด
-                <br />
+              <p className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md w-60">
+                ค่าดอกเบี้ยตลอดการผ่อน <br />
                 <span className="font-bold text-[#30A572] text-2xl">
                   {totalMonthlyPayment.toLocaleString()}
                 </span>{" "}
                 <b>บาท</b>
               </p>
-              <p>
-                รวมค่าดอกเบี้ยตลอดระยะเวลาผ่อน <br />
+              <p className="p-4">
+                จะผ่อนเสร็จวันที่ <br />
                 <span className="font-bold text-[#30A572] text-2xl">
-                  {remainingInterestText.toLocaleString()}
+                  {lastPaymentText}
                 </span>{" "}
-                <b>บาท</b>
               </p>
             </div>
           </div>

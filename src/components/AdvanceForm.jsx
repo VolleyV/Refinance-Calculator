@@ -40,6 +40,18 @@ const AdvanceForm = ({
 
   const startDateRef = useRef(null);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640); // กำหนด threshold สำหรับ mobile
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleStartDateChange = (event) => {
     setStartDate(event.target.value);
     setDateText(
@@ -351,7 +363,7 @@ const AdvanceForm = ({
 
         <div className="relative border-2 border-dashed border-[#bbbbbb] rounded-md p-4 mt-8">
           <div className="absolute -top-3 left-4 bg-white px-4 text-gray-700 font-medium">
-            อัตราดอกเบี้ย
+            กรอบอัตราดอกเบี้ย
           </div>
           <div className="grid grid-cols-1 gap-6 mt-6">
             {Array.from({ length: visibleRows }).map((_, index) => (
@@ -380,12 +392,14 @@ const AdvanceForm = ({
 
                 {/* อัตราดอกเบี้ย */}
                 <div className="flex flex-col justify-center relative">
-                  <label
-                    className="text-gray-700 font-medium text-lg mb-2"
-                    htmlFor={`interest-rate-${index}`}
-                  >
-                    อัตราดอกเบี้ย
-                  </label>
+                  {(index === 0 || isMobile) && ( // แสดง label ในบรรทัดแรกหรือถ้าเป็น Mobile */}
+                    <label
+                      className="text-gray-700 font-medium text-lg mb-2"
+                      htmlFor={`interest-rate-${index}`}
+                    >
+                      อัตราดอกเบี้ย
+                    </label>
+                  )}
                   <div className="relative">
                     <input
                       type="number"
@@ -412,12 +426,14 @@ const AdvanceForm = ({
 
                 {/* งวดที่เริ่ม */}
                 <div className="flex flex-col justify-center">
-                  <label
-                    className="text-gray-700 font-medium text-lg mb-2"
-                    htmlFor={`start-term-${index}`}
-                  >
-                    งวดที่เริ่ม
-                  </label>
+                  {(index === 0 || isMobile) && ( // แสดง label ในบรรทัดแรกหรือถ้าเป็น Mobile */}
+                    <label
+                      className="text-gray-700 font-medium text-lg mb-2"
+                      htmlFor={`start-term-${index}`}
+                    >
+                      งวดที่เริ่ม
+                    </label>
+                  )}
                   <input
                     type="text"
                     id={`start-term-${index}`}
@@ -431,14 +447,16 @@ const AdvanceForm = ({
                   />
                 </div>
 
-                {/* จำนวนเงินที่จะผ่อน */}
+                {/* เงินผ่อนต่อเดือน */}
                 <div className="flex flex-col justify-center relative">
-                  <label
-                    className="text-gray-700 font-medium text-lg mb-2"
-                    htmlFor={`monthly-payment-${index}`}
-                  >
-                    เงินผ่อนต่อเดือน
-                  </label>
+                  {(index === 0 || isMobile) && ( // แสดง label ในบรรทัดแรกหรือถ้าเป็น Mobile */}
+                    <label
+                      className="text-gray-700 font-medium text-lg mb-2"
+                      htmlFor={`monthly-payment-${index}`}
+                    >
+                      เงินผ่อนต่อเดือน
+                    </label>
+                  )}
                   <div className="relative">
                     <input
                       type="text"
@@ -556,6 +574,7 @@ const AdvanceForm = ({
             </div>
           </div>
         </div>
+
 
         <div className="mt-8 flex flex-wrap justify-between items-center gap-4">
           {/* ปุ่มคำนวณ */}

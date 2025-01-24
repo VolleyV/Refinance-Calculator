@@ -242,6 +242,47 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
           </div>
         </div>
 
+        <div className="flex gap-4 mt-4">
+          {/* ค่าประกัน */}
+          <div className="flex-1">
+            <label className="text-gray-700 font-medium text-lg">
+              ค่าประกัน (ถ้ามี)
+            </label>
+            <div className="relative mt-2">
+              <input
+                type="text"
+                id="insurance-input"
+                /*value={insurance}
+                onChange={handleInsuranceChange}*/
+                className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
+              />
+              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+                บาท
+              </span>
+            </div>
+          </div>
+
+          {/* ค่าจดจำนอง */}
+          <div className="flex-1">
+            <label className="text-gray-700 font-medium text-lg">
+              ค่าจดจำนอง (ถ้ามี)
+            </label>
+            <div className="relative mt-2">
+              <input
+                type="text"
+                id="additional-input2"
+                /*value={mortgageFee}
+                onChange={handleMorgageFeeChange}*/
+                className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
+              />
+              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+                บาท
+              </span>
+            </div>
+          </div>
+        </div>
+
+
         <div className="mt-8 flex flex-wrap justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}
           <div className="flex-1 flex justify-start">
