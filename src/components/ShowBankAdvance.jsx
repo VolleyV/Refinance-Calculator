@@ -82,7 +82,17 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
   return (
     <div className="relative p-6 max-w-4xl mx-auto rounded-lg mt-8 bg-white">
 
-        
+        <div >
+          <h2 className="text-xl text-[#082044] text-center">
+            หากผ่อนเดือนละ 11,000 บาท
+          </h2>
+          <h2 className="text-4xl font-bold text-[#082044] text-center mt-4">
+            จะผ่อนจบ ต้องใช้เวลา 12 ปี 6 เดือน
+          </h2>
+        </div>
+
+        {/* เส้นแบ่ง */}
+        <div className="border-t-[3px] border-[#082044] my-20 mt-10 mb-10"></div>
 
         {/* ส่วนข้อมูล */}
         <div className="flex flex-col">
