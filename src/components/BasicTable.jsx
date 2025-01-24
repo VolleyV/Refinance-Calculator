@@ -91,7 +91,7 @@ const BasicTable = ({ data }) => {
 
       // Set scale for better quality and larger text
       const canvas = await html2canvas(tableElement, {
-        scale: 3, // Larger values (e.g., 3 or 4) make text bigger and sharper
+        scale: 2, // Larger values (e.g., 3 or 4) make text bigger and sharper
       });
 
       const imgData = canvas.toDataURL("image/png");
