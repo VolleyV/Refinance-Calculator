@@ -57,14 +57,13 @@ export const advanceLoanCalculateDetail = (advanceData) => {
       const start = parseInt(startTerm[i]) || 0;
       const end = parseInt(endTerm[i]) || Infinity;
 
-      if (monthsElapsed + 1 >= start && monthsElapsed + 1 <= end) {
+      if (monthsElapsed + 1 >= start) {
         currentInterestRate =
           parseFloat(interestRates[i]?.replace(/,/g, "")) / 100 ||
           currentInterestRate;
         currentMonthlyPayment =
           parseFloat(monthlyPayment[i]?.replace(/,/g, "")) ||
           currentMonthlyPayment;
-        break;
       }
     }
 
