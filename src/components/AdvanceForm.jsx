@@ -350,7 +350,7 @@ const AdvanceForm = ({
 
         <div className="relative border border-[#082044] rounded-md p-4 mt-8">
           <div className="absolute -top-3 left-4 bg-white px-4 text-gray-700 font-medium">
-            อัตราดอกเบี้ย
+            กรอบอัตราดอกเบี้ย
           </div>
           <div className="grid grid-cols-1 gap-6 mt-6">
             {Array.from({ length: visibleRows }).map((_, index) => (
@@ -479,40 +479,40 @@ const AdvanceForm = ({
 
             {/* ปุ่มสำหรับ Mobile */}
             <div className="grid grid-cols-1 gap-6 mt-6">
-  {/* ปุ่ม +/- สำหรับ Mobile */}
-  <div className="relative sm:hidden mt-4">
-    <div className="absolute inset-x-0 bottom-[-32px] flex justify-center">
-      {visibleRows < 5 && (
-        <div className="relative">
-          {/* เส้นสีขาว */}
-          <div
-            className="absolute top-1/2 left-[-12px] right-[-12px] h-[2px] bg-white z-10 transform -translate-y-1/2"
-          ></div>
-          {/* ปุ่ม + */}
-          <button
-            type="button"
-            className="relative bg-[#082044] text-white w-8 h-8 rounded-md flex items-center justify-center z-20"
-            onClick={addRow}
-          >
-            +
-          </button>
-        </div>
-      )}
-      {visibleRows > 1 && (
-        <div className="relative ml-2">
-          {/* เส้นสีขาว */}
-          <div
-            className="absolute top-1/2 left-[-12px] right-[-12px] h-[2px] bg-white z-10 transform -translate-y-1/2"
-          ></div>
-          {/* ปุ่ม - */}
-          <button
-            type="button"
-            className="relative bg-[#82828E] text-white w-8 h-8 rounded-md flex items-center justify-center z-20"
-            onClick={removeRow}
-          >
-            -
-          </button>
-        </div>
+              {/* ปุ่ม +/- สำหรับ Mobile */}
+              <div className="relative sm:hidden mt-4">
+                <div className="absolute inset-x-0 bottom-[-32px] flex justify-center">
+                  {visibleRows < 5 && (
+                    <div className="relative">
+                      {/* เส้นสีขาว */}
+                      <div
+                        className="absolute top-1/2 left-[-12px] right-[-12px] h-[2px] bg-white z-10 transform -translate-y-1/2"
+                      ></div>
+                      {/* ปุ่ม + */}
+                      <button
+                        type="button"
+                        className="relative bg-[#082044] text-white w-8 h-8 rounded-md flex items-center justify-center z-20"
+                        onClick={addRow}
+                      >
+                        +
+                      </button>
+                    </div>
+                  )}
+                  {visibleRows > 1 && (
+                    <div className="relative ml-2">
+                      {/* เส้นสีขาว */}
+                      <div
+                        className="absolute top-1/2 left-[-12px] right-[-12px] h-[2px] bg-white z-10 transform -translate-y-1/2"
+                      ></div>
+                      {/* ปุ่ม - */}
+                      <button
+                        type="button"
+                        className="relative bg-[#82828E] text-white w-8 h-8 rounded-md flex items-center justify-center z-20"
+                        onClick={removeRow}
+                      >
+                        -
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
@@ -521,13 +521,11 @@ const AdvanceForm = ({
         </div>
 
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <div className="flex gap-4 mt-4">
           {/* ค่าประกัน */}
-          <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg">
-              ค่าประกัน
-            </label>
-            <div className="relative">
+          <div className="flex-1">
+            <label className="text-gray-700 font-medium text-lg">ค่าประกัน</label>
+            <div className="relative mt-2">
               <input
                 type="text"
                 id="insurance-input"
@@ -542,11 +540,9 @@ const AdvanceForm = ({
           </div>
 
           {/* ค่าจดจำนอง */}
-          <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg">
-              ค่าจดจำนอง
-            </label>
-            <div className="relative">
+          <div className="flex-1">
+            <label className="text-gray-700 font-medium text-lg">ค่าจดจำนอง</label>
+            <div className="relative mt-2">
               <input
                 type="text"
                 id="additional-input2"
@@ -560,6 +556,7 @@ const AdvanceForm = ({
             </div>
           </div>
         </div>
+
 
         <div className="mt-8 flex flex-wrap justify-between items-center gap-4">
           {/* ปุ่มคำนวณ */}
