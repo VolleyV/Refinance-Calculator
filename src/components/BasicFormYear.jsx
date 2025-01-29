@@ -23,6 +23,8 @@ const BasicFormYear = ({
       day: "2-digit",
     }) || "Invalid Date"
   );
+  const [insurance, setInsurance] = useState("");
+  const [mortgageFee, setMortgageFee] = useState("");
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
@@ -70,6 +72,24 @@ const BasicFormYear = ({
     }
   };
 
+  const handleInsuranceChange = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setInsurance(formattedValue);
+    }
+  };
+
+  const handleMorgageFeeChange = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setMortgageFee(formattedValue);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!loanAmount || !interestRate) {
@@ -91,6 +111,8 @@ const BasicFormYear = ({
       paymentDuration,
       startDate,
       interestRate,
+      insurance,
+      mortgageFee,
     };
     onSubmitBasicYear(data);
   };
@@ -100,6 +122,8 @@ const BasicFormYear = ({
     setPaymentDuration(1);
     setInterestRate("");
     setStartDate(new Date().toISOString().split("T")[0]);
+    setInsurance("");
+    setMortgageFee("");
     onResetBasicYear();
     toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
       position: "top-center",
@@ -123,6 +147,8 @@ const BasicFormYear = ({
         basicYearInitialInput.startDate ||
           new Date().toISOString().split("T")[0]
       );
+      setInsurance(basicYearInitialInput.insurance || 0);
+      setMortgageFee(basicYearInitialInput.mortgageFee || 0);
     }
   }, [basicYearInitialInput]);
 
@@ -241,8 +267,8 @@ const BasicFormYear = ({
               <input
                 type="text"
                 id="insurance-input"
-                /*value={insurance}
-                onChange={handleInsuranceChange}*/
+                value={insurance}
+                onChange={handleInsuranceChange}
                 className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
               />
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
@@ -260,8 +286,8 @@ const BasicFormYear = ({
               <input
                 type="text"
                 id="additional-input2"
-                /*value={mortgageFee}
-                onChange={handleMorgageFeeChange}*/
+                value={mortgageFee}
+                onChange={handleMorgageFeeChange}
                 className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
               />
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">

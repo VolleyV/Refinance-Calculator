@@ -26,8 +26,8 @@ const AdvanceForm = ({
   );
   const [visibleRows, setVisibleRows] = useState(1); // แถวที่แสดงอยู่
 
-  const [insurance, setInsurance] = useState(0);
-  const [mortgageFee, setMortgageFee] = useState(0);
+  const [insurance, setInsurance] = useState("");
+  const [mortgageFee, setMortgageFee] = useState("");
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
@@ -276,8 +276,8 @@ const AdvanceForm = ({
     setEndTerm(["", "", "", "", ""]);
     setVisibleRows(1);
 
-    setInsurance(0);
-    setMortgageFee(0);
+    setInsurance("");
+    setMortgageFee("");
     onAdvanceReset();
     toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
       position: "top-center",
@@ -409,15 +409,8 @@ const AdvanceForm = ({
                       onChange={(e) =>
                         handleInterestRateChange(index, e.target.value)
                       }
-                      className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
+                      className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px] appearance-none pr-8"
                     />
-                    <style jsx>{`
-                      input[type="number"]::-webkit-inner-spin-button,
-                      input[type="number"]::-webkit-outer-spin-button {
-                        position: relative;
-                        left: -20px; /* Move arrow buttons left */
-                      }
-                    `}</style>
                     <span className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                       %
                     </span>
@@ -539,7 +532,7 @@ const AdvanceForm = ({
           {/* ค่าประกัน */}
           <div className="flex-1">
             <label className="text-gray-700 font-medium text-lg">
-              ค่าประกัน
+              ค่าประกัน (ถ้ามี)
             </label>
             <div className="relative mt-2">
               <input
@@ -558,7 +551,7 @@ const AdvanceForm = ({
           {/* ค่าจดจำนอง */}
           <div className="flex-1">
             <label className="text-gray-700 font-medium text-lg">
-              ค่าจดจำนอง
+              ค่าจดจำนอง (ถ้ามี)
             </label>
             <div className="relative mt-2">
               <input
@@ -575,20 +568,9 @@ const AdvanceForm = ({
           </div>
         </div>
 
-
-        <div className="mt-8 flex flex-wrap justify-between items-center gap-4">
-          {/* ปุ่มคำนวณ */}
-          <div className="w-full sm:w-auto flex justify-center sm:justify-end mb-4 sm:mb-0">
-            <button
-              type="submit"
-              className="inline-block w-full sm:w-auto rounded-full bg-[#30A572] px-6 py-2 text-sm font-bold text-white hover:bg-green-600"
-            >
-              คำนวณ
-            </button>
-          </div>
-
+        <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}
-          <div className="w-full sm:w-auto flex justify-center sm:justify-start">
+          <div className="order-2 sm:order-1 w-full sm:w-auto flex justify-center sm:justify-start">
             <button
               type="button"
               onClick={resetFields}
@@ -598,17 +580,27 @@ const AdvanceForm = ({
               ล้างข้อมูล
             </button>
           </div>
+
+          {/* ปุ่มคำนวณ */}
+          <div className="order-1 sm:order-2 w-full sm:w-auto flex justify-center sm:justify-end sm:ml-auto">
+            <button
+              type="submit"
+              className="inline-block w-full sm:w-auto rounded-full bg-[#30A572] px-6 py-2 text-sm font-bold text-white hover:bg-green-600"
+            >
+              คำนวณ
+            </button>
+          </div>
         </div>
       </form>
       <ToastContainer />
-      <div className="flex items-center justify-between w-full mt-4">
+      {/* <div className="flex items-center justify-between w-full mt-4">
         <button className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
           ย้อนกลับ
         </button>
         <button className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
           เปลี่ยนหน้า
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -24,6 +24,8 @@ const ShowBank = ({ basicCalculateSummary }) => {
     principalPortionAfterThreeYears,
     totalMonthlyPaymentThreeYears,
     monthlyPayment,
+    insurance,
+    mortgageFee,
     totalYears,
     totalMonths,
     totalInterestPaid,
@@ -33,15 +35,18 @@ const ShowBank = ({ basicCalculateSummary }) => {
 
   const remainingDateText = `จะผ่อนจบ ต้องใช้เวลา ${totalYears} ปี ${totalMonths} เดือน`;
 
+  const totalInsuranceMortgage = insurance + mortgageFee;
+
   const remainingInterestText = `${totalInterestPaid.toLocaleString()} `;
 
-  const lastPaymentText = `สิ้นสุดการชำระ ณ วันที่: ${new Date(
-    lastDayOfPaying
-  ).toLocaleDateString("th-TH", {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
-  })}`;
+  const lastPaymentText = `${new Date(lastDayOfPaying).toLocaleDateString(
+    "th-TH",
+    {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    }
+  )}`;
 
   const circleThreeYears = {
     labels: ["เงินต้น", "ดอกเบี้ย"],
@@ -157,7 +162,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
                   <br />
                   จดจำนองและค่าประกัน <br />{" "}
                   <span className="font-bold text-[#30A572] text-2xl">
-                    {principalAfterThreeYears.toLocaleString()}
+                    {totalInsuranceMortgage.toLocaleString()}
                   </span>{" "}
                   <b>บาท</b>
                 </p>
@@ -178,7 +183,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
 
         {/* ส่วนข้อมูลจนึงสิ้นสุดการชำระ */}
         <div>
-          <h2 className="text-4xl font-bold text-[#082044] text-center">
+          <h2 className="text-2xl font-bold text-[#082044] text-center">
             ผ่อนจนเสร็จสิ้น
           </h2>
           <p className="text-[#082044] text-lg text-center mt-2 ">
@@ -270,6 +275,9 @@ ShowBank.propTypes = {
     principalAfterThreeYears: PropTypes.number.isRequired,
     totalInterestThreeYears: PropTypes.number.isRequired,
     principalPortionAfterThreeYears: PropTypes.number.isRequired,
+    monthlyPayment: PropTypes.number.isRequired,
+    insurance: PropTypes.number.isRequired,
+    mortgageFee: PropTypes.number.isRequired,
     totalMonthlyPaymentThreeYears: PropTypes.number.isRequired,
     totalYears: PropTypes.number.isRequired,
     totalMonths: PropTypes.number.isRequired,

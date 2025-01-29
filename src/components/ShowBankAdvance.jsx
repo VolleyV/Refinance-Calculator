@@ -200,17 +200,17 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
             <div className="text-lg space-y-4">
               <p className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md w-60">
                 ค่าดอกเบี้ยตลอดการผ่อน <br />
-                <span className="font-bold text-[#30A572] text-xl">
+                <span className="font-bold text-[#30A572] text-2xl">
                   {remainingInterestText.toLocaleString()}
                 </span>
                 <span>
                   <b>บาท</b>
                 </span>
               </p>
-              <p>
+              <p className="text-[#35373F] p-4">
                 รวมเงินผ่อนทั้งหมด
                 <br />
-                <span className="font-bold text-[#30A572] text-xl">
+                <span className="font-bold text-[#30A572] text-2xl">
                   {totalMonthlyPayment.toLocaleString()}
                 </span>
                 <span>
