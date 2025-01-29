@@ -45,9 +45,20 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const scrollToBottom = () => {
+    const isMobile = window.innerWidth < 768;
+    let scrollPosition = isMobile
+      ? window.innerHeight * 1.3
+      : window.innerHeight * 1;
+
+    if (isMobile && advanceFormData) {
+      scrollPosition = window.innerHeight * 1.7;
+    } else {
+      scrollPosition;
+    }
+
     window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth", // เพิ่มความลื่นไหลในการเลื่อน
+      top: scrollPosition,
+      behavior: "smooth",
     });
   };
 

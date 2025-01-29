@@ -229,13 +229,13 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
             <div className="relative">
               <input
                 type="number"
-                step="0.1"
+                step={0.1}
                 name="interestRate"
                 value={interestRate}
                 onChange={handleInterestRateChange}
                 className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
               />
-              <style jsx>{`
+              <style jsx="true">{`
                 input[type="number"]::-webkit-inner-spin-button,
                 input[type="number"]::-webkit-outer-spin-button {
                   position: relative;
