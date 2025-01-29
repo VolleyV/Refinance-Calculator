@@ -104,7 +104,6 @@ export const advanceThreeYearsSummary = (details) => {
     ? parseFloat(lastDetail.mortgageFee.replace(/,/g, ""))
     : 0;
 
-  console.log(insurance, mortgageFee);
   const threeYears = 3 * 12;
   const limitedDetails = details.slice(0, threeYears);
   const loanAmountAfterThreeYears =

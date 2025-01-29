@@ -11,7 +11,14 @@ const daysInMonth = (year, month) => {
 };
 
 export const basicLoanCalculateDetail = (data) => {
-  const { loanAmount, startDate, interestRate, monthlyPayment } = data;
+  const {
+    loanAmount,
+    startDate,
+    interestRate,
+    monthlyPayment,
+    insurance,
+    mortgageFee,
+  } = data;
 
   let principalRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
   let monthlyPaymentAmount = parseFloat(monthlyPayment.replace(/,/g, "")) || 0;
@@ -26,9 +33,6 @@ export const basicLoanCalculateDetail = (data) => {
     const daysInCurrentMonth = daysInMonth(currentYear, currentMonth);
     const daysInCurrentYear = daysInYear(currentYear);
 
-    // const interest =
-    //   (principalRemaining * interestRateMonthly * daysInCurrentMonth) /
-    //   daysInCurrentYear;
     const interest = parseFloat(
       (
         (principalRemaining * interestRateMonthly * daysInCurrentMonth) /
@@ -47,6 +51,8 @@ export const basicLoanCalculateDetail = (data) => {
       remainingPrincipal: parseFloat(principalRemaining.toFixed(2)),
       monthlyPayment: parseFloat(monthlyPaymentAmount.toFixed(2)),
       interestRate,
+      insurance,
+      mortgageFee,
     });
 
     initialStartDate.setMonth(initialStartDate.getMonth() + 1);
@@ -61,6 +67,13 @@ export const calculateThreeYearSummary = (details) => {
   const threeYears = 3 * 12;
   const limitedDetails = details.slice(0, threeYears);
   const monthlyPayment = details[0]?.monthlyPayment || 0;
+  const insurance = details[0].insurance
+    ? parseFloat(details[0].insurance.replace(/,/g, ""))
+    : 0;
+
+  const mortgageFee = details[0].mortgageFee
+    ? parseFloat(details[0].mortgageFee.replace(/,/g, ""))
+    : 0;
 
   const principalAfterThreeYears =
     limitedDetails[limitedDetails.length - 1]?.remainingPrincipal || 0;
@@ -88,6 +101,8 @@ export const calculateThreeYearSummary = (details) => {
       principalPortionAfterThreeYears
     ),
     totalMonthlyPaymentThreeYears: Math.trunc(totalMonthlyPaymentThreeYears),
+    insurance,
+    mortgageFee,
   };
 };
 

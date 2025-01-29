@@ -12,8 +12,14 @@ const daysInMonth = (year, month) => {
 };
 
 export const basicYearLoanCalculateDetail = (basicYearData) => {
-  const { loanAmount, startDate, interestRate, paymentDuration } =
-    basicYearData;
+  const {
+    loanAmount,
+    startDate,
+    interestRate,
+    paymentDuration,
+    insurance,
+    mortgageFee,
+  } = basicYearData;
 
   // Parse input values
   const principal = parseFloat(loanAmount.replace(/,/g, "")) || 0; // Loan principal
@@ -71,6 +77,8 @@ export const basicYearLoanCalculateDetail = (basicYearData) => {
       remainingPrincipal: parseFloat(principalRemaining.toFixed(2)),
       monthlyPayment: parseFloat(calculatedMonthlyPayment.toFixed(2)),
       interestRate,
+      insurance,
+      mortgageFee,
     });
 
     // Advance date to the next month
@@ -85,6 +93,13 @@ export const calculateBasicYearThreeYearSummary = (details) => {
   const threeYears = 3 * 12;
   const limitedDetails = details.slice(0, threeYears);
   const paymentDuration = details[0]?.paymentDuration || 0;
+  const insurance = details[0].insurance
+    ? parseFloat(details[0].insurance.replace(/,/g, ""))
+    : 0;
+
+  const mortgageFee = details[0].mortgageFee
+    ? parseFloat(details[0].mortgageFee.replace(/,/g, ""))
+    : 0;
 
   const principalAfterThreeYears =
     limitedDetails[limitedDetails.length - 1]?.remainingPrincipal || 0;
@@ -112,6 +127,8 @@ export const calculateBasicYearThreeYearSummary = (details) => {
       principalPortionAfterThreeYears
     ),
     totalMonthlyPaymentThreeYears: Math.trunc(totalMonthlyPaymentThreeYears),
+    insurance,
+    mortgageFee,
   };
 };
 

@@ -27,6 +27,8 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
     totalMonthlyPaymentThreeYears,
     paymentDuration,
     monthlyPayment,
+    insurance,
+    mortgageFee,
     totalYears,
     totalMonths,
     totalInterestPaid,
@@ -36,15 +38,18 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
 
   const remainingDateText = `ระยะเวลาผ่อนชำระ ${totalYears} ปี ${totalMonths} เดือน`;
 
+  const totalInsuranceMortgage = insurance + mortgageFee;
+
   const remainingInterestText = `${totalInterestPaid.toLocaleString()}`;
 
-  const lastPaymentText = `สิ้นสุดการชำระ ณ วันที่: ${new Date(
-    lastDayOfPaying
-  ).toLocaleDateString("th-TH", {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
-  })}`;
+  const lastPaymentText = `${new Date(lastDayOfPaying).toLocaleDateString(
+    "th-TH",
+    {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    }
+  )}`;
 
   const circleThreeYears = {
     labels: ["เงินต้น", "ดอกเบี้ย"],
@@ -150,7 +155,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
                   <br />
                   จดจำนองและค่าประกัน <br />{" "}
                   <span className="font-bold text-[#30A572] text-2xl">
-                    {principalAfterThreeYears.toLocaleString()}
+                    {totalInsuranceMortgage.toLocaleString()}
                   </span>{" "}
                   <b>บาท</b>
                 </p>
@@ -241,6 +246,8 @@ ShowBankBasicYear.propTypes = {
     totalInterestThreeYears: PropTypes.number.isRequired,
     principalPortionAfterThreeYears: PropTypes.number.isRequired,
     totalMonthlyPaymentThreeYears: PropTypes.number.isRequired,
+    insurance: PropTypes.number.isRequired,
+    mortgageFee: PropTypes.number.isRequired,
     monthlyPayment: PropTypes.number.isRequired,
     totalYears: PropTypes.number.isRequired,
     totalMonths: PropTypes.number.isRequired,

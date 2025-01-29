@@ -19,6 +19,8 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
       day: "2-digit",
     }) || "Invalid Date"
   );
+  const [insurance, setInsurance] = useState("");
+  const [mortgageFee, setMortgageFee] = useState("");
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
@@ -71,6 +73,24 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
     }
   };
 
+  const handleInsuranceChange = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setInsurance(formattedValue);
+    }
+  };
+
+  const handleMorgageFeeChange = (event) => {
+    const { value } = event.target;
+    const rawValue = value.replace(/[^0-9]/g, "");
+    if (Number(rawValue) <= 999_000_000) {
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      setMortgageFee(formattedValue);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!loanAmount || !interestRate || !monthlyPayment) {
@@ -115,6 +135,8 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
       startDate,
       interestRate,
       monthlyPayment,
+      insurance,
+      mortgageFee,
     };
     onSubmit(data);
   };
@@ -124,6 +146,8 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
     setMonthlyPayment("");
     setInterestRate("");
     setStartDate(new Date().toISOString().split("T")[0]);
+    setInsurance("");
+    setMortgageFee("");
     onReset();
     toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
       position: "top-center",
@@ -146,6 +170,8 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
       setStartDate(
         initialInput.startDate || new Date().toISOString().split("T")[0]
       );
+      setInsurance(initialInput.insurance || 0);
+      setMortgageFee(initialInput.mortgageFee || 0);
     }
   }, [initialInput]);
 
@@ -252,8 +278,8 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
               <input
                 type="text"
                 id="insurance-input"
-                /*value={insurance}
-                onChange={handleInsuranceChange}*/
+                value={insurance}
+                onChange={handleInsuranceChange}
                 className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
               />
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
@@ -271,8 +297,8 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
               <input
                 type="text"
                 id="additional-input2"
-                /*value={mortgageFee}
-                onChange={handleMorgageFeeChange}*/
+                value={mortgageFee}
+                onChange={handleMorgageFeeChange}
                 className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
               />
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
@@ -281,7 +307,6 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
             </div>
           </div>
         </div>
-
 
         <div className="mt-8 flex flex-wrap justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}
