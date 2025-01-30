@@ -99,7 +99,7 @@ const InputForm = ({
     //     )}
     //   </div>
     // </div>
-    <div className="relative p-6 max-w-4xl mx-auto rounded-lg shadow-md border-t bg-white z-10">
+    <div className="relative p-6 max-w-4xl mx-auto md:rounded-lg shadow-md border-t bg-white z-10">
       <div className="flex flex-wrap gap-2 overflow-x-auto">
         <div className="border-gray-200 container mx-auto px-4">
           <div className="flex items-center py-4">
