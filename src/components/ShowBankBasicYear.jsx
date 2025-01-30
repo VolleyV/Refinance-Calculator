@@ -150,7 +150,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
 
             {/* คอลัมน์ 2 แถวที่ 2: ดอกเบี้ยรวม + ค่าจดจำนอง */}
             <div className="text-lg space-y-4 text-start p-4">
-              <p>ดอกเบี้ยรวมค่า จดจำนองและค่าประกัน</p>
+              <p>ดอกเบี้ย 3 ปี รวมค่า<br />จดจำนองและค่าประกัน<br /></p>
               <span className="font-bold text-[#30A572] text-2xl">
                 {totalInsuranceMortgage.toLocaleString()}
               </span>{" "}

@@ -144,7 +144,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
 
                 {/* ดอกเบี้ยรวมค่าใช้จ่าย */}
                 <p className="text-start p-4">
-                  ดอกเบี้ยรวมค่า <br />
+                  ดอกเบี้ย 3 ปี รวมค่า <br />
                   จดจำนองและค่าประกัน <br />
                   <span className="font-bold text-[#30A572] text-2xl">
                     {totalInsuranceMortgage.toLocaleString()}

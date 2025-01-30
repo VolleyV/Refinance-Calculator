@@ -160,8 +160,8 @@ const BasicTable = ({ data }) => {
                   key={index}
                   className={`${
                     index % 2 === 0
-                      ? "bg-gray-100" //bg-gray-100 dark:bg-gray-800
-                      : "bg-white" //bg-white dark:bg-gray-900
+                      ? "bg-gray-100" //bg-gray-100 dark:bg-gray-800 bg-gray-100
+                      : "bg-white" //bg-white dark:bg-gray-900 bg-white
                   }`}
                 >
                   <td className="border px-6 py-4 text-center">
