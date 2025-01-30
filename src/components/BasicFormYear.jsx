@@ -145,7 +145,7 @@ const BasicFormYear = ({
       setInterestRate(basicYearInitialInput.interestRate || "");
       setStartDate(
         basicYearInitialInput.startDate ||
-          new Date().toISOString().split("T")[0]
+        new Date().toISOString().split("T")[0]
       );
       setInsurance(basicYearInitialInput.insurance || 0);
       setMortgageFee(basicYearInitialInput.mortgageFee || 0);
@@ -154,17 +154,11 @@ const BasicFormYear = ({
 
   return (
     <div>
-      <h2 className="font-sans text-xl font-bold mb-4">
-        คำนวณแบบอัตราดอกเบี้ยเดียว
-      </h2>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* จำนวนเงินที่กู้ */}
           <div className="flex flex-col space-y-2">
-            <label
-              className="text-gray-700 font-medium text-lg"
-              htmlFor="Loan-Amount"
-            >
+            <label className="text-gray-700 font-medium text-lg" htmlFor="Loan-Amount">
               จำนวนเงินที่กู้ (บาท)
             </label>
             <div className="relative">
@@ -181,12 +175,27 @@ const BasicFormYear = ({
             </div>
           </div>
 
+          {/* อัตราดอกเบี้ย (%) */}
+          <div className="flex flex-col space-y-2">
+            <label className="text-gray-700 font-medium text-lg">อัตราดอกเบี้ย (%)</label>
+            <div className="relative">
+              <input
+                type="number"
+                name="interestRate"
+                step={0.1}
+                value={interestRate}
+                onChange={handleInterestRateChange}
+                className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
+              />
+              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+                %
+              </span>
+            </div>
+          </div>
+
           {/* วันที่เริ่ม */}
           <div className="flex flex-col space-y-2">
-            <label
-              className="text-gray-700 font-medium text-lg"
-              htmlFor="startDate"
-            >
+            <label className="text-gray-700 font-medium text-lg" htmlFor="startDate">
               วันที่เริ่ม ({dateText})
             </label>
             <div className="relative">
@@ -203,33 +212,11 @@ const BasicFormYear = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          {/* อัตราดอกเบี้ย (%) */}
-          <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg">
-              อัตราดอกเบี้ย (%)
-            </label>
-            <div className="relative">
-              <input
-                type="number"
-                name="interestRate"
-                step={0.1}
-                value={interestRate}
-                onChange={handleInterestRateChange}
-                className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
-              />
-              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
-                %
-              </span>
-            </div>
-          </div>
-
+        {/* แถวที่ 2 */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           {/* เลือกระยะเวลาในการผ่อน */}
           <div className="flex flex-col space-y-2">
-            <label
-              htmlFor="payment-duration"
-              className="text-gray-700 font-medium text-lg"
-            >
+            <label htmlFor="payment-duration" className="text-gray-700 font-medium text-lg">
               เลือกระยะเวลาในการผ่อน
             </label>
             <div className="relative">
@@ -240,13 +227,6 @@ const BasicFormYear = ({
                 value={paymentDuration}
                 className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
               >
-                <style jsx>{`
-                  input[type="number"]::-webkit-inner-spin-button,
-                  input[type="number"]::-webkit-outer-spin-button {
-                    position: relative;
-                    left: -20px; /* Move arrow buttons left */
-                  }
-                `}</style>
                 {Array.from({ length: 40 }, (_, i) => i + 1).map((year) => (
                   <option key={year} value={year}>
                     {year} ปี
@@ -255,14 +235,10 @@ const BasicFormYear = ({
               </select>
             </div>
           </div>
-        </div>
 
-        <div className="flex gap-4 mt-4">
-          {/* ค่าประกัน */}
-          <div className="flex-1">
-            <label className="text-gray-700 font-medium text-lg">
-              ค่าประกัน (ถ้ามี)
-            </label>
+          {/* ค่าประกัน (ถ้ามี) */}
+          <div className="flex flex-col space-y-2">
+            <label className="text-gray-700 font-medium text-lg">ค่าประกัน (ถ้ามี)</label>
             <div className="relative mt-2">
               <input
                 type="text"
@@ -277,15 +253,13 @@ const BasicFormYear = ({
             </div>
           </div>
 
-          {/* ค่าจดจำนอง */}
-          <div className="flex-1">
-            <label className="text-gray-700 font-medium text-lg">
-              ค่าจดจำนอง (ถ้ามี)
-            </label>
+          {/* ค่าจดจำนอง (ถ้ามี) */}
+          <div className="flex flex-col space-y-2">
+            <label className="text-gray-700 font-medium text-lg">ค่าจดจำนอง (ถ้ามี)</label>
             <div className="relative mt-2">
               <input
                 type="text"
-                id="additional-input2"
+                id="mortgageFee-input"
                 value={mortgageFee}
                 onChange={handleMorgageFeeChange}
                 className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
@@ -297,29 +271,25 @@ const BasicFormYear = ({
           </div>
         </div>
 
-        <div className="mt-8 flex flex-wrap justify-between items-center gap-4">
+
+        <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}
-          <div className="flex-1 flex justify-start">
+          <div className="order-2 sm:order-1 w-full sm:w-auto flex justify-center sm:justify-start">
             <button
               type="button"
               onClick={resetFields}
               className="flex items-center text-gray-600 hover:text-gray-800 text-sm font-medium"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 12a7.5 7.5 0 1113.91 3.06M9 11.25L4.5 12l2.25-4.5M16.5 12l-2.25 4.5M12 12h.008v.008H12v-.008z"
-              />
               <IoReload />
               ล้างข้อมูล
             </button>
           </div>
 
           {/* ปุ่มคำนวณ */}
-          <div className="flex-1 flex justify-end">
+          <div className="order-1 sm:order-2 w-full sm:w-auto flex justify-center sm:justify-end sm:ml-auto">
             <button
               type="submit"
-              className="inline-block w-full sm:w-auto rounded-full bg-[#30A572] px-6 py-2 text-sm font-bold text-white hover:bg-green-600"
+              className="inline-block w-full sm:w-auto rounded-full bg-[#30A572] px-8 py-3 text-base font-bold text-white hover:bg-green-600"
             >
               คำนวณ
             </button>

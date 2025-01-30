@@ -91,72 +91,80 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
           <p className="text-[#82828E] text-lg text-center mt-2">
             (จำนวนเงิน {totalMonthlyPaymentThreeYears.toLocaleString()} บาท)
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-8">
-            {/* วงกลม 3 ปี */}
-            <div className="flex justify-center">
-              <div className="flex items-center">
-                {/* Legend (left side) */}
-                <div className="space-y-2 mr-4">
-                  {circleThreeYears.labels.map((label, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <div
-                        className="w-4 h-4"
-                        style={{
-                          backgroundColor:
-                            circleThreeYears.datasets[0].backgroundColor[index],
-                        }}
-                      ></div>
-                      <span className="text-sm font-medium">{label}</span>
-                    </div>
-                  ))}
-                </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center mt-8">
+  {/* คอลัมน์ที่ 1 (กราฟและ Legend ด้านล่าง) */}
+  <div className="flex flex-col items-center">
+    {/* กราฟวงกลม */}
+    <div className="w-48 h-48">
+      <Doughnut data={circleThreeYears} options={options} />
+    </div>
 
-                {/* Chart (right side) */}
-                <div className="w-48 h-48">
-                  <Doughnut data={circleThreeYears} options={options} />
-                </div>
-              </div>
-            </div>
-            <div className="text-lg space-y-4">
-              <div className="flex justify-between items-center">
-                <p className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md">
-                  ผ่อนดอกเบี้ยไป <br />
-                  <span className="font-bold text-[#30A572] text-2xl">
-                    {totalInterestThreeYears.toLocaleString()}
-                  </span>{" "}
-                  <b>บาท</b>
-                </p>
-
-                <p className="flex-col p-4">
-                  ผ่อนเงินต้นไป <br />
-                  <span className="font-bold text-[#30A572] text-2xl">
-                    {principalPortionAfterThreeYears.toLocaleString()}
-                  </span>{" "}
-                  <b>บาท</b>
-                </p>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <p className="p-4">
-                  ค่าดอกเบี้ยรวมค่า <br />
-                  จดจำนองและค่าประกัน <br />
-                  <span className="font-bold text-[#30A572] text-2xl">
-                    {totalInsuranceMortgage.toLocaleString()}
-                  </span>{" "}
-                  <b>บาท</b>
-                </p>
-
-                <p className="flex-col mt-7">
-                  เหลือเงินต้นต้องผ่อนอีก <br />
-                  <span className="font-bold text-[#30A572] text-2xl">
-                    {totalLoanRemaining.toLocaleString()}
-                  </span>{" "}
-                  <b>บาท</b>
-                </p>
-              </div>
-            </div>
-          </div>
+    {/* Legend (ย้ายมาไว้ใต้กราฟ) */}
+    <div className="flex justify-center space-x-4 mt-4">
+      {circleThreeYears.labels.map((label, index) => (
+        <div key={index} className="flex items-center space-x-2">
+          <div
+            className="w-4 h-4"
+            style={{
+              backgroundColor:
+                circleThreeYears.datasets[0].backgroundColor[index],
+            }}
+          ></div>
+          <span className="text-sm font-medium">{label}</span>
         </div>
+      ))}
+    </div>
+  </div>
+
+  {/* คอลัมน์ที่ 2 และ 3 (ข้อมูลการชำระเงิน) */}
+  <div className="grid grid-cols-2 col-span-2 gap-6">
+    {/* คอลัมน์ที่ 2 */}
+    <div className="text-lg flex flex-col justify-between">
+      {/* ผ่อนดอกเบี้ยไป (เส้นกรอบประ) */}
+      <div className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md">
+        <p className="text-start">
+          ผ่อนดอกเบี้ยไป <br />
+          <span className="font-bold text-[#30A572] text-2xl">
+            {totalInterestThreeYears.toLocaleString()}
+          </span>{" "}
+          บาท
+        </p>
+      </div>
+
+      {/* ดอกเบี้ยรวมค่าใช้จ่าย */}
+      <p className="text-start p-4">
+        ดอกเบี้ยรวมค่า <br />
+        จดจำนองและค่าประกัน <br />
+        <span className="font-bold text-[#30A572] text-2xl">
+          {totalInsuranceMortgage.toLocaleString()}
+        </span>{" "}
+        บาท
+      </p>
+    </div>
+
+    {/* คอลัมน์ที่ 3 */}
+    <div className="text-lg flex flex-col justify-between">
+      {/* ผ่อนเงินต้นไป */}
+      <div className="p-4 text-start">
+        ผ่อนเงินต้นไป <br />
+        <span className="font-bold text-[#30A572] text-2xl">
+          {principalPortionAfterThreeYears.toLocaleString()}
+        </span>{" "}
+        บาท
+      </div>
+
+      {/* เหลือเงินต้นต้องผ่อน */}
+      <p className="text-start p-4">
+        เหลือเงินต้นต้องผ่อนอีก <br />
+        <span className="font-bold text-[#30A572] text-2xl">
+          {totalLoanRemaining.toLocaleString()}
+        </span>{" "}
+        บาท
+      </p>
+    </div>
+  </div>
+</div>
+
 
         {/* เส้นแบ่ง */}
         <div className="border-t border-[#D3D8E2] my-20"></div>
@@ -169,59 +177,56 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
           <p className="text-[#82828E] text-lg text-center mt-2">
             (จะผ่อนเสร็จวันที่ {lastPaymentText})
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center mt-8">
-            <div className="flex justify-center">
-              {/* วงกลม ทุกปี*/}
-              <div className="flex justify-center">
-                <div className="flex items-center">
-                  {/* Legend (left side) */}
-                  <div className="space-y-2 mr-4">
-                    {circleAllYears.labels.map((label, index) => (
-                      <div key={index} className="flex items-center space-x-2">
-                        <div
-                          className="w-4 h-4"
-                          style={{
-                            backgroundColor:
-                              circleAllYears.datasets[0].backgroundColor[index],
-                          }}
-                        ></div>
-                        <span className="text-sm font-medium">{label}</span>
-                      </div>
-                    ))}
-                  </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center mt-8">
+  {/* คอลัมน์ที่ 1 (กราฟและ Legend ด้านล่าง) */}
+  <div className="flex flex-col items-center col-span-1">
+    {/* กราฟวงกลม */}
+    <div className="w-48 h-48">
+      <Doughnut data={circleAllYears} options={options} />
+    </div>
 
-                  {/* Chart (right side) */}
-                  <div className="w-48 h-48">
-                    <Doughnut data={circleAllYears} options={options} />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="text-lg space-y-4">
-              <p className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md w-60">
-                ค่าดอกเบี้ยตลอดการผ่อน <br />
-                <span className="font-bold text-[#30A572] text-2xl">
-                  {remainingInterestText.toLocaleString()}
-                </span>
-                <span>
-                  <b>บาท</b>
-                </span>
-              </p>
-              <p className="text-[#35373F] p-4">
-                รวมเงินผ่อนทั้งหมด
-                <br />
-                <span className="font-bold text-[#30A572] text-2xl">
-                  {totalMonthlyPayment.toLocaleString()}
-                </span>
-                <span>
-                  {" "}
-                  <b>บาท</b>
-                </span>
-              </p>
-            </div>
-          </div>
+    {/* Legend (ย้ายมาอยู่ใต้กราฟ) */}
+    <div className="flex justify-center space-x-4 mt-4">
+      {circleAllYears.labels.map((label, index) => (
+        <div key={index} className="flex items-center space-x-2">
+          <div
+            className="w-4 h-4"
+            style={{
+              backgroundColor:
+                circleAllYears.datasets[0].backgroundColor[index],
+            }}
+          ></div>
+          <span className="text-sm font-medium">{label}</span>
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
+
+  {/* คอลัมน์ที่ 2 (ข้อมูลดอกเบี้ยและวันผ่อนเสร็จ) */}
+  <div className="text-lg flex flex-col justify-between col-span-1">
+    {/* ค่าดอกเบี้ยตลอดการผ่อน (เส้นกรอบประ) */}
+    <div className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md text-start">
+      <p>
+        ค่าดอกเบี้ยตลอดการผ่อน <br />
+        <span className="font-bold text-[#30A572] text-2xl">
+          {remainingInterestText.toLocaleString()}
+        </span>{" "}
+        บาท
+      </p>
+    </div>
+
+    {/* จะผ่อนเสร็จวันที่ */}
+    <p className="text-[#35373F] text-start p-4">
+      จะผ่อนเสร็จวันที่ <br />
+      <span className="font-bold text-[#30A572] text-2xl">
+        {lastPaymentText}
+      </span>
+    </p>
+  </div>
+
+  {/* คอลัมน์ที่ 3 (เว้นว่างไว้) */}
+  <div className="col-span-1"></div>
+</div>
 
       {/* ปุ่มดูรายละเอียด */}
       <div className="mt-20 text-center">
@@ -232,6 +237,9 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
           ดูรายละเอียด
         </button>
       </div>
+    </div>
+    </div>
+    </div>
     </div>
   );
 };

@@ -215,8 +215,7 @@ const AdvanceForm = ({
 
         if (monthlyPaymentNum <= monthlyInterestOnly) {
           toast.error(
-            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
-              i + 1
+            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${i + 1
             } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`,
             {
               position: "top-center",
@@ -371,16 +370,6 @@ const AdvanceForm = ({
                 key={index}
                 className="grid grid-cols- sm:grid-cols-4 lg:grid-cols-4 gap-4 items-center relative whitespace-nowrap"
               >
-                {/* อัตราดอกเบี้ยที่ */}
-                {/* สำหรับ PC และ Tablet */}
-                <div className="hidden sm:flex flex-col justify-center relative">
-                  <label
-                    className="text-gray-700 font-medium text-lg absolute bottom-[-50px]"
-                    htmlFor={`start-term-${index}`}
-                  >
-                    อัตราดอกเบี้ยที่{index + 1}
-                  </label>
-                </div>
 
                 {/* สำหรับ Mobile */}
                 <div className="flex items-center sm:hidden">
@@ -391,6 +380,21 @@ const AdvanceForm = ({
                 </div>
 
                 {/* อัตราดอกเบี้ย */}
+                <div className="flex flex-col justify-center relative">
+                  {(index === 0 || isMobile) && ( // แสดง label ในบรรทัดแรกหรือถ้าเป็น Mobile */}
+                    <label className="text-white font-medium text-lg mb-2" htmlFor={`interest-rate-${index}`}>
+                      อัตราดอกเบี้ยที่
+                    </label>
+                  )}
+                  <div className="relative">
+                    {/* แสดงเป็นข้อความแทน input */}
+                    <span className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
+                      อัตราดอกเบี้ยที่{index + 1}
+                    </span>
+                  </div>
+                </div>
+
+
                 <div className="flex flex-col justify-center relative">
                   {(index === 0 || isMobile) && ( // แสดง label ในบรรทัดแรกหรือถ้าเป็น Mobile */}
                     <label
@@ -585,7 +589,7 @@ const AdvanceForm = ({
           <div className="order-1 sm:order-2 w-full sm:w-auto flex justify-center sm:justify-end sm:ml-auto">
             <button
               type="submit"
-              className="inline-block w-full sm:w-auto rounded-full bg-[#30A572] px-6 py-2 text-sm font-bold text-white hover:bg-green-600"
+              className="inline-block w-full sm:w-auto rounded-full bg-[#30A572] px-8 py-3 text-base font-bold text-white hover:bg-green-600"
             >
               คำนวณ
             </button>
