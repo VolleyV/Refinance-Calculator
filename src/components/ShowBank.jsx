@@ -1,21 +1,16 @@
 /* eslint-disable no-unused-vars */
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 const ShowBank = ({ basicCalculateSummary }) => {
-  // const handleOpenTableInNewTab = () => {
-  //   sessionStorage.setItem(
-  //     "basicTableData",
-  //     JSON.stringify(basicCalculateSummary)
-  //   );
-  //   window.open("/basicTab", "_blank");
-  // };
-
-  const navigate = useNavigate();
-  const handleNavigateToTable = () => {
-    navigate("/basicTab", { state: { activeTab: "basic" } });
+  const handleOpenTableInNewTab = () => {
+    sessionStorage.setItem(
+      "basicTableData",
+      JSON.stringify(basicCalculateSummary)
+    );
+    window.open("/basicTab", "_blank");
   };
 
   const {
@@ -33,9 +28,26 @@ const ShowBank = ({ basicCalculateSummary }) => {
     lastDayOfPaying,
   } = basicCalculateSummary;
 
-  const remainingDateText = `จะผ่อนจบ ต้องใช้เวลา ${totalYears} ปี ${totalMonths} เดือน`;
+  let remainingDateText;
+  if (totalYears == 0) {
+    remainingDateText = `จะผ่อนจบ ต้องใช้เวลา ${totalMonths} เดือน`;
+  } else if (totalMonths == 0) {
+    remainingDateText = `จะผ่อนจบ ต้องใช้เวลา ${totalYears} ปี`;
+  } else {
+    remainingDateText = `จะผ่อนจบ ต้องใช้เวลา ${totalYears} ปี ${totalMonths} เดือน`;
+  }
+
+  // const remainingDateText = totalMonths == 0 ? `จะผ่อนจบ ต้องใช้เวลา ${totalYears} ปี`: `จะผ่อนจบ ต้องใช้เวลา ${totalYears} ปี ${totalMonths} เดือน`;
 
   const totalInsuranceMortgage = insurance + mortgageFee;
+  let insuranceOrMortgageText;
+  if (insurance != 0 && mortgageFee == 0) {
+    insuranceOrMortgageText = "ค่าประกัน";
+  } else if (insurance == 0 && mortgageFee != 0) {
+    insuranceOrMortgageText = "ค่าจดจำนอง";
+  } else {
+    insuranceOrMortgageText = "ค่าจดจำนองและค่าประกัน";
+  }
 
   const remainingInterestText = `${totalInterestPaid.toLocaleString()} `;
 
@@ -143,14 +155,16 @@ const ShowBank = ({ basicCalculateSummary }) => {
                 </div>
 
                 {/* ดอกเบี้ยรวมค่าใช้จ่าย */}
-                <p className="text-start p-4">
-                  ดอกเบี้ย 3 ปี รวมค่า <br />
-                  จดจำนองและค่าประกัน <br />
-                  <span className="font-bold text-[#30A572] text-2xl">
-                    {totalInsuranceMortgage.toLocaleString()}
-                  </span>{" "}
-                  บาท
-                </p>
+                {totalInsuranceMortgage !== 0 && (
+                  <div className="text-start p-4">
+                    <p>ดอกเบี้ย 3 ปี รวม</p>
+                    <p>{insuranceOrMortgageText}</p>
+                    <span className="font-bold text-[#30A572] text-2xl">
+                      {totalInsuranceMortgage.toLocaleString()}
+                    </span>{" "}
+                    บาท
+                  </div>
+                )}
               </div>
 
               {/* คอลัมน์ที่ 3 */}
@@ -175,7 +189,6 @@ const ShowBank = ({ basicCalculateSummary }) => {
               </div>
             </div>
           </div>
-
 
           {/* เส้นแบ่ง */}
           <div className="border-t border-[#D3D8E2] my-20"></div>
@@ -243,15 +256,15 @@ const ShowBank = ({ basicCalculateSummary }) => {
         {/* ปุ่มดูรายลเยีด */}
         <div className="mt-20 text-center">
           <button
-            onClick={handleNavigateToTable}
+            // onClick={handleNavigateToTable}
+            onClick={handleOpenTableInNewTab}
             className="inline-block rounded-full bg-[#30A572] px-8 py-2 text-lg font-bold text-white hover:bg-[#28a062]"
           >
             ดูรายละเอียด
           </button>
         </div>
-      </div >
-    </div >
-
+      </div>
+    </div>
   );
 };
 

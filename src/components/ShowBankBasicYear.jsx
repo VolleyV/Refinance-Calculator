@@ -1,24 +1,17 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
-  const navigate = useNavigate();
-
-  const handleNavigateToTable = () => {
-    navigate("/basicYearTable", { state: { activeTab: "basicYear" } });
+  const handleOpenTableInNewTab = () => {
+    sessionStorage.setItem(
+      "basicTableData",
+      JSON.stringify(basicYearCalculateSummary)
+    );
+    window.open("/basicYearTable", "_blank");
   };
-
-  // const handleOpenTableInNewTab = () => {
-  //   sessionStorage.setItem(
-  //     "basicTableData",
-  //     JSON.stringify(basicYearCalculateSummary)
-  //   );
-  //   window.open("/basicYearTable", "_blank");
-  // };
 
   const {
     principalAfterThreeYears,
@@ -29,16 +22,24 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
     monthlyPayment,
     insurance,
     mortgageFee,
-    totalYears,
-    totalMonths,
+    // totalYears,
+    // totalMonths,
     totalInterestPaid,
     totalMonthlyPayment,
     lastDayOfPaying,
   } = basicYearCalculateSummary;
 
-  const remainingDateText = `ระยะเวลาผ่อนชำระ ${totalYears} ปี ${totalMonths} เดือน`;
+  // const remainingDateText = `ระยะเวลาผ่อนชำระ ${totalYears} ปี ${totalMonths} เดือน`;
 
   const totalInsuranceMortgage = insurance + mortgageFee;
+  let insuranceOrMortgageText;
+  if (insurance != 0 && mortgageFee == 0) {
+    insuranceOrMortgageText = "ค่าประกัน";
+  } else if (insurance == 0 && mortgageFee != 0) {
+    insuranceOrMortgageText = "ค่าจดจำนอง";
+  } else {
+    insuranceOrMortgageText = "ค่าจดจำนองและค่าประกัน";
+  }
 
   const remainingInterestText = `${totalInterestPaid.toLocaleString()}`;
 
@@ -150,11 +151,16 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
 
             {/* คอลัมน์ 2 แถวที่ 2: ดอกเบี้ยรวม + ค่าจดจำนอง */}
             <div className="text-lg space-y-4 text-start p-4">
-              <p>ดอกเบี้ย 3 ปี รวมค่า<br />จดจำนองและค่าประกัน<br /></p>
-              <span className="font-bold text-[#30A572] text-2xl">
-                {totalInsuranceMortgage.toLocaleString()}
-              </span>{" "}
-              <b>บาท</b>
+              {totalInsuranceMortgage !== 0 && (
+                <div className="text-start p-4">
+                  <p>ดอกเบี้ย 3 ปี รวม</p>
+                  <p>{insuranceOrMortgageText}</p>
+                  <span className="font-bold text-[#30A572] text-2xl">
+                    {totalInsuranceMortgage.toLocaleString()}
+                  </span>{" "}
+                  บาท
+                </div>
+              )}
             </div>
 
             {/* คอลัมน์ 3 แถวที่ 2: เหลือเงินต้นต้องผ่อนอีก */}
@@ -228,22 +234,19 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               {/* คอลัมน์ที่ 3 (เว้นว่างไว้) */}
               <div className="col-span-1"></div>
             </div>
-
-
           </div>
         </div>
       </div>
       {/* ปุ่มดูรายละเอียด */}
       <div className="mt-20 text-center">
         <button
-          onClick={handleNavigateToTable}
+          onClick={handleOpenTableInNewTab}
           className="inline-block rounded-full bg-[#30A572] px-8 py-2 text-lg font-bold text-white hover:bg-[#28a062]"
         >
           ดูรายละเอียด
         </button>
       </div>
     </div>
-
   );
 };
 
@@ -256,8 +259,8 @@ ShowBankBasicYear.propTypes = {
     insurance: PropTypes.number.isRequired,
     mortgageFee: PropTypes.number.isRequired,
     monthlyPayment: PropTypes.number.isRequired,
-    totalYears: PropTypes.number.isRequired,
-    totalMonths: PropTypes.number.isRequired,
+    // totalYears: PropTypes.number.isRequired,
+    // totalMonths: PropTypes.number.isRequired,
     totalInterestPaid: PropTypes.number.isRequired,
     totalMonthlyPayment: PropTypes.number.isRequired,
     lastDayOfPaying: PropTypes.string.isRequired,
