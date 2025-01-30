@@ -42,11 +42,24 @@ const ShowBank = ({ basicCalculateSummary }) => {
   const totalInsuranceMortgage = insurance + mortgageFee;
   let insuranceOrMortgageText;
   if (insurance != 0 && mortgageFee == 0) {
-    insuranceOrMortgageText = "ค่าประกัน";
+    insuranceOrMortgageText = (
+      <div>
+        <p>ดอกเบี้ย 3 ปี รวมค่าประกัน</p>
+      </div>
+    );
   } else if (insurance == 0 && mortgageFee != 0) {
-    insuranceOrMortgageText = "ค่าจดจำนอง";
+    insuranceOrMortgageText = (
+      <div>
+        <p>ดอกเบี้ย 3 ปี รวมค่าจดจำนอง</p>
+      </div>
+    );
   } else {
-    insuranceOrMortgageText = "ค่าจดจำนองและค่าประกัน";
+    insuranceOrMortgageText = (
+      <div>
+        <p>ดอกเบี้ย 3 ปี รวม</p>
+        <p>ค่าจดจำนองและค่าประกัน</p>
+      </div>
+    );
   }
 
   const remainingInterestText = `${totalInterestPaid.toLocaleString()} `;
@@ -155,12 +168,19 @@ const ShowBank = ({ basicCalculateSummary }) => {
                 </div>
 
                 {/* ดอกเบี้ยรวมค่าใช้จ่าย */}
-                {totalInsuranceMortgage !== 0 && (
+                {totalInsuranceMortgage !== 0 ? (
                   <div className="text-start p-4">
-                    <p>ดอกเบี้ย 3 ปี รวม</p>
-                    <p>{insuranceOrMortgageText}</p>
+                    {insuranceOrMortgageText}
                     <span className="font-bold text-[#30A572] text-2xl">
                       {totalInsuranceMortgage.toLocaleString()}
+                    </span>{" "}
+                    บาท
+                  </div>
+                ) : (
+                  <div className="text-start p-4">
+                    <p>เหลือเงินต้นต้องผ่อนอีก</p>
+                    <span className="font-bold text-[#30A572] text-2xl">
+                      {principalAfterThreeYears.toLocaleString()}
                     </span>{" "}
                     บาท
                   </div>
@@ -179,13 +199,15 @@ const ShowBank = ({ basicCalculateSummary }) => {
                 </div>
 
                 {/* เหลือเงินต้นต้องผ่อน */}
-                <p className="text-start p-4">
-                  เหลือเงินต้นต้องผ่อนอีก <br />
-                  <span className="font-bold text-[#30A572] text-2xl">
-                    {principalAfterThreeYears.toLocaleString()}
-                  </span>{" "}
-                  บาท
-                </p>
+                {totalInsuranceMortgage !== 0 && (
+                  <div className="text-start p-4">
+                    <p>เหลือเงินต้นต้องผ่อนอีก</p>
+                    <span className="font-bold text-[#30A572] text-2xl">
+                      {principalAfterThreeYears.toLocaleString()}
+                    </span>{" "}
+                    บาท
+                  </div>
+                )}
               </div>
             </div>
           </div>
