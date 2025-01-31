@@ -210,6 +210,13 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
                   onChange={handleInterestRateChange}
                   className="w-full border-b-2 border-gray-300 focus:border-[#082044] text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                 />
+                 <style jsx>{`
+                input[type="number"]::-webkit-inner-spin-button,
+                input[type="number"]::-webkit-outer-spin-button {
+                  position: relative;
+                  left: -20px; /* Move arrow buttons left */
+                }
+              `}</style>
                 <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                   %
                 </span>
