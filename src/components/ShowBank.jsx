@@ -79,7 +79,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
       {
         label: "# of Votes",
         data: [principalPortionAfterThreeYears, totalInterestThreeYears],
-        backgroundColor: ["#082044", "#82828E"],
+        backgroundColor: ["#82828E","#082044" ],
       },
     ],
   };
@@ -89,7 +89,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
       {
         label: "# of Votes",
         data: [totalMonthlyPayment, totalInterestPaid],
-        backgroundColor: ["#082044", "#82828E"],
+        backgroundColor: ["#82828E","#082044" ],
       },
     ],
   };
