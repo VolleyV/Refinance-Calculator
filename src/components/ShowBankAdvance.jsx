@@ -37,7 +37,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
       {
         label: "# of Votes",
         data: [principalPortionAfterThreeYears, totalInterestThreeYears],
-        backgroundColor: ["#82828E","#082044" ],
+        backgroundColor: ["#82828E", "#082044"],
       },
     ],
   };
@@ -47,7 +47,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
       {
         label: "# of Votes",
         data: [totalMonthlyPayment, totalInterestPaid],
-        backgroundColor: ["#82828E","#082044" ],
+        backgroundColor: ["#82828E", "#082044"],
       },
     ],
   };
@@ -155,15 +155,6 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                 </div>
 
                 {/* ดอกเบี้ยรวมค่าใช้จ่าย */}
-                {totalInsuranceMortgage !== 0 && (
-                  <div className="text-start p-4">
-                    {insuranceOrMortgageText}
-                    <span className="font-bold text-[#30A572] text-2xl">
-                      {totalInsuranceMortgage.toLocaleString()}
-                    </span>{" "}
-                    บาท
-                  </div>
-                )}
                 {totalInsuranceMortgage !== 0 ? (
                   <div className="text-start p-4">
                     {insuranceOrMortgageText}

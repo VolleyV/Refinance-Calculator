@@ -95,10 +95,10 @@ const BasicFormYear = ({
     if (!loanAmount || !interestRate) {
       toast.error("กรุณากรอกข้อมูลให้ครบถ้วน", {
         position: "top-center",
-        autoClose: 1500,
+        autoClose: 4000,
         hideProgressBar: false,
         closeOnClick: false,
-        pauseOnHover: false,
+        pauseOnHover: true,
         draggable: true,
         progress: undefined,
         theme: "light",
@@ -127,10 +127,10 @@ const BasicFormYear = ({
     onResetBasicYear();
     toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
       position: "top-center",
-      autoClose: 1500,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
-      pauseOnHover: false,
+      pauseOnHover: true,
       draggable: true,
       progress: undefined,
       theme: "light",
@@ -145,7 +145,7 @@ const BasicFormYear = ({
       setInterestRate(basicYearInitialInput.interestRate || "");
       setStartDate(
         basicYearInitialInput.startDate ||
-        new Date().toISOString().split("T")[0]
+          new Date().toISOString().split("T")[0]
       );
       setInsurance(basicYearInitialInput.insurance || 0);
       setMortgageFee(basicYearInitialInput.mortgageFee || 0);
@@ -158,7 +158,10 @@ const BasicFormYear = ({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* จำนวนเงินที่กู้ */}
           <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg" htmlFor="Loan-Amount">
+            <label
+              className="text-gray-700 font-medium text-lg"
+              htmlFor="Loan-Amount"
+            >
               จำนวนเงินที่กู้ (บาท)
             </label>
             <div className="relative">
@@ -177,7 +180,9 @@ const BasicFormYear = ({
 
           {/* อัตราดอกเบี้ย (%) */}
           <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg">อัตราดอกเบี้ย (%)</label>
+            <label className="text-gray-700 font-medium text-lg">
+              อัตราดอกเบี้ย (%)
+            </label>
             <div className="relative">
               <input
                 type="number"
@@ -187,7 +192,7 @@ const BasicFormYear = ({
                 onChange={handleInterestRateChange}
                 className="w-full border-b-2 border-gray-300 focus:border-blue-500 text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
               />
-               <style jsx>{`
+              <style jsx>{`
                 input[type="number"]::-webkit-inner-spin-button,
                 input[type="number"]::-webkit-outer-spin-button {
                   position: relative;
@@ -202,7 +207,10 @@ const BasicFormYear = ({
 
           {/* วันที่เริ่ม */}
           <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg" htmlFor="startDate">
+            <label
+              className="text-gray-700 font-medium text-lg"
+              htmlFor="startDate"
+            >
               วันที่เริ่ม ({dateText})
             </label>
             <div className="relative">
@@ -223,7 +231,10 @@ const BasicFormYear = ({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           {/* เลือกระยะเวลาในการผ่อน */}
           <div className="flex flex-col space-y-2">
-            <label htmlFor="payment-duration" className="text-gray-700 font-medium text-lg">
+            <label
+              htmlFor="payment-duration"
+              className="text-gray-700 font-medium text-lg"
+            >
               เลือกระยะเวลาในการผ่อน
             </label>
             <div className="relative">
@@ -245,7 +256,9 @@ const BasicFormYear = ({
 
           {/* ค่าประกัน (ถ้ามี) */}
           <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg">ค่าประกัน (ถ้ามี)</label>
+            <label className="text-gray-700 font-medium text-lg">
+              ค่าประกัน (ถ้ามี)
+            </label>
             <div className="relative mt-2">
               <input
                 type="text"
@@ -262,7 +275,9 @@ const BasicFormYear = ({
 
           {/* ค่าจดจำนอง (ถ้ามี) */}
           <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg">ค่าจดจำนอง (ถ้ามี)</label>
+            <label className="text-gray-700 font-medium text-lg">
+              ค่าจดจำนอง (ถ้ามี)
+            </label>
             <div className="relative mt-2">
               <input
                 type="text"
@@ -277,7 +292,6 @@ const BasicFormYear = ({
             </div>
           </div>
         </div>
-
 
         <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}

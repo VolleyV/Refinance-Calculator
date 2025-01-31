@@ -98,36 +98,36 @@ const AdvanceForm = ({
     }
   };
 
-  const handleEndTermChange = (index, value) => {
-    const updatedEndTerm = [...endTerm];
-    updatedEndTerm[index] = value;
+  // const handleEndTermChange = (index, value) => {
+  //   const updatedEndTerm = [...endTerm];
+  //   updatedEndTerm[index] = value;
 
-    setEndTerm(updatedEndTerm);
+  //   setEndTerm(updatedEndTerm);
 
-    // เมื่อ "ถึงงวดที่" ถูกลบออก
-    if (value === "" || value === undefined) {
-      if (index + 1 < startTerm.length) {
-        setStartTerm((prev) => {
-          const updated = [...prev];
-          updated[index + 1] = ""; // ลบค่าใน "งวดที่เริ่ม" ของบรรทัดถัดไป
-          return updated;
-        });
-      }
-      return;
-    }
+  //   // เมื่อ "ถึงงวดที่" ถูกลบออก
+  //   if (value === "" || value === undefined) {
+  //     if (index + 1 < startTerm.length) {
+  //       setStartTerm((prev) => {
+  //         const updated = [...prev];
+  //         updated[index + 1] = ""; // ลบค่าใน "งวดที่เริ่ม" ของบรรทัดถัดไป
+  //         return updated;
+  //       });
+  //     }
+  //     return;
+  //   }
 
-    // อัปเดต "งวดที่เริ่ม" ในแถวถัดไป
-    if (index + 1 < startTerm.length) {
-      const nextStartTerm = parseInt(value, 10) + 1; // เพิ่มค่าเป็น 1
-      if (!isNaN(nextStartTerm)) {
-        setStartTerm((prev) => {
-          const updated = [...prev];
-          updated[index + 1] = nextStartTerm.toString();
-          return updated;
-        });
-      }
-    }
-  };
+  //   // อัปเดต "งวดที่เริ่ม" ในแถวถัดไป
+  //   if (index + 1 < startTerm.length) {
+  //     const nextStartTerm = parseInt(value, 10) + 1; // เพิ่มค่าเป็น 1
+  //     if (!isNaN(nextStartTerm)) {
+  //       setStartTerm((prev) => {
+  //         const updated = [...prev];
+  //         updated[index + 1] = nextStartTerm.toString();
+  //         return updated;
+  //       });
+  //     }
+  //   }
+  // };
 
   const handleInsuranceChange = (event) => {
     const { value } = event.target;
@@ -150,13 +150,28 @@ const AdvanceForm = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (loanAmount <= 0) {
+      toast.error("จำนวนเงินที่กู้ห้ามน้อยกว่าหรือเท่ากับ 0", {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+
     if (!loanAmount || !startDate) {
       toast.error("กรุณากรอกข้อมูลให้ครบถ้วน", {
         position: "top-center",
-        autoClose: 1500,
+        autoClose: 4000,
         hideProgressBar: false,
         closeOnClick: false,
-        pauseOnHover: false,
+        pauseOnHover: true,
         draggable: true,
         progress: undefined,
         theme: "light",
@@ -176,10 +191,10 @@ const AdvanceForm = ({
           `กรุณาใส่ข้อมูลอัตราดอกเบี้ยและจำนวนเงินผ่อนในแถวที่ ${i + 1}`,
           {
             position: "top-center",
-            autoClose: 1500,
+            autoClose: 4000,
             hideProgressBar: false,
             closeOnClick: false,
-            pauseOnHover: false,
+            pauseOnHover: true,
             draggable: true,
             progress: undefined,
             theme: "light",
@@ -200,10 +215,10 @@ const AdvanceForm = ({
             `กรุณาใส่จำนวนเงินผ่อนต่อเดือนให้ถูกต้องในแถวที่ ${i + 1}`,
             {
               position: "top-center",
-              autoClose: 1500,
+              autoClose: 4000,
               hideProgressBar: false,
               closeOnClick: false,
-              pauseOnHover: false,
+              pauseOnHover: true,
               draggable: true,
               progress: undefined,
               theme: "light",
@@ -215,14 +230,15 @@ const AdvanceForm = ({
 
         if (monthlyPaymentNum <= monthlyInterestOnly) {
           toast.error(
-            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${i + 1
+            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
+              i + 1
             } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`,
             {
               position: "top-center",
-              autoClose: 1500,
+              autoClose: 4000,
               hideProgressBar: false,
               closeOnClick: false,
-              pauseOnHover: false,
+              pauseOnHover: true,
               draggable: true,
               progress: undefined,
               theme: "light",
@@ -280,10 +296,10 @@ const AdvanceForm = ({
     onAdvanceReset();
     toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
       position: "top-center",
-      autoClose: 1500,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
-      pauseOnHover: false,
+      pauseOnHover: true,
       draggable: true,
       progress: undefined,
       theme: "light",
@@ -370,7 +386,6 @@ const AdvanceForm = ({
                 key={index}
                 className="grid grid-cols- sm:grid-cols-4 lg:grid-cols-4 gap-4 items-center relative whitespace-nowrap"
               >
-
                 {/* สำหรับ Mobile */}
                 <div className="flex items-center sm:hidden">
                   <div className="bg-blue-900 text-white font-medium py-1 px-4 rounded-md relative">
@@ -382,7 +397,10 @@ const AdvanceForm = ({
                 {/* อัตราดอกเบี้ย */}
                 <div className="flex flex-col justify-center relative">
                   {(index === 0 || isMobile) && ( // แสดง label ในบรรทัดแรกหรือถ้าเป็น Mobile */}
-                    <label className="text-white font-medium text-lg mb-2" htmlFor={`interest-rate-${index}`}>
+                    <label
+                      className="text-white font-medium text-lg mb-2"
+                      htmlFor={`interest-rate-${index}`}
+                    >
                       อัตราดอกเบี้ยที่
                     </label>
                   )}
@@ -393,7 +411,6 @@ const AdvanceForm = ({
                     </span>
                   </div>
                 </div>
-
 
                 <div className="flex flex-col justify-center relative">
                   {(index === 0 || isMobile) && ( // แสดง label ในบรรทัดแรกหรือถ้าเป็น Mobile */}

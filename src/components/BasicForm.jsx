@@ -96,10 +96,10 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
     if (!loanAmount || !interestRate || !monthlyPayment) {
       toast.error("กรุณากรอกข้อมูลให้ครบถ้วน", {
         position: "top-center",
-        autoClose: 1500,
+        autoClose: 4000,
         hideProgressBar: false,
         closeOnClick: false,
-        pauseOnHover: false,
+        pauseOnHover: true,
         draggable: true,
         progress: undefined,
         theme: "light",
@@ -117,10 +117,10 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
     if (monthlyPaymentNum <= monthlyInterestOnly) {
       toast.error("จำนวนเงินผ่อนต่อเดือนน้อยเกินไปจนดอกเบี้ยไม่ลด", {
         position: "top-center",
-        autoClose: 1500,
+        autoClose: 4000,
         hideProgressBar: false,
         closeOnClick: false,
-        pauseOnHover: false,
+        pauseOnHover: true,
         draggable: true,
         progress: undefined,
         theme: "light",
@@ -151,10 +151,10 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
     onReset();
     toast.success("ล้างข้อมูลเรียบร้อยแล้ว!", {
       position: "top-center",
-      autoClose: 1500,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
-      pauseOnHover: false,
+      pauseOnHover: true,
       draggable: true,
       progress: undefined,
       theme: "light",
@@ -183,7 +183,9 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* จำนวนเงินที่กู้ */}
             <div className="flex flex-col space-y-2">
-              <label className="text-gray-700 font-medium text-lg">จำนวนเงินที่กู้ (บาท)</label>
+              <label className="text-gray-700 font-medium text-lg">
+                จำนวนเงินที่กู้ (บาท)
+              </label>
               <div className="relative">
                 <input
                   type="text"
@@ -200,7 +202,9 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
 
             {/* อัตราดอกเบี้ย */}
             <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg">อัตราดอกเบี้ย (%)</label>
+              <label className="text-gray-700 font-medium text-lg">
+                อัตราดอกเบี้ย (%)
+              </label>
               <div className="relative">
                 <input
                   type="number"
@@ -210,23 +214,24 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
                   onChange={handleInterestRateChange}
                   className="w-full border-b-2 border-gray-300 focus:border-[#082044] text-2xl font-bold text-gray-900 focus:outline-none px-2 h-[48px]"
                 />
-                 <style jsx>{`
-                input[type="number"]::-webkit-inner-spin-button,
-                input[type="number"]::-webkit-outer-spin-button {
-                  position: relative;
-                  left: -20px; /* Move arrow buttons left */
-                }
-              `}</style>
+                <style jsx>{`
+                  input[type="number"]::-webkit-inner-spin-button,
+                  input[type="number"]::-webkit-outer-spin-button {
+                    position: relative;
+                    left: -20px; /* Move arrow buttons left */
+                  }
+                `}</style>
                 <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                   %
                 </span>
-              
               </div>
             </div>
 
             {/* วันที่เริ่ม */}
             <div className="flex flex-col space-y-2">
-            <label className="text-gray-700 font-medium text-lg">วันที่เริ่ม ({dateText})</label>
+              <label className="text-gray-700 font-medium text-lg">
+                วันที่เริ่ม ({dateText})
+              </label>
               <div className="relative">
                 <input
                   type="date"
@@ -245,7 +250,9 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* เงินผ่อนต่อเดือน */}
             <div className="flex flex-col space-y-2">
-              <label className="text-gray-700 font-medium text-lg">เงินผ่อนต่อเดือน (บาท)</label>
+              <label className="text-gray-700 font-medium text-lg">
+                เงินผ่อนต่อเดือน (บาท)
+              </label>
               <div className="relative">
                 <input
                   type="text"
@@ -262,7 +269,9 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
 
             {/* ค่าประกัน */}
             <div className="flex flex-col space-y-2">
-              <label className="text-gray-700 font-medium text-lg">ค่าประกัน (ถ้ามี)</label>
+              <label className="text-gray-700 font-medium text-lg">
+                ค่าประกัน (ถ้ามี)
+              </label>
               <div className="relative">
                 <input
                   type="text"
@@ -279,7 +288,9 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
 
             {/* ค่าจดจำนอง */}
             <div className="flex flex-col space-y-2 ">
-              <label className="text-gray-700 font-medium text-lg">ค่าจดจำนอง (ถ้ามี)</label>
+              <label className="text-gray-700 font-medium text-lg">
+                ค่าจดจำนอง (ถ้ามี)
+              </label>
               <div className="relative">
                 <input
                   type="text"
@@ -295,7 +306,6 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
             </div>
           </div>
         </div>
-
 
         <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}
@@ -320,7 +330,6 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
             </button>
           </div>
         </div>
-
       </form>
       <ToastContainer />
     </div>
