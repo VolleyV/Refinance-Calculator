@@ -47,11 +47,13 @@ function App() {
   const scrollToBottom = () => {
     const isMobile = window.innerWidth < 768;
     let scrollPosition = isMobile
-      ? window.innerHeight * 1.3
-      : window.innerHeight * 1;
+      ? window.innerHeight * 1.5
+      : window.innerHeight * 0.7;
 
     if (isMobile && advanceFormData) {
-      scrollPosition = window.innerHeight * 1.7;
+      scrollPosition = window.innerHeight * 1.8;
+    } else if (advanceFormData) {
+      scrollPosition = window.innerHeight * 1.2;
     } else {
       scrollPosition;
     }

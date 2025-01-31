@@ -1,3 +1,5 @@
+import { Link, useNavigate } from "react-router-dom"; // ✅ ใช้ useNavigate
+
 const Navbar = () => {
   return (
     <div className="bg-[#082044]">
@@ -5,7 +7,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center py-4">
           {/* โลโก้ */}
           <div className="flex items-center">
-            <div className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               {/* Icon */}
               <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
                 <span className="text-[#082044] font-bold">★</span>
@@ -14,17 +16,17 @@ const Navbar = () => {
                 <p className="text-white font-bold text-lg">Financial</p>
                 <p className="text-gray-300 text-sm">Site</p>
               </div>
-            </div>
+            </Link>
           </div>
 
           {/* เมนู */}
           <nav className="flex gap-6" aria-label="Tabs">
-            <a
-              href="#"
+            <Link
+              to="/"
               className="text-sm font-medium text-green-400 border-b-2 border-green-400 pb-1"
             >
               HOME
-            </a>
+            </Link>
             <a
               href="#"
               className="text-sm font-medium text-gray-300 hover:text-white hover:border-gray-100 pb-1"
