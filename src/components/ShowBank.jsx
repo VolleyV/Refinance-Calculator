@@ -200,12 +200,13 @@ const ShowBank = ({ basicCalculateSummary }) => {
 
                 {/* เหลือเงินต้นต้องผ่อน */}
                 {totalInsuranceMortgage !== 0 && (
-                  <div className="text-start p-4">
+                  <div className="text-start p-4 ">
                     <p>เหลือเงินต้นต้องผ่อนอีก</p>
+                    <div className="font-bold text-[#30A572]"> </div>
                     <span className="font-bold text-[#30A572] text-2xl">
                       {principalAfterThreeYears.toLocaleString()}
                     </span>{" "}
-                    บาท
+                    <span className="font-bold">บาท</span>
                   </div>
                 )}
               </div>

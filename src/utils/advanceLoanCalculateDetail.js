@@ -16,7 +16,6 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     startDate,
     interestRates,
     startTerm = ["1"],
-    endTerm,
     insurance,
     mortgageFee,
   } = advanceData;
@@ -25,6 +24,15 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     console.error("Invalid advanceData:", advanceData);
     return [];
   }
+
+  const filteredMonthlyPayment = monthlyPayment.filter((value) => value !== "");
+  const averageMonthlyPayment =
+    filteredMonthlyPayment.length > 0
+      ? filteredMonthlyPayment.reduce(
+          (acc, curr) => acc + (parseFloat(curr.replace(/,/g, "")) || 0),
+          0
+        ) / filteredMonthlyPayment.length
+      : 0;
 
   let loanAmountRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
   /*   let newInsurance= parseFloat(insurance.replace(/,/g, "")) || 0;
@@ -55,7 +63,6 @@ export const advanceLoanCalculateDetail = (advanceData) => {
 
     for (let i = 0; i < startTerm.length; i++) {
       const start = parseInt(startTerm[i]) || 0;
-      const end = parseInt(endTerm[i]) || Infinity;
 
       if (monthsElapsed + 1 >= start) {
         currentInterestRate =
@@ -85,12 +92,12 @@ export const advanceLoanCalculateDetail = (advanceData) => {
       interestRate: (currentInterestRate * 100).toFixed(2),
       insurance: insurance,
       mortgageFee: mortgageFee,
+      averageMonthlyPayment: averageMonthlyPayment,
     });
 
     monthsElapsed++;
   }
 
-  console.log("Loan fully paid off after", monthsElapsed, "months.");
   return details;
 };
 
@@ -126,6 +133,8 @@ export const advanceThreeYearsSummary = (details) => {
     0
   );
 
+  const averageMonthlyPayment = details[0]?.averageMonthlyPayment || 0;
+
   const total =
     parseFloat(totalInterestThreeYears) +
     parseFloat(principalPortionAfterThreeYears) +
@@ -142,6 +151,7 @@ export const advanceThreeYearsSummary = (details) => {
     insurance: Math.trunc(insurance),
     mortgageFee: Math.trunc(mortgageFee),
     total: Math.trunc(total),
+    averageMonthlyPayment: Math.trunc(averageMonthlyPayment),
   };
 };
 

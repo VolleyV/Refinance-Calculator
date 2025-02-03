@@ -98,37 +98,6 @@ const AdvanceForm = ({
     }
   };
 
-  // const handleEndTermChange = (index, value) => {
-  //   const updatedEndTerm = [...endTerm];
-  //   updatedEndTerm[index] = value;
-
-  //   setEndTerm(updatedEndTerm);
-
-  //   // เมื่อ "ถึงงวดที่" ถูกลบออก
-  //   if (value === "" || value === undefined) {
-  //     if (index + 1 < startTerm.length) {
-  //       setStartTerm((prev) => {
-  //         const updated = [...prev];
-  //         updated[index + 1] = ""; // ลบค่าใน "งวดที่เริ่ม" ของบรรทัดถัดไป
-  //         return updated;
-  //       });
-  //     }
-  //     return;
-  //   }
-
-  //   // อัปเดต "งวดที่เริ่ม" ในแถวถัดไป
-  //   if (index + 1 < startTerm.length) {
-  //     const nextStartTerm = parseInt(value, 10) + 1; // เพิ่มค่าเป็น 1
-  //     if (!isNaN(nextStartTerm)) {
-  //       setStartTerm((prev) => {
-  //         const updated = [...prev];
-  //         updated[index + 1] = nextStartTerm.toString();
-  //         return updated;
-  //       });
-  //     }
-  //   }
-  // };
-
   const handleInsuranceChange = (event) => {
     const { value } = event.target;
     const rawValue = value.replace(/[^0-9]/g, "");
@@ -614,14 +583,6 @@ const AdvanceForm = ({
         </div>
       </form>
       <ToastContainer />
-      {/* <div className="flex items-center justify-between w-full mt-4">
-        <button className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-          ย้อนกลับ
-        </button>
-        <button className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-          เปลี่ยนหน้า
-        </button>
-      </div> */}
     </div>
   );
 };
