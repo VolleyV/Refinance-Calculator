@@ -182,7 +182,6 @@ function App() {
           advanceCalculateDetails
         );
         return {
-          ...advanceCalculateDetails,
           ...threeYearSummary,
           ...advanceRemainSummary,
         };
@@ -198,7 +197,6 @@ function App() {
   const advanceSummary = calculateAdvanceDetails();
 
   const [compareData, setCompareData] = useState([]);
-
   const saveToTable = (advanceSummary) => {
     console.log(advanceSummary);
     setCompareData((prev) => [...prev, advanceSummary]);
@@ -244,20 +242,25 @@ function App() {
                     <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
                     <div className="bg-gray-200 p-4 text-center mt-4 w-full">
                       <div className="flex justify-center items-center space-x-2">
-                        <p>
-                          หากต้องการเปรียบเทียบผลการคำนวณ
+                        <p className="inline">
+                          หากต้องการเปรียบเทียบผลการคำนวณ{" "}
                           <button
-                            className="font-bold text-xl text-green-500 cursor-pointer"
+                            className="font-bold text-xl text-[#30A572] cursor-pointer underline inline whitespace-nowrap"
                             onClick={() => saveToTable({ advanceSummary })}
                           >
                             คลิกที่นี่
-                          </button>
+                          </button>{" "}
                           เพื่อทำการบันทึกผลไว้ในตาราง
                         </p>
                       </div>
                     </div>
                     {compareData.length > 0 && (
-                      <CompareTable compareData={compareData} />
+                      <div>
+                        <CompareTable
+                          compareData={compareData}
+                          setCompareData={setCompareData}
+                        />
+                      </div>
                     )}
                   </>
                 )}
