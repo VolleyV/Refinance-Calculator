@@ -109,7 +109,7 @@ const InputForm = ({
             >
               <button
                 onClick={() => switchTab("basic")}
-                className={`flex-grow text-center rounded-full py-2.5 text-sm font-medium transition-all duration-300 ${
+                className={`flex-grow text-center rounded-full py-2.5 text-sm font-medium transition-all duration-300 text-nowrap ${
                   activeTab === "basic"
                     ? "bg-[#082044] text-white"
                     : "bg-transparent text-gray-500 hover:text-gray-700"
@@ -119,7 +119,7 @@ const InputForm = ({
               </button>
               <button
                 onClick={() => switchTab("basicYear")}
-                className={`flex-grow text-center rounded-full py-2.5 text-sm font-medium transition-all duration-300 ${
+                className={`flex-grow text-center rounded-full py-2.5 text-sm font-medium transition-all duration-300 text-nowrap ${
                   activeTab === "basicYear"
                     ? "bg-[#082044] text-white"
                     : "bg-transparent text-gray-500 hover:text-gray-700"
@@ -129,7 +129,7 @@ const InputForm = ({
               </button>
               <button
                 onClick={() => switchTab("advanced")}
-                className={`flex-grow text-center rounded-full py-2.5 text-sm font-medium transition-all duration-300 ${
+                className={`flex-grow text-center rounded-full py-2.5 text-sm font-medium transition-all duration-300 text-nowrap ${
                   activeTab === "advanced"
                     ? "bg-[#082044] text-white"
                     : "bg-transparent text-gray-500 hover:text-gray-700"
