@@ -64,19 +64,19 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
   let insuranceOrMortgageText;
   if (insurance != 0 && mortgageFee == 0) {
     insuranceOrMortgageText = (
-      <div>
+      <div className="mt-4">
         <p>ดอกเบี้ย 3 ปี รวมค่าประกัน</p>
       </div>
     );
   } else if (insurance == 0 && mortgageFee != 0) {
     insuranceOrMortgageText = (
-      <div>
+      <div className="mt-4">
         <p>ดอกเบี้ย 3 ปี รวมค่าจดจำนอง</p>
       </div>
     );
   } else {
     insuranceOrMortgageText = (
-      <div>
+      <div className="mt-4">
         <p>ดอกเบี้ย 3 ปี รวม</p>
         <p>ค่าจดจำนองและค่าประกัน</p>
       </div>
@@ -85,16 +85,16 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
 
   let remainingDateText;
   if (totalYears == 0) {
-    remainingDateText = `ระยะเวลาผ่อนชำระ ${totalMonths} เดือน`;
+    remainingDateText = ` ${totalMonths} เดือน`;//ระยะเวลาผ่อนชำระ
   } else if (totalMonths == 0) {
-    remainingDateText = `ระยะเวลาผ่อนชำระ ${totalYears} ปี`;
+    remainingDateText = ` ${totalYears} ปี`;//ระยะเวลาผ่อนชำระ
   } else {
-    remainingDateText = `ระยะเวลาผ่อนชำระ ${totalYears} ปี ${totalMonths} เดือน`;
+    remainingDateText = ` ${totalYears} ปี ${totalMonths} เดือน`;//ระยะเวลาผ่อนชำระ
   }
 
   const remainingInterestText = `${totalInterestPaid.toLocaleString()} `;
 
-  const lastPaymentText = `สิ้นสุดการชำระ ณ วันที่: ${new Date(
+  const lastPaymentText = `${new Date(
     lastDayOfPaying
   ).toLocaleDateString("th-TH", {
     year: "numeric",
@@ -108,10 +108,10 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
       <div className="flex flex-col">
         {/* ส่วนข้อมูลระยะเวลา 3 ปีแรก */}
         <div>
-          <h2 className="text-2xl font-bold text-[#082044] text-center">
+          <h2 className="text-3xl font-bold text-[#082044] text-center">
             ผ่อน 3 ปี แรก
           </h2>
-          <p className="text-[#82828E] text-lg text-center mt-2">
+          <p className="text-[#82828E] text-xl text-center mt-2">
             (จำนวนเงิน {totalMonthlyPaymentThreeYears.toLocaleString()} บาท)
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center mt-8">
@@ -140,7 +140,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
             </div>
 
             {/* คอลัมน์ที่ 2 และ 3 (ข้อมูลการชำระเงิน) */}
-            <div className="grid grid-cols-2 col-span-2 gap-6">
+            <div className="sm:grid grid-cols-2 col-span-2 gap-6">
               {/* คอลัมน์ที่ 2 */}
               <div className="text-lg flex flex-col justify-between">
                 {/* ผ่อนดอกเบี้ยไป (เส้นกรอบประ) */}
@@ -150,7 +150,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                     <span className="font-bold text-[#30A572] text-2xl">
                       {totalInterestThreeYears.toLocaleString()}
                     </span>{" "}
-                    บาท
+                    <span className="font-bold">บาท</span>
                   </p>
                 </div>
 
@@ -161,15 +161,15 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                     <span className="font-bold text-[#30A572] text-2xl">
                       {totalInsuranceMortgage.toLocaleString()}
                     </span>{" "}
-                    บาท
+                    <span className="font-bold">บาท</span>
                   </div>
                 ) : (
-                  <div className="text-start p-4">
+                  <div className="text-start p-4 mt-4">
                     <p>เหลือเงินต้นต้องผ่อนอีก</p>
                     <span className="font-bold text-[#30A572] text-2xl">
                       {totalLoanRemaining.toLocaleString()}
                     </span>{" "}
-                    บาท
+                    <span className="font-bold">บาท</span>
                   </div>
                 )}
               </div>
@@ -182,7 +182,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                   <span className="font-bold text-[#30A572] text-2xl">
                     {principalPortionAfterThreeYears.toLocaleString()}
                   </span>{" "}
-                  บาท
+                  <span className="font-bold">บาท</span>
                 </div>
 
                 {/* เหลือเงินต้นต้องผ่อน */}
@@ -192,7 +192,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                     <span className="font-bold text-[#30A572] text-2xl">
                       {totalLoanRemaining.toLocaleString()}
                     </span>{" "}
-                    บาท
+                    <span className="font-bold">บาท</span>
                   </div>
                 )}
               </div>
@@ -200,17 +200,17 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
           </div>
 
           {/* เส้นแบ่ง */}
-          <div className="border-t border-[#D3D8E2] my-20"></div>
+          <div className="border-t border-[#D3D8E2] my-[40px]"></div>
 
           {/* ส่วนข้อมูลจนถึงสิ้นสุดการชำระ */}
           <div>
-            <h2 className="text-2xl font-bold text-[#082044] text-center">
+            <h2 className="text-3xl font-bold text-[#082044] text-center">
               จะผ่อนหมดต้องใช้เวลา {remainingDateText}
             </h2>
-            <p className="text-[#82828E] text-lg text-center mt-2">
+            <p className="text-[#82828E] text-xl text-center mt-2">
               (จะผ่อนเสร็จวันที่ {lastPaymentText})
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center mt-2">
               {/* คอลัมน์ที่ 1 (กราฟและ Legend ด้านล่าง) */}
               <div className="flex flex-col items-center col-span-1">
                 {/* กราฟวงกลม */}
@@ -244,14 +244,15 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                     <span className="font-bold text-[#30A572] text-2xl">
                       {remainingInterestText.toLocaleString()}
                     </span>{" "}
-                    บาท
+                    <span className="font-bold">บาท</span>
                   </p>
                 </div>
 
                 {/* จะผ่อนเสร็จวันที่ */}
-                <p className="text-[#35373F] text-start p-4">
-                  จะผ่อนเสร็จวันที่ <br />
-                  <span className="font-bold text-[#30A572] text-2xl">
+                <p className="text-[#35373F] text-start p-4 sm:block inline">
+                  จะผ่อนเสร็จวันที่
+                  <span className="inline sm:hidden">&nbsp;</span>
+                  <span className="font-bold text-[#30A572] text-2xl sm:block inline">
                     {lastPaymentText}
                   </span>
                 </p>
@@ -262,10 +263,10 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
             </div>
 
             {/* ปุ่มดูรายละเอียด */}
-            <div className="mt-20 text-center">
+            <div className="mt-5 text-center">
               <button
                 onClick={handleOpenTableInNewTab}
-                className="inline-block rounded-full bg-[#30A572] px-8 py-2 text-lg font-bold text-white hover:bg-[#28a062]"
+                className="inline-block rounded-full bg-[#30A572] w-full sm:w-[250px] px-8 py-2 text-lg font-bold text-white hover:bg-[#28a062]"
               >
                 ดูรายละเอียด
               </button>

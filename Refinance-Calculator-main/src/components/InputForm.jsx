@@ -104,12 +104,12 @@ const InputForm = ({
         <div className="border-gray-200 container mx-auto px-4">
           <div className="flex items-center py-4">
             <nav
-              className="flex w-full bg-gray-200 rounded-full p-1 h-16"
+              className="flex w-full bg-gray-200 rounded-full p-1"
               aria-label="Tabs"
             >
               <button
                 onClick={() => switchTab("basic")}
-                className={`flex-grow text-center rounded-full py-2.5 text-lg font-medium transition-all duration-300 ${
+                className={`flex-grow text-center rounded-full py-2.5 text-sm font-medium transition-all duration-300 ${
                   activeTab === "basic"
                     ? "bg-[#082044] text-white"
                     : "bg-transparent text-gray-500 hover:text-gray-700"
@@ -119,7 +119,7 @@ const InputForm = ({
               </button>
               <button
                 onClick={() => switchTab("basicYear")}
-                className={`flex-grow text-center rounded-full py-2.5 text-lg font-medium transition-all duration-300 ${
+                className={`flex-grow text-center rounded-full py-2.5 text-sm font-medium transition-all duration-300 ${
                   activeTab === "basicYear"
                     ? "bg-[#082044] text-white"
                     : "bg-transparent text-gray-500 hover:text-gray-700"
@@ -129,7 +129,7 @@ const InputForm = ({
               </button>
               <button
                 onClick={() => switchTab("advanced")}
-                className={`flex-grow text-center rounded-full py-2.5 text-lg font-medium transition-all duration-300 ${
+                className={`flex-grow text-center rounded-full py-2.5 text-sm font-medium transition-all duration-300 ${
                   activeTab === "advanced"
                     ? "bg-[#082044] text-white"
                     : "bg-transparent text-gray-500 hover:text-gray-700"

@@ -25,7 +25,6 @@ import {
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
-import CompareTable from "./components/CompareTable";
 
 function App() {
   const [basicFormData, setBasicFormData] = useState(() => {
@@ -112,7 +111,6 @@ function App() {
 
   const clearAdvanceFormData = () => {
     setAdvanceFormData(null);
-    setCalculatedData([]);
     sessionStorage.removeItem("advanceFormData");
   };
 
@@ -182,11 +180,7 @@ function App() {
         const advanceRemainSummary = advanceRemainingToLast(
           advanceCalculateDetails
         );
-        return {
-          ...advanceCalculateDetails,
-          ...threeYearSummary,
-          ...advanceRemainSummary,
-        };
+        return { ...threeYearSummary, ...advanceRemainSummary };
       } catch (error) {
         console.error("Error calculating advance details:", error);
       }
@@ -197,37 +191,6 @@ function App() {
   const basicSummary = calculateBasicSummary();
   const basicYearSummary = calculateBasicYearSummary();
   const advanceSummary = calculateAdvanceDetails();
-
-  const [calculatedData, setCalculatedData] = useState([]);
-
-  // ฟังก์ชันคำนวณข้อมูลเมื่อมี advanceFormData
-  useEffect(() => {
-    if (advanceFormData) {
-      // ดึงข้อมูลการคำนวณจาก advanceLoanCalculateDetail
-      const details = advanceLoanCalculateDetail(advanceFormData);
-
-      // แปลงข้อมูลให้มีแค่ field ที่ต้องการ
-      const formattedData = details.map((detail) => ({
-        month: detail.month,
-        date: detail.date,
-        interest: detail.interest,
-        loanAmountPortion: detail.principalPortion,
-        remainingLoanAmount: detail.remainingPrincipal,
-        monthlyPayment: detail.monthlyPayment,
-        interestRate: detail.interestRate,
-      }));
-
-      setCalculatedData(formattedData);
-    }
-  }, [advanceFormData]);
-
-  console.log(calculatedData);
-
-  const [compareData, setCompareData] = useState([]);
-  const saveToTable = (advanceSummary) => {
-    // console.log(advanceSummary);
-    setCompareData((prev) => [...prev, advanceSummary]);
-  };
 
   return (
     <Router>
@@ -267,28 +230,12 @@ function App() {
                 {!isLoading && advanceFormData && (
                   <>
                     <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
-                    <div className="bg-gray-200 p-4 text-center mt-4 w-full">
-                      <div className="flex justify-center items-center space-x-2">
-                        <p className="inline">
-                          หากต้องการเปรียบเทียบผลการคำนวณ{" "}
-                          <button
-                            className="font-bold text-xl text-[#30A572] cursor-pointer underline inline whitespace-nowrap"
-                            onClick={() => saveToTable({ advanceSummary })}
-                          >
-                            คลิกที่นี่
-                          </button>{" "}
-                          เพื่อทำการบันทึกผลไว้ในตาราง
-                        </p>
-                      </div>
+                    <div className="bg-[#D3D8E2] p-4 text-center mt-4 w-full">
+                      <p>
+                        หากต้องการเปรียบเทียบผลการคำนวณ กรุณาคลิกที่นี่
+                        เพื่อทำการบันทึกผลไว้ในตาราง
+                      </p>
                     </div>
-                    {compareData.length > 0 && (
-                      <div>
-                        <CompareTable
-                          compareData={compareData}
-                          setCompareData={setCompareData}
-                        />
-                      </div>
-                    )}
                   </>
                 )}
               </div>
