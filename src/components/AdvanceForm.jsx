@@ -377,7 +377,7 @@ const AdvanceForm = ({
 
         <div className="relative border-2 border-dashed border-[#bbbbbb] rounded-md p-4 mt-8">
           <div className="absolute -top-3 left-4 bg-white px-4 text-gray-700 font-medium">
-            กรอบอัตราดอกเบี้ย
+            อัตราดอกเบี้ย
           </div>
           <div className="grid grid-cols-1 gap-6 mt-6">
             {Array.from({ length: visibleRows }).map((_, index) => (
@@ -394,7 +394,7 @@ const AdvanceForm = ({
                 </div>
 
                 {/* อัตราดอกเบี้ย */}
-                <div className="hidden sm:flexflex-col justify-center relative">
+                <div className="hidden sm:flex flex-col justify-center relative">
                   {(index === 0 || isMobile) && ( // แสดง label ในบรรทัดแรกหรือถ้าเป็น Mobile */}
                     <div className="font-medium text-lg mt-8"></div>
                   )}
