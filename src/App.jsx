@@ -112,6 +112,7 @@ function App() {
 
   const clearAdvanceFormData = () => {
     setAdvanceFormData(null);
+    setCalculatedData([]);
     sessionStorage.removeItem("advanceFormData");
   };
 
@@ -182,6 +183,7 @@ function App() {
           advanceCalculateDetails
         );
         return {
+          ...advanceCalculateDetails,
           ...threeYearSummary,
           ...advanceRemainSummary,
         };
@@ -196,9 +198,34 @@ function App() {
   const basicYearSummary = calculateBasicYearSummary();
   const advanceSummary = calculateAdvanceDetails();
 
+  const [calculatedData, setCalculatedData] = useState([]);
+
+  // ฟังก์ชันคำนวณข้อมูลเมื่อมี advanceFormData
+  useEffect(() => {
+    if (advanceFormData) {
+      // ดึงข้อมูลการคำนวณจาก advanceLoanCalculateDetail
+      const details = advanceLoanCalculateDetail(advanceFormData);
+
+      // แปลงข้อมูลให้มีแค่ field ที่ต้องการ
+      const formattedData = details.map((detail) => ({
+        month: detail.month,
+        date: detail.date,
+        interest: detail.interest,
+        loanAmountPortion: detail.principalPortion,
+        remainingLoanAmount: detail.remainingPrincipal,
+        monthlyPayment: detail.monthlyPayment,
+        interestRate: detail.interestRate,
+      }));
+
+      setCalculatedData(formattedData);
+    }
+  }, [advanceFormData]);
+
+  console.log(calculatedData);
+
   const [compareData, setCompareData] = useState([]);
   const saveToTable = (advanceSummary) => {
-    console.log(advanceSummary);
+    // console.log(advanceSummary);
     setCompareData((prev) => [...prev, advanceSummary]);
   };
 
