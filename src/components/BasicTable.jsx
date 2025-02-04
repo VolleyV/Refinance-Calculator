@@ -8,13 +8,28 @@ import Pagination from "./Pagination";
 
 const BasicTable = ({ data }) => {
   if (!data) {
-    return <div>ไม่มีข้อมูลที่จะแสดง</div>;
+    return (
+      <div>
+        <p className="text-center mt-4 text-sm text-gray-600">
+          ไม่มีข้อมูลในตาราง หากผู้ใช้เปิดเว็บนี้ใน Line กรุณาเปิดใน Brownser
+          เพื่อดูตาราง{" "}
+          <a
+            href="https://example.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 underline"
+          >
+            กดที่นี่เพื่อเปิดในเบราว์เซอร์
+          </a>
+        </p>
+      </div>
+    );
   }
 
   useEffect(() => {
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "instant" });
-    }, 50);
+    }, 0);
   }, []);
 
   const itemsPerPage = 36;
