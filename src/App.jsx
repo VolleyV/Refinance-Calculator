@@ -54,7 +54,7 @@ function App() {
     if (isMobile && advanceFormData) {
       scrollPosition = window.innerHeight * 1.8;
     } else if (advanceFormData) {
-      scrollPosition = window.innerHeight * 1.2;
+      scrollPosition = window.innerHeight * 1;
     } else {
       scrollPosition;
     }
