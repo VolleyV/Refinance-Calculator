@@ -226,10 +226,10 @@ function App() {
   const [compareData, setCompareData] = useState([]);
   const saveToTable = async (advanceSummary) => {
     try {
-      // Add a unique ID based on timestamp
+      // Ensure id is a number (if bigint in Supabase)
       const dataToInsert = {
-        id: Date.now().toString(), // Unique ID
-        ...advanceSummary, // Spread the existing object
+        id: Date.now(), // No .toString()
+        ...advanceSummary,
       };
   
       // Send data to the API
@@ -247,8 +247,8 @@ function App() {
   
       console.log("✅ Data inserted successfully:", result);
   
-      // Update local state only if successful
-      setCompareData((prev) => [...prev, dataToInsert]);
+      // ✅ Update local state only after a successful insert
+      setCompareData((prev) => [...prev, result.data[0]]);
     } catch (error) {
       console.error("❌ Error inserting data:", error.message);
     }
