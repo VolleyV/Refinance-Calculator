@@ -228,9 +228,15 @@ function App() {
     try {
       console.log("Sending data:", advanceSummary); // 🔍 Debugging
   
-      // Ensure correct field names, flatten structure, and add `id`
+      if (!Array.isArray(advanceSummary)) {
+        throw new Error("advanceSummary is not an array");
+      }
+  
+      const id = Date.now().toString(); // ✅ Generate ID once for all rows
+  
+      // Format data with the same `id`
       const formattedData = advanceSummary.map(item => ({
-        id: Date.now().toString(), // ✅ Generate unique ID
+        id, // ✅ Use the same ID for all entries
         month: item.month,
         date: item.date,
         interest: item.interest,
@@ -243,7 +249,7 @@ function App() {
       const response = await fetch("https://refinance-calculator-navy.vercel.app/api/insert", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formattedData), // ✅ Send as array directly
+        body: JSON.stringify(formattedData), // ✅ Send correctly formatted array
       });
   
       const result = await response.json();
@@ -254,8 +260,7 @@ function App() {
   
       console.log("✅ Data inserted successfully:", result);
   
-      // Update local state only if successful
-      setCompareData((prev) => [...prev, ...formattedData]);
+      setCompareData((prev) => [...prev, ...formattedData]); // Update state
     } catch (error) {
       console.error("❌ Error inserting data:", error.message);
     }
