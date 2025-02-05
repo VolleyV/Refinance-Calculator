@@ -231,7 +231,7 @@ function App() {
       const response = await fetch("https://refinance-calculator-navy.vercel.app/api/insert", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(advanceSummary), // Send the array directly
+        body: JSON.stringify(advanceSummary), // Send the array directly without wrapping
       });
   
       const result = await response.json();
