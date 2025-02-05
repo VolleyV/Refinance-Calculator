@@ -17,16 +17,16 @@ export default async function handler(req, res) {
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
   // ✅ Get request body
-  const { month, date, interest, LoanAmount, RemainingLoan, monthlyPayment, interestRate } = req.body;
+  const { month, date, interest, loanAmount, remainingLoan, monthlyPayment, interestRate } = req.body;
   const id = Date.now().toString(); // Generate ID
 
-  if (!month || !date || !interest || !LoanAmount || !RemainingLoan || !monthlyPayment || !interestRate) {
+  if (!month || !date || !interest || !loanAmount || !remainingLoan || !monthlyPayment || !interestRate) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
   // ✅ Insert data into the "AdvanceDetail" table
   const { data, error } = await supabase.from("AdvanceDetail").insert([
-    { id, month, date, interest, LoanAmount, RemainingLoan, monthlyPayment, interestRate },
+    { id, month, date, interest, loanAmount, remainingLoan, monthlyPayment, interestRate },
   ]);
 
   if (error) {
