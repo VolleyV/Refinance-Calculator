@@ -17,24 +17,21 @@ export default async function handler(req, res) {
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
   // ✅ Get request body
-  const { advanceSummary } = req.body;
+  const { month, date, interest, loanAmount, remainingLoan, monthlyPayment, interestRate } = req.body;
+  const id = Date.now().toString(); // Generate ID
 
-  if (!advanceSummary || !Array.isArray(advanceSummary) || advanceSummary.length === 0) {
-    return res.status(400).json({ error: "Missing or invalid data format" });
+  if (!month || !date || !interest || !loanAmount || !remainingLoan || !monthlyPayment || !interestRate) {
+    return res.status(400).json({ error: "Missing required fields" });
   }
 
-  // ✅ Add unique ID to each entry
-  const formattedData = advanceSummary.map((entry) => ({
-    id: Date.now().toString() + Math.floor(Math.random() * 1000), // Unique ID
-    ...entry,
-  }));
-
-  // ✅ Insert multiple records into the "AdvanceDetail" table
-  const { error } = await supabase.from("AdvanceDetail").insert(formattedData);
+  // ✅ Insert data into the "AdvanceDetail" table
+  const { data, error } = await supabase.from("AdvanceDetail").insert([
+    { id, month, date, interest, loanAmount, remainingLoan, monthlyPayment, interestRate },
+  ]);
 
   if (error) {
     return res.status(500).json({ error: error.message });
   }
 
-  return res.status(201).json({ message: "Data inserted successfully" });
+  return res.status(201).json({ message: "Data inserted successfully", data });
 }
