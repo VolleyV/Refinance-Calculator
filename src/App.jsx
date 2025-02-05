@@ -226,11 +226,11 @@ function App() {
   const [compareData, setCompareData] = useState([]);
   const saveToTable = async (advanceSummary) => {
     // บันทึกข้อมูลพร้อม timestamp ลงใน compareData
-    setCompareData((prev) => [...prev, dataWithTimestamp]
     try {
           const dataWithTimestamp = {
       ...advanceSummary,
       timeStamp: Date.now(), // เพิ่ม timestamp ปัจจุบัน
+                setCompareData((prev) => [...prev, dataWithTimestamp]
     };
 
       // Add a unique ID based on timestamp
