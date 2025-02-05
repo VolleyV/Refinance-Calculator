@@ -226,17 +226,12 @@ function App() {
   const [compareData, setCompareData] = useState([]);
   const saveToTable = async (advanceSummary) => {
     try {
-      // Ensure id is a number (if bigint in Supabase)
-      const dataToInsert = {
-        id: Date.now(), // No .toString()
-        ...advanceSummary,
-      };
+      console.log("Sending data:", advanceSummary); // 🔍 Debugging
   
-      // Send data to the API
       const response = await fetch("https://refinance-calculator-navy.vercel.app/api/insert", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataToInsert),
+        body: JSON.stringify({ advanceSummary }), // ✅ Correct format
       });
   
       const result = await response.json();
@@ -247,8 +242,8 @@ function App() {
   
       console.log("✅ Data inserted successfully:", result);
   
-      // ✅ Update local state only after a successful insert
-      setCompareData((prev) => [...prev, result.data[0]]);
+      // Update local state only if successful
+      setCompareData((prev) => [...prev, ...advanceSummary]);
     } catch (error) {
       console.error("❌ Error inserting data:", error.message);
     }
