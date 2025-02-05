@@ -85,22 +85,23 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
 
   let remainingDateText;
   if (totalYears == 0) {
-    remainingDateText = ` ${totalMonths} เดือน`;//ระยะเวลาผ่อนชำระ
+    remainingDateText = ` ${totalMonths} เดือน`; //ระยะเวลาผ่อนชำระ
   } else if (totalMonths == 0) {
-    remainingDateText = ` ${totalYears} ปี`;//ระยะเวลาผ่อนชำระ
+    remainingDateText = ` ${totalYears} ปี`; //ระยะเวลาผ่อนชำระ
   } else {
-    remainingDateText = ` ${totalYears} ปี ${totalMonths} เดือน`;//ระยะเวลาผ่อนชำระ
+    remainingDateText = ` ${totalYears} ปี ${totalMonths} เดือน`; //ระยะเวลาผ่อนชำระ
   }
 
   const remainingInterestText = `${totalInterestPaid.toLocaleString()} `;
 
-  const lastPaymentText = `${new Date(
-    lastDayOfPaying
-  ).toLocaleDateString("th-TH", {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
-  })}`;
+  const lastPaymentText = `${new Date(lastDayOfPaying).toLocaleDateString(
+    "th-TH",
+    {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    }
+  )}`;
 
   return (
     <div className="relative p-6 max-w-4xl mx-auto rounded-lg mt-8 bg-white">
@@ -111,7 +112,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
           <h2 className="text-3xl font-bold text-[#082044] text-center">
             ผ่อน 3 ปี แรก
           </h2>
-          <p className="text-[#82828E] text-xl text-center mt-2">
+          <p className="text-[#082044] text-xl text-center mt-2">
             (จำนวนเงิน {totalMonthlyPaymentThreeYears.toLocaleString()} บาท)
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center mt-8">
@@ -207,8 +208,8 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
             <h2 className="text-3xl font-bold text-[#082044] text-center">
               จะผ่อนหมดต้องใช้เวลา {remainingDateText}
             </h2>
-            <p className="text-[#82828E] text-xl text-center mt-2">
-              (จะผ่อนเสร็จวันที่ {lastPaymentText})
+            <p className="text-[#082044] text-xl text-center mt-2">
+              (จำนวนเงิน {totalMonthlyPayment.toLocaleString()} บาท)
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center mt-2">
               {/* คอลัมน์ที่ 1 (กราฟและ Legend ด้านล่าง) */}

@@ -54,7 +54,7 @@ function App() {
     if (isMobile && advanceFormData) {
       scrollPosition = window.innerHeight * 1.8;
     } else if (advanceFormData) {
-      scrollPosition = window.innerHeight * 1.2;
+      scrollPosition = window.innerHeight * 1;
     } else {
       scrollPosition;
     }
@@ -221,39 +221,44 @@ function App() {
     }
   }, [advanceFormData]);
 
-  console.log(calculatedData);
+  // console.log(calculatedData);
 
   const [compareData, setCompareData] = useState([]);
-  const saveToTable = async (advanceSummary) => {
-    try {
-      // Add a unique ID based on timestamp
-      const dataToInsert = {
-        id: Date.now().toString(), // Unique ID
-        ...advanceSummary, // Spread the existing object
-      };
-  
-      // Send data to the API
-      const response = await fetch("https://refinance-calculator-navy.vercel.app/api/insert", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataToInsert),
-      });
-  
-      const result = await response.json();
-  
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to insert data");
-      }
-  
-      console.log("✅ Data inserted successfully:", result);
-  
-      // Update local state only if successful
-      setCompareData((prev) => [...prev, dataToInsert]);
-    } catch (error) {
-      console.error("❌ Error inserting data:", error.message);
+const saveToTable = async (advanceSummary) => {
+  try {
+    const dataWithTimestamp = {
+      ...advanceSummary,
+      timeStamp: Date.now(), // Add timestamp
+    };
+
+    // Add a unique ID based on timestamp
+    const dataToInsert = {
+      id: Date.now().toString(), // Unique ID
+      ...dataWithTimestamp,
+    };
+
+    // Send data to the API
+    const response = await fetch("https://refinance-calculator-navy.vercel.app/api/insert", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dataToInsert),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "Failed to insert data");
     }
-  };
-  
+
+    console.log("✅ Data inserted successfully:", result);
+
+    // ✅ Correctly update state here
+    setCompareData((prev) => [...prev, dataToInsert]);
+  } catch (error) {
+    console.error("❌ Error inserting data:", error.message);
+  }
+};
+
 
   return (
     <Router>
