@@ -225,14 +225,14 @@ function App() {
 
   const [compareData, setCompareData] = useState([]);
   const saveToTable = async (advanceSummary) => {
-    const dataWithTimestamp = {
+    // บันทึกข้อมูลพร้อม timestamp ลงใน compareData
+    setCompareData((prev) => [...prev, dataWithTimestamp]
+    try {
+          const dataWithTimestamp = {
       ...advanceSummary,
       timeStamp: Date.now(), // เพิ่ม timestamp ปัจจุบัน
     };
 
-    // บันทึกข้อมูลพร้อม timestamp ลงใน compareData
-    setCompareData((prev) => [...prev, dataWithTimestamp]
-    try {
       // Add a unique ID based on timestamp
       const dataToInsert = {
         id: Date.now().toString(), // Unique ID
