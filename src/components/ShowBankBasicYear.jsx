@@ -144,7 +144,6 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               </div>
             </div>
 
-
             {/* คอลัมน์ที่ 2 และ 3 (ข้อมูลการชำระเงิน) */}
             <div className="sm:grid grid-cols-2 col-span-2 gap-6">
               {/* คอลัมน์ที่ 2 */}
@@ -213,7 +212,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               ผ่อนจนเสร็จสิ้น
             </h2>
             <p className="text-[#082044] text-xl text-center mt-2 ">
-              (จำนวนเงิน {remainingInterestText.toLocaleString()} บาท)
+              (จำนวนเงิน {totalMonthlyPayment.toLocaleString()} บาท)
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center mt-2">

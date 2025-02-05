@@ -221,12 +221,19 @@ function App() {
     }
   }, [advanceFormData]);
 
-  console.log(calculatedData);
+  // console.log(calculatedData);
 
   const [compareData, setCompareData] = useState([]);
   const saveToTable = (advanceSummary) => {
-    // console.log(advanceSummary);
-    setCompareData((prev) => [...prev, advanceSummary]);
+    // setCompareData((prev) => [...prev, advanceSummary]);
+
+    const dataWithTimestamp = {
+      ...advanceSummary,
+      timeStamp: Date.now(), // เพิ่ม timestamp ปัจจุบัน
+    };
+
+    // บันทึกข้อมูลพร้อม timestamp ลงใน compareData
+    setCompareData((prev) => [...prev, dataWithTimestamp]);
   };
 
   return (

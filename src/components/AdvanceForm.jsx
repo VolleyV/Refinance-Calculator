@@ -199,7 +199,8 @@ const AdvanceForm = ({
 
         if (monthlyPaymentNum <= monthlyInterestOnly) {
           toast.error(
-            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${i + 1
+            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
+              i + 1
             } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`,
             {
               position: "top-center",
@@ -517,9 +518,7 @@ const AdvanceForm = ({
           <div className="flex-1">
             <label className="text-gray-700 font-[400] text-lg">
               ค่าประกัน&nbsp;
-              <span className="text-[#82828E] text-lg font-[300]">
-                (ถ้ามี)
-              </span>
+              <span className="text-[#82828E] text-lg font-[300]">(ถ้ามี)</span>
             </label>
             <div className="relative mt-2">
               <input
@@ -539,9 +538,7 @@ const AdvanceForm = ({
           <div className="flex-1">
             <label className="text-gray-700 font-[400] text-lg">
               ค่าจดจำนอง&nbsp;
-              <span className="text-[#82828E] text-lg font-[300]">
-                (ถ้ามี)
-              </span>
+              <span className="text-[#82828E] text-lg font-[300]">(ถ้ามี)</span>
             </label>
             <div className="relative mt-2">
               <input
@@ -557,7 +554,6 @@ const AdvanceForm = ({
             </div>
           </div>
         </div>
-
 
         <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}

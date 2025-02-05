@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { RiDeleteBinFill } from "react-icons/ri";
 
 const CompareTable = ({ compareData, setCompareData }) => {
-  console.log(compareData);
+  // console.log(compareData);
   const [planNames, setPlanNames] = useState(
     compareData.map((_, index) => `แผนที่ ${index + 1}`)
   );
@@ -47,6 +47,7 @@ const CompareTable = ({ compareData, setCompareData }) => {
         <table className="table-auto w-full bg-white text-sm border-collapse">
           <thead>
             <tr className="bg-[#082044] text-white">
+              <th className="p-3">timeStamp</th>
               <th className="p-3"></th>
               <th className="p-3">เฉลี่ยเงินผ่อนต่อเดือน</th>
               <th className="p-3">ระยะเวลาผ่อน</th>
@@ -60,8 +61,13 @@ const CompareTable = ({ compareData, setCompareData }) => {
             {compareData.map((item, index) => (
               <tr
                 key={index}
-                className={`${index % 2 === 0 ? "bg-white" : "bg-gray-100"}`}
+                className={`${
+                  index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                } text-nowrap`}
               >
+                <td className="border-r border-[#082044] px-4 py-2">
+                  {item.timeStamp}
+                </td>
                 <td className="border-r border-[#082044] px-4 py-2 text-center align-middle text-lg">
                   {editIndex === index ? (
                     <input
@@ -124,7 +130,8 @@ CompareTable.propTypes = {
       totalYears: PropTypes.number.isRequired,
       totalMonths: PropTypes.number.isRequired,
     })
-  ).isRequired,
+  ),
+  setCompareData: PropTypes.func.isRequired,
 };
 
 export default CompareTable;
