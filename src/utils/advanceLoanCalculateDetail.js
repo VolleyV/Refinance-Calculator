@@ -9,38 +9,39 @@ const daysInMonth = (year, month) => {
   return daysInMonths[month];
 };
 
-export const advanceLoanCalculateDetail = (advanceData) => {
-  const {
-    loanAmount,
-    monthlyPayment,
-    startDate,
-    interestRates,
-    startTerm = ["1"],
-    insurance,
-    mortgageFee,
-  } = advanceData;
+  export const advanceLoanCalculateDetail = (advanceData) => {
+    const {
+      loanAmount,
+      monthlyPayment,
+      startDate,
+      interestRates,
+      startTerm = ["1"],
+      insurance,
+      mortgageFee,
+    } = advanceData;
 
-  if (!advanceData || typeof advanceData !== "object") {
-    console.error("Invalid advanceData:", advanceData);
-    return [];
-  }
+    if (!advanceData || typeof advanceData !== "object") {
+      console.error("Invalid advanceData:", advanceData);
+      return [];
+    }
 
-  const filteredMonthlyPayment = monthlyPayment.filter((value) => value !== "");
-  const averageMonthlyPayment =
-    filteredMonthlyPayment.length > 0
-      ? filteredMonthlyPayment.reduce(
-          (acc, curr) => acc + (parseFloat(curr.replace(/,/g, "")) || 0),
-          0
-        ) / filteredMonthlyPayment.length
-      : 0;
+    const filteredMonthlyPayment = (monthlyPayment || []).filter((value) => value !== "");
 
-  let loanAmountRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
-  /*   let newInsurance= parseFloat(insurance.replace(/,/g, "")) || 0;
-  loanAmountRemaining += newInsurance */
-  if (isNaN(loanAmountRemaining) || loanAmountRemaining <= 0) {
-    console.error("Invalid loanAmount:", loanAmount);
-    return [];
-  }
+    const averageMonthlyPayment =
+      filteredMonthlyPayment.length > 0
+        ? filteredMonthlyPayment.reduce(
+            (acc, curr) => acc + (parseFloat(curr.replace(/,/g, "")) || 0),
+            0
+          ) / filteredMonthlyPayment.length
+        : 0;
+
+    let loanAmountRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
+    /*   let newInsurance= parseFloat(insurance.replace(/,/g, "")) || 0;
+    loanAmountRemaining += newInsurance */
+    if (isNaN(loanAmountRemaining) || loanAmountRemaining <= 0) {
+      console.error("Invalid loanAmount:", loanAmount);
+      return [];
+    }
 
   const initialStartDate = new Date(startDate);
   const details = [];

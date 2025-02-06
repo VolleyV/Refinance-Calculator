@@ -26,6 +26,7 @@ import {
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CompareTable from "./components/CompareTable";
+import DatasetDetails from "./components/DatasetDetails";
 
 function App() {
   const [basicFormData, setBasicFormData] = useState(() => {
@@ -224,36 +225,19 @@ function App() {
   console.log(calculatedData);
 
   const [compareData, setCompareData] = useState([]);
-  const saveToTable = async (advanceSummary) => {
-    try {
-      // Add a unique ID based on timestamp
-      const dataToInsert = {
-        id: Date.now().toString(), // Unique ID
-        ...advanceSummary, // Spread the existing object
-      };
-  
-      // Send data to the API
-      const response = await fetch("https://refinance-calculator-navy.vercel.app/api/insert", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataToInsert),
-      });
-  
-      const result = await response.json();
-  
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to insert data");
-      }
-  
-      console.log("✅ Data inserted successfully:", result);
-  
-      // Update local state only if successful
-      setCompareData((prev) => [...prev, dataToInsert]);
-    } catch (error) {
-      console.error("❌ Error inserting data:", error.message);
-    }
+  const saveToTable = (advanceSummary) => {
+    console.log(window.location.href);
+
+    const dataWithTimestamp = {
+      ...advanceSummary,
+      timeStamp: Date.now(), // Add a unique timestamp
+    };
+    setCompareData((prev) => {
+      const updatedCompareData = [...prev, dataWithTimestamp];
+      console.log(updatedCompareData); // Log to see if the state is updating correctly
+      return updatedCompareData;
+    });
   };
-  
 
   return (
     <Router>
@@ -354,6 +338,9 @@ function App() {
             path="/advanceTable"
             element={<AdvanceTable advanceData={advanceFormData || []} />}
           />
+          <Route path="/dataset" element={<DatasetDetails />} />
+
+          {/* Add other routes as necessary */}
         </Routes>
       </div>
     </Router>

@@ -2,9 +2,32 @@ import { useState, useEffect } from "react";
 import { HiPencilSquare } from "react-icons/hi2";
 import PropTypes from "prop-types";
 import { RiDeleteBinFill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+
+
 
 const CompareTable = ({ compareData, setCompareData }) => {
   console.log(compareData);
+  const navigate = useNavigate();
+
+  const handleDetailClick = (data) => {
+    console.log(window.location.href);
+
+    const encodedData = encodeURIComponent(JSON.stringify(data));
+    console.log("Encoded Data: ", encodedData); // Debug the encoded data
+  
+    if (encodedData.length > 2048) {
+      console.log("Using localStorage for data");
+      localStorage.setItem("datasetDetail", JSON.stringify(data)); 
+      window.open(`/dataset`, '_blank');
+    } else {
+      console.log("Using URL for data");
+      window.open(`/dataset?data=${encodedData}`, '_blank');
+    }
+  };
+  
+  
+  
   const [planNames, setPlanNames] = useState(
     compareData.map((_, index) => `แผนที่ ${index + 1}`)
   );
@@ -96,10 +119,14 @@ const CompareTable = ({ compareData, setCompareData }) => {
                   {item.advanceSummary.totalInterestPaid.toLocaleString()}
                 </td>
                 <td className="border-r border-[#082044] px-4 py-2">
-                  <button className="text-green-500 cursor-pointer">
+                  <button
+                    className="text-green-500 cursor-pointer"
+                    onClick={() => handleDetailClick(item)}
+                  >
                     อ่านรายละเอียด
                   </button>
                 </td>
+
                 <td className="px-4 py-2">
                   <RiDeleteBinFill
                     className="text-red-500 cursor-pointer"
