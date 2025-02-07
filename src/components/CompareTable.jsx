@@ -2,13 +2,11 @@ import { useState, useEffect } from "react";
 import { HiPencilSquare } from "react-icons/hi2";
 import PropTypes from "prop-types";
 import { RiDeleteBinFill } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
 
 
 
 const CompareTable = ({ compareData, setCompareData }) => {
   console.log(compareData);
-  const navigate = useNavigate();
 
   const handleDetailClick = (data) => {
     console.log(window.location.href);
@@ -125,7 +123,7 @@ const CompareTable = ({ compareData, setCompareData }) => {
                   >
                     อ่านรายละเอียด
                   </button>
-                </td>
+                </td> 
 
                 <td className="px-4 py-2">
                   <RiDeleteBinFill
