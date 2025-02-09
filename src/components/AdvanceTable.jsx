@@ -7,9 +7,10 @@ import { FaFileDownload } from "react-icons/fa";
 import Pagination from "./Pagination";
 
 const AdvanceTable = ({ advanceData }) => {
-  if (!advanceData) {
+  if (!advanceData || advanceData.length === 0) {
     return <p>ไม่มีข้อมูล กรุณากลับไปกรอกแบบฟอร์มก่อน</p>;
   }
+
   useEffect(() => {
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "instant" });
@@ -24,10 +25,7 @@ const AdvanceTable = ({ advanceData }) => {
 
   // คำนวณรายการที่ต้องแสดงในหน้าปัจจุบัน
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = calculationDetails.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
+  const currentItems = calculationDetails.slice(startIndex, startIndex + itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -66,6 +64,7 @@ const AdvanceTable = ({ advanceData }) => {
     const blobURL = URL.createObjectURL(pdfBlob);
     window.open(blobURL, "_blank");
   };
+
   return (
     <div className="container mx-auto mt-10 px-4">
       <div className="flex items-center justify-between w-full mb-5">
@@ -79,49 +78,23 @@ const AdvanceTable = ({ advanceData }) => {
         </button>
       </div>
       {currentItems.length > 0 ? (
-        <div
-          className="overflow-x-auto rounded-lg border border"
-          id="table-to-pdf"
-        >
+        <div className="overflow-x-auto rounded-lg border border" id="table-to-pdf">
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm rounded-lg overflow-hidden">
             <thead className="bg-[#082044] text-white rounded-t-lg">
               <tr>
-                <th className="whitespace-nowrap px-6 py-4 font-medium">
-                  งวดที่
-                </th>
-                <th className="whitespace-nowrap px-6 py-4 font-medium">
-                  วันที่
-                </th>
-                <th className="whitespace-nowrap px-6 py-4 font-medium">
-                  อัตราดอกเบี้ย
-                </th>
-                <th className="whitespace-nowrap px-6 py-4 font-medium">
-                  ผ่อนต่อเดือน
-                </th>
-                <th className="whitespace-nowrap px-6 py-4 font-medium">
-                  เงินต้น
-                </th>
-                <th className="whitespace-nowrap px-6 py-4 font-medium">
-                  ดอกเบี้ย
-                </th>
-                <th className="whitespace-nowrap px-6 py-4 font-medium">
-                  ยอดคงเหลือ
-                </th>
+                <th className="whitespace-nowrap px-6 py-4 font-medium">งวดที่</th>
+                <th className="whitespace-nowrap px-6 py-4 font-medium">วันที่</th>
+                <th className="whitespace-nowrap px-6 py-4 font-medium">อัตราดอกเบี้ย</th>
+                <th className="whitespace-nowrap px-6 py-4 font-medium">ผ่อนต่อเดือน</th>
+                <th className="whitespace-nowrap px-6 py-4 font-medium">เงินต้น</th>
+                <th className="whitespace-nowrap px-6 py-4 font-medium">ดอกเบี้ย</th>
+                <th className="whitespace-nowrap px-6 py-4 font-medium">ยอดคงเหลือ</th>
               </tr>
             </thead>
             <tbody>
               {currentItems.map((detail, index) => (
-                <tr
-                  key={index}
-                  className={`${
-                    index % 2 === 0
-                      ? "bg-gray-100" //bg-gray-100 dark:bg-gray-800
-                      : "bg-white" //bg-white dark:bg-gray-900
-                  }`}
-                >
-                  <td className="border px-6 py-4 text-center">
-                    {detail.month}
-                  </td>
+                <tr key={index} className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}>
+                  <td className="border px-6 py-4 text-center">{detail.month}</td>
                   <td className="border px-6 py-4 text-center whitespace-nowrap">
                     {new Date(detail.date).toLocaleDateString("th-TH", {
                       year: "numeric",
@@ -130,19 +103,19 @@ const AdvanceTable = ({ advanceData }) => {
                     }) || "Invalid Date"}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.interestRate).toLocaleString()}%
+                    {parseFloat(detail.interestRate || 0).toLocaleString()}%
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.monthlyPayment).toLocaleString()}
+                    {parseFloat(detail.monthlyPayment || 0).toLocaleString()}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.loanAmountPortion).toLocaleString()}
+                    {parseFloat(detail.loanAmountPortion || 0).toLocaleString()}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.interest).toLocaleString()}
+                    {parseFloat(detail.interest || 0).toLocaleString()}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.remainingLoanAmount).toLocaleString()}
+                    {parseFloat(detail.remainingLoanAmount || 0).toLocaleString()}
                   </td>
                 </tr>
               ))}
@@ -151,8 +124,7 @@ const AdvanceTable = ({ advanceData }) => {
         </div>
       ) : (
         <p>ไม่มีข้อมูลการคำนวณ</p>
-      )}{" "}
-      {/* ปุ่มเปลี่ยนหน้า */}
+      )}
       <div className="mt-5 flex justify-center">
         <Pagination
           totalPages={totalPages}

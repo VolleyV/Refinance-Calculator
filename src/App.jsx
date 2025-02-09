@@ -26,6 +26,7 @@ import {
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CompareTable from "./components/CompareTable";
+import DatasetDetails from "./components/DatasetDetails";
 
 function App() {
   const [basicFormData, setBasicFormData] = useState(() => {
@@ -54,7 +55,7 @@ function App() {
     if (isMobile && advanceFormData) {
       scrollPosition = window.innerHeight * 1.8;
     } else if (advanceFormData) {
-      scrollPosition = window.innerHeight * 1;
+      scrollPosition = window.innerHeight * 1.2;
     } else {
       scrollPosition;
     }
@@ -221,44 +222,22 @@ function App() {
     }
   }, [advanceFormData]);
 
-  // console.log(calculatedData);
+  console.log(calculatedData);
 
   const [compareData, setCompareData] = useState([]);
-const saveToTable = async (advanceSummary) => {
-  try {
+  const saveToTable = (advanceSummary) => {
+    console.log(window.location.href);
+
     const dataWithTimestamp = {
       ...advanceSummary,
-      timeStamp: Date.now(), // Add timestamp
+      timeStamp: Date.now(), // Add a unique timestamp
     };
-
-    // Add a unique ID based on timestamp
-    const dataToInsert = {
-      id: Date.now().toString(), // Unique ID
-      ...dataWithTimestamp,
-    };
-
-    // Send data to the API
-    const response = await fetch("https://refinance-calculator-navy.vercel.app/api/insert", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dataToInsert),
+    setCompareData((prev) => {
+      const updatedCompareData = [...prev, dataWithTimestamp];
+      console.log(updatedCompareData); // Log to see if the state is updating correctly
+      return updatedCompareData;
     });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.error || "Failed to insert data");
-    }
-
-    console.log("✅ Data inserted successfully:", result);
-
-    // ✅ Correctly update state here
-    setCompareData((prev) => [...prev, dataToInsert]);
-  } catch (error) {
-    console.error("❌ Error inserting data:", error.message);
-  }
-};
-
+  };
 
   return (
     <Router>
@@ -359,6 +338,9 @@ const saveToTable = async (advanceSummary) => {
             path="/advanceTable"
             element={<AdvanceTable advanceData={advanceFormData || []} />}
           />
+          <Route path="/dataset" element={<DatasetDetails />} />
+
+          {/* Add other routes as necessary */}
         </Routes>
       </div>
     </Router>

@@ -1,15 +1,35 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { HiPencilSquare } from "react-icons/hi2";
 import PropTypes from "prop-types";
 import { RiDeleteBinFill } from "react-icons/ri";
 
+
+
 const CompareTable = ({ compareData, setCompareData }) => {
+  console.log(compareData);
+
+  const handleDetailClick = (data) => {
+    console.log(window.location.href);
+
+    const encodedData = encodeURIComponent(JSON.stringify(data));
+    console.log("Encoded Data: ", encodedData); // Debug the encoded data
+  
+    if (encodedData.length > 2048) {
+      console.log("Using localStorage for data");
+      localStorage.setItem("datasetDetail", JSON.stringify(data)); 
+      window.open(`/dataset`, '_blank');
+    } else {
+      console.log("Using URL for data");
+      window.open(`/dataset?data=${encodedData}`, '_blank');
+    }
+  };
+  
+  
+  
   const [planNames, setPlanNames] = useState(
     compareData.map((_, index) => `แผนที่ ${index + 1}`)
   );
   const [editIndex, setEditIndex] = useState(null);
-  const [inputValue, setInputValue] = useState("");
-  const inputRef = useRef(null);
 
   useEffect(() => {
     setPlanNames((prevPlanNames) => {
@@ -24,34 +44,17 @@ const CompareTable = ({ compareData, setCompareData }) => {
     });
   }, [compareData]);
 
-  useEffect(() => {
-    if (editIndex !== null && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [editIndex]);
-
   const handleNameChange = (index, newName) => {
     const newPlanNames = [...planNames];
     newPlanNames[index] = newName;
     setPlanNames(newPlanNames);
   };
 
-  const handleEditClick = (index) => {
-    setEditIndex(index);
-    setInputValue(planNames[index]);
-  };
-
-  const handleSave = () => {
-    if (editIndex !== null) {
-      handleNameChange(editIndex, inputValue);
-      setEditIndex(null);
-    }
-  };
-
-  // ลบแผน
   const handleDelete = (index) => {
     const newCompareData = compareData.filter((_, i) => i !== index);
     setCompareData(newCompareData);
+
+    // ลบชื่อแผนที่ของแถวที่ถูกลบ
     const newPlanNames = planNames.filter((_, i) => i !== index);
     setPlanNames(newPlanNames);
   };
@@ -61,11 +64,10 @@ const CompareTable = ({ compareData, setCompareData }) => {
       <h1 className="text-3xl font-bold text-[#082044] text-center my-5">
         เปรียบเทียบผลการคำนวณ
       </h1>
-      <div className="border-2 border-[#082044] rounded-lg overflow-hidden text-center max-w-4xl mx-auto overflow-x-auto">
-        <table className="table-auto w-full bg-white text-sm border-collapse text-nowrap">
+      <div className="border-2 border-[#082044] rounded-lg overflow-hidden text-center max-w-4xl mx-auto">
+        <table className="table-auto w-full bg-white text-sm border-collapse">
           <thead>
             <tr className="bg-[#082044] text-white">
-              <th className="p-3">timeStamp</th>
               <th className="p-3"></th>
               <th className="p-3">เฉลี่ยเงินผ่อนต่อเดือน</th>
               <th className="p-3">ระยะเวลาผ่อน</th>
@@ -79,32 +81,24 @@ const CompareTable = ({ compareData, setCompareData }) => {
             {compareData.map((item, index) => (
               <tr
                 key={index}
-                className={`${
-                  index % 2 === 0 ? "bg-white" : "bg-gray-100"
-                } text-nowrap relative`}
+                className={`${index % 2 === 0 ? "bg-white" : "bg-gray-100"}`}
               >
-                <td className="border-r border-[#082044] px-4 py-2">
-                  {item.timeStamp}
-                </td>
-                <td className="border-r border-[#082044] px-4 py-2 text-center align-middle text-lg relative">
-                  <div className="flex items-center justify-center">
-                    <div className="text-sm">{planNames[index]}</div>
-                    <HiPencilSquare
-                      className="ml-2 text-[#82828E] cursor-pointer"
-                      onClick={() => handleEditClick(index)}
+                <td className="border-r border-[#082044] px-4 py-2 text-center align-middle text-lg">
+                  {editIndex === index ? (
+                    <input
+                      type="text"
+                      value={planNames[index]}
+                      onChange={(e) => handleNameChange(index, e.target.value)}
+                      onBlur={() => setEditIndex(null)}
+                      autoFocus
+                      className="border border-gray-300 rounded text-sm w-full max-w-[100px]"
                     />
-                  </div>
-
-                  {editIndex === index && (
-                    <div className="absolute left-1/2 transform -translate-x-1/2 bottom-10 translate-y-full z-50 bg-white shadow-lg border border-gray-300 rounded p-2">
-                      <input
-                        type="text"
-                        ref={inputRef}
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && handleSave()}
-                        onBlur={handleSave}
-                        className="border border-gray-300 rounded text-sm p-1 w-40"
+                  ) : (
+                    <div className="flex items-center justify-center">
+                      <div className="text-sm">{planNames[index]}</div>
+                      <HiPencilSquare
+                        className="ml-2 text-[#82828E] cursor-pointer"
+                        onClick={() => setEditIndex(index)}
                       />
                     </div>
                   )}
@@ -123,10 +117,14 @@ const CompareTable = ({ compareData, setCompareData }) => {
                   {item.advanceSummary.totalInterestPaid.toLocaleString()}
                 </td>
                 <td className="border-r border-[#082044] px-4 py-2">
-                  <button className="text-green-500 cursor-pointer">
+                  <button
+                    className="text-green-500 cursor-pointer"
+                    onClick={() => handleDetailClick(item)}
+                  >
                     อ่านรายละเอียด
                   </button>
-                </td>
+                </td> 
+
                 <td className="px-4 py-2">
                   <RiDeleteBinFill
                     className="text-red-500 cursor-pointer"
@@ -145,17 +143,13 @@ const CompareTable = ({ compareData, setCompareData }) => {
 CompareTable.propTypes = {
   compareData: PropTypes.arrayOf(
     PropTypes.shape({
-      timeStamp: PropTypes.string.isRequired,
-      advanceSummary: PropTypes.shape({
-        averageMonthlyPayment: PropTypes.number.isRequired,
-        totalInterestThreeYears: PropTypes.number.isRequired,
-        totalInterestPaid: PropTypes.number.isRequired,
-        totalYears: PropTypes.number.isRequired,
-        totalMonths: PropTypes.number.isRequired,
-      }).isRequired,
-    }).isRequired
+      averageMonthlyPayment: PropTypes.number.isRequired,
+      totalInterestThreeYears: PropTypes.number.isRequired,
+      totalInterestPaid: PropTypes.number.isRequired,
+      totalYears: PropTypes.number.isRequired,
+      totalMonths: PropTypes.number.isRequired,
+    })
   ).isRequired,
-  setCompareData: PropTypes.func.isRequired,
 };
 
 export default CompareTable;

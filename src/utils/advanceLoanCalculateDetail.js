@@ -10,6 +10,15 @@ const daysInMonth = (year, month) => {
 };
 
 export const advanceLoanCalculateDetail = (advanceData) => {
+  if (!advanceData || typeof advanceData !== "object") {
+    console.error("Invalid advanceData:", advanceData);
+    return [];
+  }
+/*   if (!advanceData || !advanceData.loanAmount) {
+    console.error("Invalid loan amount");
+    return [];
+  } */
+
   const {
     loanAmount,
     monthlyPayment,
@@ -20,23 +29,19 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     mortgageFee,
   } = advanceData;
 
-  if (!advanceData || typeof advanceData !== "object") {
-    console.error("Invalid advanceData:", advanceData);
-    return [];
-  }
+  const filteredMonthlyPayment = (monthlyPayment || []).filter((value) => value !== "");
+  
+  const averageMonthlyPayment = filteredMonthlyPayment.length
+    ? filteredMonthlyPayment.reduce(
+        (acc, curr) => acc + (parseFloat(curr.replace(/,/g, "")) || 0),
+        0
+      ) / filteredMonthlyPayment.length
+    : 0;
 
-  const filteredMonthlyPayment = monthlyPayment.filter((value) => value !== "");
-  const averageMonthlyPayment =
-    filteredMonthlyPayment.length > 0
-      ? filteredMonthlyPayment.reduce(
-          (acc, curr) => acc + (parseFloat(curr.replace(/,/g, "")) || 0),
-          0
-        ) / filteredMonthlyPayment.length
-      : 0;
+  let loanAmountRemaining = loanAmount
+    ? parseFloat(loanAmount.replace(/,/g, "")) || 0
+    : 0;
 
-  let loanAmountRemaining = parseFloat(loanAmount.replace(/,/g, "")) || 0;
-  /*   let newInsurance= parseFloat(insurance.replace(/,/g, "")) || 0;
-  loanAmountRemaining += newInsurance */
   if (isNaN(loanAmountRemaining) || loanAmountRemaining <= 0) {
     console.error("Invalid loanAmount:", loanAmount);
     return [];
@@ -47,9 +52,11 @@ export const advanceLoanCalculateDetail = (advanceData) => {
   let monthsElapsed = 0;
 
   let currentInterestRate =
-    parseFloat(interestRates[0]?.replace(/,/g, "")) / 100 || 0.025; // Default 2.5%
-  let currentMonthlyPayment =
-    parseFloat(monthlyPayment[0]?.replace(/,/g, "")) || 0;
+    interestRates && interestRates[0] && typeof interestRates[0] === "string"
+      ? parseFloat(interestRates[0].replace(/,/g, "")) / 100
+      : 0.025; // Default 2.5%
+
+  let currentMonthlyPayment = parseFloat(monthlyPayment[0]?.replace(/,/g, "")) || 0;
 
   // Calculate until loanAmountRemaining is 0
   while (loanAmountRemaining > 0) {
@@ -75,11 +82,9 @@ export const advanceLoanCalculateDetail = (advanceData) => {
     }
 
     const interest =
-      (loanAmountRemaining * currentInterestRate * daysInCurrentMonth) /
-      daysInCurrentYear;
+      (loanAmountRemaining * currentInterestRate * daysInCurrentMonth) / daysInCurrentYear;
     const loanAmountPortion = Math.max(0, currentMonthlyPayment - interest);
 
-    // Update the remaining loan balance
     loanAmountRemaining = Math.max(0, loanAmountRemaining - loanAmountPortion);
 
     details.push({
@@ -100,6 +105,7 @@ export const advanceLoanCalculateDetail = (advanceData) => {
 
   return details;
 };
+
 
 export const advanceThreeYearsSummary = (details) => {
   const lastDetail = details[details.length - 1];
