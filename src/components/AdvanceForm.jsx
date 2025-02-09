@@ -25,9 +25,29 @@ const AdvanceForm = ({
     }) || "Invalid Date"
   );
   const [visibleRows, setVisibleRows] = useState(1); // แถวที่แสดงอยู่
-
   const [insurance, setInsurance] = useState("");
   const [mortgageFee, setMortgageFee] = useState("");
+
+
+  // Ref สำหรับ div ที่มีข้อความ "อัตราดอกเบี้ย"
+  const titleRef = useRef(null);
+  // state สำหรับเก็บความกว้างของ div ที่มี title
+  const [titleWidth, setTitleWidth] = useState(0);
+
+  useEffect(() => {
+    const updateTitleWidth = () => {
+      if (titleRef.current) {
+        const rect = titleRef.current.getBoundingClientRect();
+        setTitleWidth(rect.width - 40); // ลดค่าลงเพื่อป้องกันเส้นเกิน
+      }
+    };
+
+    updateTitleWidth(); // อัปเดตครั้งแรก
+    window.addEventListener("resize", updateTitleWidth); // อัปเดตเมื่อ resize
+
+    return () => window.removeEventListener("resize", updateTitleWidth); // Cleanup
+  }, []);
+
 
   const handleLoanAmountChange = (event) => {
     const { value } = event.target;
@@ -199,7 +219,8 @@ const AdvanceForm = ({
 
         if (monthlyPaymentNum <= monthlyInterestOnly) {
           toast.error(
-            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${i + 1
+            `จำนวนเงินผ่อนต่อเดือนในแถวที่ ${
+              i + 1
             } น้อยเกินไปจนดอกเบี้ยไม่ลด กรุณาใส่จำนวนเงินที่มากกว่าดอกเบี้ยรายเดือน หรือ ลดอัตราดอกเบี้ยลง`,
             {
               position: "top-center",
@@ -344,7 +365,9 @@ const AdvanceForm = ({
           </div>
         </div>
 
-        <div className="relative border-2 border-dashed border-[#bbbbbb] rounded-md p-4 mt-8">
+        <div
+          ref={titleRef}
+          className="relative border-2 box-border border-dashed border-[#bbbbbb] rounded-md p-4 mt-8 ">
           <div className="absolute -top-3 left-4 bg-white px-4 text-gray-700 font-medium">
             อัตราดอกเบี้ย
           </div>
@@ -358,7 +381,9 @@ const AdvanceForm = ({
                 <div className="flex items-center sm:hidden">
                   <div className="bg-[#082044] text-white font-medium py-1 px-4 rounded-md relative">
                     อัตราที่ {index + 1}
-                    <hr className="absolute bottom-0 left-1 w-[350%] border-[#082044] border-t-[2px]" />
+                    <hr
+                      style={{ width: `${titleWidth}px` }}
+                      className="absolute bottom-0 left-1 border-[#082044] border-t-[2px] " />
                   </div>
                 </div>
 
@@ -367,9 +392,9 @@ const AdvanceForm = ({
                   {(index === 0 || isMobile) && ( // แสดง label ในบรรทัดแรกหรือถ้าเป็น Mobile */}
                     <div className="font-medium text-lg mt-8"></div>
                   )}
-                  <div className="hidden sm:flex relative justify-center items-center text-center">
+                  <div className=" sm:flex relative justify-center items-center text-center">
                     {/* แสดงเป็นข้อความแทน input */}
-                    <span className="hidden sm:inline text-gray-700 font-medium text-lg">
+                    <span className=" sm:inline text-gray-700 font-medium text-lg">
                       อัตราดอกเบี้ยที่ {index + 1}
                     </span>
                   </div>
@@ -517,9 +542,7 @@ const AdvanceForm = ({
           <div className="flex-1">
             <label className="text-gray-700 font-[400] text-lg">
               ค่าประกัน&nbsp;
-              <span className="text-[#82828E] text-lg font-[300]">
-                (ถ้ามี)
-              </span>
+              <span className="text-[#82828E] text-lg font-[300]">(ถ้ามี)</span>
             </label>
             <div className="relative mt-2">
               <input
@@ -539,9 +562,7 @@ const AdvanceForm = ({
           <div className="flex-1">
             <label className="text-gray-700 font-[400] text-lg">
               ค่าจดจำนอง&nbsp;
-              <span className="text-[#82828E] text-lg font-[300]">
-                (ถ้ามี)
-              </span>
+              <span className="text-[#82828E] text-lg font-[300]">(ถ้ามี)</span>
             </label>
             <div className="relative mt-2">
               <input
@@ -557,7 +578,6 @@ const AdvanceForm = ({
             </div>
           </div>
         </div>
-
 
         <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           {/* ปุ่มล้างข้อมูล */}

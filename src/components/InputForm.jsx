@@ -25,7 +25,6 @@ const InputForm = ({
   useEffect(() => {
     sessionStorage.setItem("activeTab", activeTab);
   }, [activeTab]);
-  console.log(location.state);
 
   const switchTab = (tab) => {
     if (tab === "basic" && activeTab !== "basic") {
