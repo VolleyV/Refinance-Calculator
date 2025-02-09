@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { FaFileDownload } from "react-icons/fa";
+import Pagination from "./Pagination";
 import AdvanceTable from "./AdvanceTable"; // Assuming this is the component that renders the data
 
 const DatasetDetails = () => {
@@ -24,14 +25,18 @@ const DatasetDetails = () => {
         console.log("Parsed URL Data:", parsedData);
 
         if (parsedData && parsedData.advanceSummary) {
-          // Instead of converting it to an array, pass the object directly
-          setAdvanceFormData(parsedData.advanceSummary);
+          const summary = parsedData.advanceSummary;
+          console.log("Advance Summary:", summary);
+          setAdvanceFormData(
+            Array.isArray(summary) ? summary : Object.values(summary)
+          );
         } else {
-          setAdvanceFormData({});
+          console.log("Advance Summary not found.");
+          setAdvanceFormData([]);
         }
       } catch (error) {
         console.error("Error parsing data:", error);
-        setAdvanceFormData({});
+        setAdvanceFormData([]);
       }
     } else {
       const storedData = localStorage.getItem("datasetDetail");
@@ -40,22 +45,71 @@ const DatasetDetails = () => {
       if (storedData) {
         try {
           const parsedStoredData = JSON.parse(storedData);
+          console.log("Parsed Stored Data:", parsedStoredData);
+
           if (parsedStoredData && parsedStoredData.advanceSummary) {
-            setAdvanceFormData(parsedStoredData.advanceSummary);
+            const summary = parsedStoredData.advanceSummary;
+            console.log("Advance Summary from Local Storage:", summary);
+            setAdvanceFormData(
+              Array.isArray(summary) ? summary : Object.values(summary)
+            );
           } else {
-            setAdvanceFormData({});
+            console.log("No advanceSummary in localStorage data.");
+            setAdvanceFormData([]);
           }
         } catch (error) {
           console.error("Error parsing localStorage data:", error);
-          setAdvanceFormData({});
+          setAdvanceFormData([]);
         }
       }
     }
   }, [location]);
 
+  const itemsPerPage = 36; // จำนวนงวดต่อหน้า
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = (Math.ceil((advanceFormData?.length || 0) / itemsPerPage));
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = Array.isArray(advanceFormData)
+    ? advanceFormData.slice(startIndex, startIndex + itemsPerPage)
+    : [];
+
+  const validItems = currentItems.filter(
+    (row) =>
+      row &&
+      row.date &&
+      !isNaN(new Date(row.date).getTime()) &&
+      !isNaN(row.interestRate) &&
+      !isNaN(row.monthlyPayment) &&
+      !isNaN(row.loanAmountPortion) &&
+      !isNaN(row.interest) &&
+      !isNaN(row.remainingLoanAmount)
+  );
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   /*  if (advanceFormData.length === 0) {
     return <p>ข้อมูลไม่ถูกต้อง หรือ ไม่มีข้อมูลที่ต้องการ</p>;
   } */
+  const formatDate = (dateString) => {
+    if (!dateString) return "Invalid Date"; // Handle empty/null values
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "Invalid Date"; // Handle invalid dates
+
+    return new Intl.DateTimeFormat("th-TH", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(date);
+  };
+
+  const formatNumber = (number) => {
+    return new Intl.NumberFormat("th-TH").format(number); // Add your locale if needed
+  };
+
   const printPDF = async () => {
     const pdf = new jsPDF("p", "mm", "a4");
     const tableElement = document.getElementById("table-to-pdf");
@@ -132,27 +186,37 @@ const DatasetDetails = () => {
             </tr>
           </thead>
           <tbody>
-            {Object.values(advanceFormData).map((row, index) => (
-              <tr key={index}>
-                <td className="border px-6 py-4 text-center">{row.month}</td>
-                <td className="border px-6 py-4 text-center">{row.date}</td>
-                <td className="border px-6 py-4 text-center">
-                  {row.interestRate}
-                </td>
-                <td className="border px-6 py-4 text-center">
-                  {row.monthlyPayment}
-                </td>
-                <td className="border px-6 py-4 text-center">
-                  {row.loanAmountPortion}
-                </td>
-                <td className="border px-6 py-4 text-center">{row.interest}</td>
-                <td className="border px-6 py-4 text-center">
-                  {row.remainingLoanAmount}
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {validItems.map((row, index) => (
+    <tr key={index} className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}>
+      <td className="border px-6 py-4 text-center">{row.month}</td>
+      <td className="border px-6 py-4 text-center">{formatDate(row.date)}</td>
+      <td className="border px-6 py-4 text-center">
+        {formatNumber(row.interestRate)}%
+      </td>
+      <td className="border px-6 py-4 text-center">
+        {formatNumber(row.monthlyPayment)}
+      </td>
+      <td className="border px-6 py-4 text-center">
+        {formatNumber(row.loanAmountPortion)}
+      </td>
+      <td className="border px-6 py-4 text-center">
+        {formatNumber(row.interest)}
+      </td>
+      <td className="border px-6 py-4 text-center">
+        {formatNumber(row.remainingLoanAmount)}
+      </td>
+    </tr>
+  ))}
+</tbody>
+
         </table>
+        <div className="mt-5 flex justify-center">
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
     </div>
   );
