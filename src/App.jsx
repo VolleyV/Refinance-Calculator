@@ -224,16 +224,18 @@ function App() {
   // console.log(calculatedData);
 
   const [compareData, setCompareData] = useState([]);
+  const [compareTableData, setCompareTableData] = useState([]);
   const saveToTable = (advanceSummary) => {
-    // setCompareData((prev) => [...prev, advanceSummary]);
+    setCompareData((prev) => [...prev, advanceSummary]);
+    setCompareTableData((prev) => [...prev, calculatedData]);
 
-    const dataWithTimestamp = {
-      ...advanceSummary,
-      timeStamp: Date.now(), // เพิ่ม timestamp ปัจจุบัน
-    };
+    // const dataWithTimestamp = {
+    //   ...advanceSummary,
+    //   timeStamp: Date.now(), // เพิ่ม timestamp ปัจจุบัน
+    // };
 
-    // บันทึกข้อมูลพร้อม timestamp ลงใน compareData
-    setCompareData((prev) => [...prev, dataWithTimestamp]);
+    // // บันทึกข้อมูลพร้อม timestamp ลงใน compareData
+    // setCompareData((prev) => [...prev, dataWithTimestamp]);
   };
 
   return (
@@ -292,7 +294,8 @@ function App() {
                       <div>
                         <CompareTable
                           compareData={compareData}
-                          setCompareData={setCompareData}
+                          deleteCompareData={setCompareData}
+                          compareTableData={compareTableData}
                         />
                       </div>
                     )}

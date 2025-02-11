@@ -3,7 +3,8 @@ import { HiPencilSquare } from "react-icons/hi2";
 import PropTypes from "prop-types";
 import { RiDeleteBinFill } from "react-icons/ri";
 
-const CompareTable = ({ compareData, setCompareData }) => {
+const CompareTable = ({ compareData, deleteCompareData, compareTableData }) => {
+  console.log(compareTableData);
   const [planNames, setPlanNames] = useState(
     compareData.map((_, index) => `แผนที่ ${index + 1}`)
   );
@@ -48,10 +49,20 @@ const CompareTable = ({ compareData, setCompareData }) => {
     }
   };
 
-  // ลบแผน
+  // useEffect(() => {
+  //   compareData.forEach((item, index) => {
+  //     if (compareTableData[index]) {
+  //       sessionStorage.setItem(
+  //         `compareTableData_${index}`,
+  //         JSON.stringify(compareTableData[index])
+  //       );
+  //     }
+  //   });
+  // }, [compareTableData]);
+
   const handleDelete = (index) => {
     const newCompareData = compareData.filter((_, i) => i !== index);
-    setCompareData(newCompareData);
+    deleteCompareData(newCompareData);
     const newPlanNames = planNames.filter((_, i) => i !== index);
     setPlanNames(newPlanNames);
   };
@@ -65,7 +76,6 @@ const CompareTable = ({ compareData, setCompareData }) => {
         <table className="table-auto w-full bg-white text-sm border-collapse text-nowrap">
           <thead>
             <tr className="bg-[#082044] text-white">
-              <th className="p-3">timeStamp</th>
               <th className="p-3"></th>
               <th className="p-3">เฉลี่ยเงินผ่อนต่อเดือน</th>
               <th className="p-3">ระยะเวลาผ่อน</th>
@@ -83,9 +93,6 @@ const CompareTable = ({ compareData, setCompareData }) => {
                   index % 2 === 0 ? "bg-white" : "bg-gray-100"
                 } text-nowrap relative`}
               >
-                <td className="border-r border-[#082044] px-4 py-2">
-                  {item.timeStamp}
-                </td>
                 <td className="border-r border-[#082044] px-4 py-2 text-center align-middle text-lg relative">
                   <div className="flex items-center justify-center">
                     <div className="text-sm">{planNames[index]}</div>
@@ -95,17 +102,21 @@ const CompareTable = ({ compareData, setCompareData }) => {
                     />
                   </div>
 
+                  {/* left-1/2 -translate-x-1/2 */}
                   {editIndex === index && (
-                    <div className="absolute left-1/2 transform -translate-x-1/2 bottom-10 translate-y-full z-50 bg-white shadow-lg border border-gray-300 rounded p-2">
-                      <input
-                        type="text"
-                        ref={inputRef}
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && handleSave()}
-                        onBlur={handleSave}
-                        className="border border-gray-300 rounded text-sm p-1 w-40"
-                      />
+                    <div className="absolute transform bottom-10 translate-y-full z-50 bg-white shadow-lg border border-gray-300 rounded p-2">
+                      <div className="flex items-center">
+                        <HiPencilSquare />
+                        <input
+                          type="text"
+                          ref={inputRef}
+                          value={inputValue}
+                          onChange={(e) => setInputValue(e.target.value)}
+                          onKeyDown={(e) => e.key === "Enter" && handleSave()}
+                          onBlur={handleSave}
+                          className="border border-gray-300 rounded text-sm p-1 w-40 ml-2"
+                        />
+                      </div>
                     </div>
                   )}
                 </td>
@@ -155,7 +166,7 @@ CompareTable.propTypes = {
       }).isRequired,
     }).isRequired
   ).isRequired,
-  setCompareData: PropTypes.func.isRequired,
+  deleteCompareData: PropTypes.func.isRequired,
 };
 
 export default CompareTable;

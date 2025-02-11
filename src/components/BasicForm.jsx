@@ -228,7 +228,12 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
             </div>
 
             {/* วันที่เริ่ม */}
-            <div className="flex flex-col space-y-2">
+            <div
+              className="flex flex-col space-y-2"
+              onClick={() =>
+                startDateRef.current && startDateRef.current.showPicker?.()
+              }
+            >
               <label className="text-gray-700 font-[400] text-lg">
                 วันที่เริ่ม ({dateText})
               </label>
