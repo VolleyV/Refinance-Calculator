@@ -9,7 +9,7 @@ import AdvanceTable from "./AdvanceTable"; // Assuming this is the component tha
 const DatasetDetails = () => {
   const location = useLocation();
   const [advanceFormData, setAdvanceFormData] = useState([]);
-
+  
   // คำนวณรายการที่ต้องแสดงในหน้าปัจจุบัน
   //const startIndex = (currentPage - 1) * itemsPerPage;
 
@@ -28,7 +28,7 @@ const DatasetDetails = () => {
           const summary = parsedData.advanceSummary;
           console.log("Advance Summary:", summary);
           setAdvanceFormData(
-            Array.isArray(summary) ? summary : Object.values(summary)
+            (Array.isArray(summary) ? summary : Object.values(summary)).slice(0, -13)
           );
         } else {
           console.log("Advance Summary not found.");
@@ -51,7 +51,7 @@ const DatasetDetails = () => {
             const summary = parsedStoredData.advanceSummary;
             console.log("Advance Summary from Local Storage:", summary);
             setAdvanceFormData(
-              Array.isArray(summary) ? summary : Object.values(summary)
+              (Array.isArray(summary) ? summary : Object.values(summary)).slice(0, -13)
             );
           } else {
             console.log("No advanceSummary in localStorage data.");
@@ -67,6 +67,7 @@ const DatasetDetails = () => {
 
   const itemsPerPage = 36; // จำนวนงวดต่อหน้า
   const [currentPage, setCurrentPage] = useState(1);
+  console.log(advanceFormData.length)
   const totalPages = (Math.ceil((advanceFormData?.length || 0) / itemsPerPage));
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = Array.isArray(advanceFormData)
