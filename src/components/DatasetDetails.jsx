@@ -128,7 +128,7 @@ const DatasetDetails = () => {
 
       // Set scale for better quality and larger text
       const canvas = await html2canvas(tableElement, {
-        scale: 3, // Larger values (e.g., 3 or 4) make text bigger and sharper
+        scale: 1, // Larger values (e.g., 3 or 4) make text bigger and sharper
       });
 
       const imgData = canvas.toDataURL("image/png");
@@ -211,14 +211,15 @@ const DatasetDetails = () => {
 </tbody>
 
         </table>
-        <div className="mt-5 flex justify-center">
+       
+      </div>
+      <div className="mt-5 flex justify-center">
           <Pagination
             totalPages={totalPages}
             currentPage={currentPage}
             onPageChange={handlePageChange}
           />
         </div>
-      </div>
     </div>
   );
 };
