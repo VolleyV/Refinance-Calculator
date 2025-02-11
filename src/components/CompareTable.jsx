@@ -3,9 +3,7 @@ import { HiPencilSquare } from "react-icons/hi2";
 import PropTypes from "prop-types";
 import { RiDeleteBinFill } from "react-icons/ri";
 
-
-
-const CompareTable = ({ compareData, setCompareData }) => {
+const CompareTable = ({ compareData, deleteCompareData }) => {
   console.log(compareData);
 
   const handleDetailClick = (data) => {
@@ -13,19 +11,17 @@ const CompareTable = ({ compareData, setCompareData }) => {
 
     const encodedData = encodeURIComponent(JSON.stringify(data));
     console.log("Encoded Data: ", encodedData); // Debug the encoded data
-  
+
     if (encodedData.length > 2048) {
       console.log("Using localStorage for data");
-      localStorage.setItem("datasetDetail", JSON.stringify(data)); 
-      window.open(`/dataset`, '_blank');
+      localStorage.setItem("datasetDetail", JSON.stringify(data));
+      window.open(`/dataset`, "_blank");
     } else {
       console.log("Using URL for data");
-      window.open(`/dataset?data=${encodedData}`, '_blank');
+      window.open(`/dataset?data=${encodedData}`, "_blank");
     }
   };
-  
-  
-  
+
   const [planNames, setPlanNames] = useState(
     compareData.map((_, index) => `แผนที่ ${index + 1}`)
   );
@@ -52,7 +48,7 @@ const CompareTable = ({ compareData, setCompareData }) => {
 
   const handleDelete = (index) => {
     const newCompareData = compareData.filter((_, i) => i !== index);
-    setCompareData(newCompareData);
+    deleteCompareData(newCompareData);
 
     // ลบชื่อแผนที่ของแถวที่ถูกลบ
     const newPlanNames = planNames.filter((_, i) => i !== index);
@@ -123,7 +119,7 @@ const CompareTable = ({ compareData, setCompareData }) => {
                   >
                     อ่านรายละเอียด
                   </button>
-                </td> 
+                </td>
 
                 <td className="px-4 py-2">
                   <RiDeleteBinFill

@@ -206,7 +206,12 @@ const BasicFormYear = ({
           </div>
 
           {/* วันที่เริ่ม */}
-          <div className="flex flex-col space-y-2">
+          <div
+            className="flex flex-col space-y-2"
+            onClick={() =>
+              startDateRef.current && startDateRef.current.showPicker?.()
+            }
+          >
             <label
               className="text-gray-700 font-[400] text-lg"
               htmlFor="startDate"
@@ -258,9 +263,7 @@ const BasicFormYear = ({
           <div className="flex flex-col space-y-2">
             <label className="text-gray-700 font-[400] text-lg">
               ค่าประกัน&nbsp;
-                <span className="text-[#82828E] text-lg font-[300]">
-                  (ถ้ามี)
-                </span>
+              <span className="text-[#82828E] text-lg font-[300]">(ถ้ามี)</span>
             </label>
             <div className="relative mt-2">
               <input
@@ -280,9 +283,7 @@ const BasicFormYear = ({
           <div className="flex flex-col space-y-2">
             <label className="text-gray-700 font-[400] text-lg">
               ค่าจดจำนอง&nbsp;
-                <span className="text-[#82828E] text-lg font-[300]">
-                  (ถ้ามี)
-                </span>
+              <span className="text-[#82828E] text-lg font-[300]">(ถ้ามี)</span>
             </label>
             <div className="relative mt-2">
               <input

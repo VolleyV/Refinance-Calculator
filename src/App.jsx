@@ -226,17 +226,7 @@ function App() {
 
   const [compareData, setCompareData] = useState([]);
   const saveToTable = (advanceSummary) => {
-    console.log(window.location.href);
-
-    const dataWithTimestamp = {
-      ...advanceSummary,
-      timeStamp: Date.now(), // Add a unique timestamp
-    };
-    setCompareData((prev) => {
-      const updatedCompareData = [...prev, dataWithTimestamp];
-      console.log(updatedCompareData); // Log to see if the state is updating correctly
-      return updatedCompareData;
-    });
+    setCompareData((prev) => [...prev, advanceSummary]);
   };
 
   return (
@@ -295,7 +285,7 @@ function App() {
                       <div>
                         <CompareTable
                           compareData={compareData}
-                          setCompareData={setCompareData}
+                          deleteCompareData={setCompareData}
                         />
                       </div>
                     )}
