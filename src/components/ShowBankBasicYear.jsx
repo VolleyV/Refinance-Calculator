@@ -144,7 +144,6 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               </div>
             </div>
 
-
             {/* คอลัมน์ที่ 2 และ 3 (ข้อมูลการชำระเงิน) */}
             <div className="sm:grid grid-cols-2 col-span-2 gap-6">
               {/* คอลัมน์ที่ 2 */}
