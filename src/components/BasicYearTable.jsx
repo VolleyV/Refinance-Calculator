@@ -17,6 +17,7 @@ const BasicYearTable = ({ basicYearData }) => {
     }, 50);
   }, []);
 
+  const [isLoading, setIsLoading] = useState(false);
   const itemsPerPage = 36;
   const calculationDetails = basicYearLoanCalculateDetail(basicYearData);
 
@@ -36,28 +37,25 @@ const BasicYearTable = ({ basicYearData }) => {
   };
 
   const printPDF = async () => {
+    setIsLoading(true); // เริ่มโหลด
     const pdf = new jsPDF("p", "mm", "a4");
     const tableElement = document.getElementById("table-to-pdf");
 
     if (!tableElement) {
       console.error("Table element not found for PDF export.");
+      setIsLoading(false);
       return;
     }
 
     for (let page = 0; page < totalPages; page++) {
-      if (page > 0) pdf.addPage(); // Add a new page for subsequent parts
+      if (page > 0) pdf.addPage();
       setCurrentPage(page + 1);
 
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Allow DOM to update
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Set scale for better quality and larger text
-      const canvas = await html2canvas(tableElement, {
-        scale: 3, // Larger values (e.g., 3 or 4) make text bigger and sharper
-      });
-
+      const canvas = await html2canvas(tableElement, { scale: 1 });
       const imgData = canvas.toDataURL("image/png");
-
-      const imgWidth = 210; // Width in PDF
+      const imgWidth = 210;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       pdf.addImage(imgData, "PNG", 0, 10, imgWidth, imgHeight);
@@ -66,9 +64,18 @@ const BasicYearTable = ({ basicYearData }) => {
     const pdfBlob = pdf.output("blob");
     const blobURL = URL.createObjectURL(pdfBlob);
     window.open(blobURL, "_blank");
+    setIsLoading(false); // โหลดเสร็จ
   };
   return (
     <div className="container mx-auto mt-10 px-4">
+      {isLoading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-5 rounded-lg shadow-lg flex flex-col items-center">
+            <div className="loader border-t-4 border-blue-500 border-solid rounded-full w-12 h-12 animate-spin"></div>
+            <p className="mt-3 text-lg font-semibold">กำลังสร้าง PDF...</p>
+          </div>
+        </div>
+      )}
       <div className="flex items-center justify-between w-full mb-5">
         <h2 className="text-2xl font-bold">ตารางการคำนวณ</h2>
         <button

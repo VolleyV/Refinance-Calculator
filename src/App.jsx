@@ -26,6 +26,7 @@ import {
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CompareTable from "./components/CompareTable";
+import DatasetDetails from "./components/DatasetDetails";
 
 function App() {
   const [basicFormData, setBasicFormData] = useState(() => {
@@ -54,7 +55,7 @@ function App() {
     if (isMobile && advanceFormData) {
       scrollPosition = window.innerHeight * 1.8;
     } else if (advanceFormData) {
-      scrollPosition = window.innerHeight * 1;
+      scrollPosition = window.innerHeight * 1.2;
     } else {
       scrollPosition;
     }
@@ -221,21 +222,11 @@ function App() {
     }
   }, [advanceFormData]);
 
-  // console.log(calculatedData);
+  console.log(calculatedData);
 
   const [compareData, setCompareData] = useState([]);
-  const [compareTableData, setCompareTableData] = useState([]);
   const saveToTable = (advanceSummary) => {
     setCompareData((prev) => [...prev, advanceSummary]);
-    setCompareTableData((prev) => [...prev, calculatedData]);
-
-    // const dataWithTimestamp = {
-    //   ...advanceSummary,
-    //   timeStamp: Date.now(), // เพิ่ม timestamp ปัจจุบัน
-    // };
-
-    // // บันทึกข้อมูลพร้อม timestamp ลงใน compareData
-    // setCompareData((prev) => [...prev, dataWithTimestamp]);
   };
 
   return (
@@ -295,7 +286,6 @@ function App() {
                         <CompareTable
                           compareData={compareData}
                           deleteCompareData={setCompareData}
-                          compareTableData={compareTableData}
                         />
                       </div>
                     )}
@@ -338,6 +328,9 @@ function App() {
             path="/advanceTable"
             element={<AdvanceTable advanceData={advanceFormData || []} />}
           />
+          <Route path="/dataset" element={<DatasetDetails />} />
+
+          {/* Add other routes as necessary */}
         </Routes>
       </div>
     </Router>

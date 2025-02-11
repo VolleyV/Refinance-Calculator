@@ -114,7 +114,7 @@ const InputForm = ({
                     : "bg-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >
-                ต้องผ่อนต่อกี่ปี
+                ผ่อนต่อกี่ปี
               </button>
               <button
                 onClick={() => switchTab("basicYear")}
@@ -124,7 +124,7 @@ const InputForm = ({
                     : "bg-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >
-                ต้องผ่อนเท่าไหร่
+                ผ่อนเท่าไหร่
               </button>
               <button
                 onClick={() => switchTab("advanced")}
@@ -134,7 +134,7 @@ const InputForm = ({
                     : "bg-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >
-                ข้อมูลขั้นสูง
+                ขั้นสูง
               </button>
             </nav>
           </div>

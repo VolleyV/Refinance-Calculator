@@ -1,28 +1,28 @@
-import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { advanceLoanCalculateDetail } from "../utils/advanceLoanCalculateDetail";
 import { FaFileDownload } from "react-icons/fa";
 import Pagination from "./Pagination";
+import { advanceLoanCalculateDetail } from "../utils/advanceLoanCalculateDetail";
 
 const AdvanceTable = ({ advanceData }) => {
-  if (!advanceData) {
+  if (!advanceData || advanceData.length === 0) {
     return <p>ไม่มีข้อมูล กรุณากลับไปกรอกแบบฟอร์มก่อน</p>;
   }
+
   useEffect(() => {
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "instant" });
     }, 50);
   }, []);
 
-  const itemsPerPage = 36; // จำนวนงวดต่อหน้า
-  const calculationDetails = advanceLoanCalculateDetail(advanceData);
-
+  const [isLoading, setIsLoading] = useState(false); // สถานะการโหลด
   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 36;
+  const calculationDetails = advanceLoanCalculateDetail(advanceData);
   const totalPages = Math.ceil(calculationDetails.length / itemsPerPage);
 
-  // คำนวณรายการที่ต้องแสดงในหน้าปัจจุบัน
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = calculationDetails.slice(
     startIndex,
@@ -35,28 +35,25 @@ const AdvanceTable = ({ advanceData }) => {
   };
 
   const printPDF = async () => {
+    setIsLoading(true); // เริ่มโหลด
     const pdf = new jsPDF("p", "mm", "a4");
     const tableElement = document.getElementById("table-to-pdf");
 
     if (!tableElement) {
       console.error("Table element not found for PDF export.");
+      setIsLoading(false);
       return;
     }
 
     for (let page = 0; page < totalPages; page++) {
-      if (page > 0) pdf.addPage(); // Add a new page for subsequent parts
+      if (page > 0) pdf.addPage();
       setCurrentPage(page + 1);
 
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Allow DOM to update
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Set scale for better quality and larger text
-      const canvas = await html2canvas(tableElement, {
-        scale: 3, // Larger values (e.g., 3 or 4) make text bigger and sharper
-      });
-
+      const canvas = await html2canvas(tableElement, { scale: 1 });
       const imgData = canvas.toDataURL("image/png");
-
-      const imgWidth = 210; // Width in PDF
+      const imgWidth = 210;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       pdf.addImage(imgData, "PNG", 0, 10, imgWidth, imgHeight);
@@ -65,24 +62,35 @@ const AdvanceTable = ({ advanceData }) => {
     const pdfBlob = pdf.output("blob");
     const blobURL = URL.createObjectURL(pdfBlob);
     window.open(blobURL, "_blank");
+    setIsLoading(false); // โหลดเสร็จ
   };
+
   return (
-    <div className="container mx-auto mt-10 px-4">
+    <div className="container mx-auto mt-10 px-4 relative">
+      {/* Loader */}
+      {isLoading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-5 rounded-lg shadow-lg flex flex-col items-center">
+            <div className="loader border-t-4 border-blue-500 border-solid rounded-full w-12 h-12 animate-spin"></div>
+            <p className="mt-3 text-lg font-semibold">กำลังสร้าง PDF...</p>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-between w-full mb-5">
         <h2 className="text-2xl font-bold">ตารางการคำนวณ</h2>
         <button
           onClick={printPDF}
           className="flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+          disabled={isLoading}
         >
           <FaFileDownload />
           <span>Download PDF</span>
         </button>
       </div>
+
       {currentItems.length > 0 ? (
-        <div
-          className="overflow-x-auto rounded-lg border border"
-          id="table-to-pdf"
-        >
+        <div className="overflow-x-auto rounded-lg border" id="table-to-pdf">
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm rounded-lg overflow-hidden">
             <thead className="bg-[#082044] text-white rounded-t-lg">
               <tr>
@@ -113,11 +121,7 @@ const AdvanceTable = ({ advanceData }) => {
               {currentItems.map((detail, index) => (
                 <tr
                   key={index}
-                  className={`${
-                    index % 2 === 0
-                      ? "bg-gray-100" //bg-gray-100 dark:bg-gray-800
-                      : "bg-white" //bg-white dark:bg-gray-900
-                  }`}
+                  className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}
                 >
                   <td className="border px-6 py-4 text-center">
                     {detail.month}
@@ -130,19 +134,21 @@ const AdvanceTable = ({ advanceData }) => {
                     }) || "Invalid Date"}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.interestRate).toLocaleString()}%
+                    {parseFloat(detail.interestRate || 0).toLocaleString()}%
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.monthlyPayment).toLocaleString()}
+                    {parseFloat(detail.monthlyPayment || 0).toLocaleString()}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.loanAmountPortion).toLocaleString()}
+                    {parseFloat(detail.loanAmountPortion || 0).toLocaleString()}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.interest).toLocaleString()}
+                    {parseFloat(detail.interest || 0).toLocaleString()}
                   </td>
                   <td className="border px-6 py-4 text-center">
-                    {parseFloat(detail.remainingLoanAmount).toLocaleString()}
+                    {parseFloat(
+                      detail.remainingLoanAmount || 0
+                    ).toLocaleString()}
                   </td>
                 </tr>
               ))}
@@ -151,8 +157,8 @@ const AdvanceTable = ({ advanceData }) => {
         </div>
       ) : (
         <p>ไม่มีข้อมูลการคำนวณ</p>
-      )}{" "}
-      {/* ปุ่มเปลี่ยนหน้า */}
+      )}
+
       <div className="mt-5 flex justify-center">
         <Pagination
           totalPages={totalPages}
