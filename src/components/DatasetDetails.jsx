@@ -9,7 +9,7 @@ import AdvanceTable from "./AdvanceTable"; // Assuming this is the component tha
 const DatasetDetails = () => {
   const location = useLocation();
   const [advanceFormData, setAdvanceFormData] = useState([]);
-  
+
   // คำนวณรายการที่ต้องแสดงในหน้าปัจจุบัน
   //const startIndex = (currentPage - 1) * itemsPerPage;
 
@@ -28,7 +28,10 @@ const DatasetDetails = () => {
           const summary = parsedData.advanceSummary;
           console.log("Advance Summary:", summary);
           setAdvanceFormData(
-            (Array.isArray(summary) ? summary : Object.values(summary)).slice(0, -13)
+            (Array.isArray(summary) ? summary : Object.values(summary)).slice(
+              0,
+              -13
+            )
           );
         } else {
           console.log("Advance Summary not found.");
@@ -51,7 +54,10 @@ const DatasetDetails = () => {
             const summary = parsedStoredData.advanceSummary;
             console.log("Advance Summary from Local Storage:", summary);
             setAdvanceFormData(
-              (Array.isArray(summary) ? summary : Object.values(summary)).slice(0, -13)
+              (Array.isArray(summary) ? summary : Object.values(summary)).slice(
+                0,
+                -13
+              )
             );
           } else {
             console.log("No advanceSummary in localStorage data.");
@@ -65,10 +71,11 @@ const DatasetDetails = () => {
     }
   }, [location]);
 
+  const [isLoading, setIsLoading] = useState(false);
   const itemsPerPage = 36; // จำนวนงวดต่อหน้า
   const [currentPage, setCurrentPage] = useState(1);
-  console.log(advanceFormData.length)
-  const totalPages = (Math.ceil((advanceFormData?.length || 0) / itemsPerPage));
+  console.log(advanceFormData.length);
+  const totalPages = Math.ceil((advanceFormData?.length || 0) / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = Array.isArray(advanceFormData)
     ? advanceFormData.slice(startIndex, startIndex + itemsPerPage)
@@ -112,11 +119,13 @@ const DatasetDetails = () => {
   };
 
   const printPDF = async () => {
+    setIsLoading(true);
     const pdf = new jsPDF("p", "mm", "a4");
     const tableElement = document.getElementById("table-to-pdf");
 
     if (!tableElement) {
       console.error("Table element not found for PDF export.");
+      setIsLoading(false);
       return;
     }
 
@@ -142,15 +151,28 @@ const DatasetDetails = () => {
     const pdfBlob = pdf.output("blob");
     const blobURL = URL.createObjectURL(pdfBlob);
     window.open(blobURL, "_blank");
+    setIsLoading(false);
   };
 
   return (
     <div className="container mx-auto mt-10 px-4">
+      {isLoading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-5 rounded-lg shadow-lg flex flex-col items-center">
+            <div className="loader border-t-4 border-blue-500 border-solid rounded-full w-12 h-12 animate-spin"></div>
+            <p className="mt-3 text-lg font-semibold">กำลังสร้าง PDF...</p>
+          </div>
+        </div>
+      )}
       <div className="flex items-center justify-between w-full mb-5">
         <h2 className="text-2xl font-bold">ตารางการคำนวณ</h2>
         <button
           onClick={printPDF}
+
           className="flex items-center gap-2 rounded-full bg-[#30A572] px-4 py-2 font-bold text-white hover:bg-blue-700"
+
+          disabled={isLoading}
+
         >
           <FaFileDownload />
           <span>Download PDF</span>
@@ -187,32 +209,36 @@ const DatasetDetails = () => {
             </tr>
           </thead>
           <tbody>
-  {validItems.map((row, index) => (
-    <tr key={index} className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}>
-      <td className="border px-6 py-4 text-center">{row.month}</td>
-      <td className="border px-6 py-4 text-center">{formatDate(row.date)}</td>
-      <td className="border px-6 py-4 text-center">
-        {formatNumber(row.interestRate)}%
-      </td>
-      <td className="border px-6 py-4 text-center">
-        {formatNumber(row.monthlyPayment)}
-      </td>
-      <td className="border px-6 py-4 text-center">
-        {formatNumber(row.loanAmountPortion)}
-      </td>
-      <td className="border px-6 py-4 text-center">
-        {formatNumber(row.interest)}
-      </td>
-      <td className="border px-6 py-4 text-center">
-        {formatNumber(row.remainingLoanAmount)}
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+            {validItems.map((row, index) => (
+              <tr
+                key={index}
+                className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}
+              >
+                <td className="border px-6 py-4 text-center">{row.month}</td>
+                <td className="border px-6 py-4 text-center">
+                  {formatDate(row.date)}
+                </td>
+                <td className="border px-6 py-4 text-center">
+                  {formatNumber(row.interestRate)}%
+                </td>
+                <td className="border px-6 py-4 text-center">
+                  {formatNumber(row.monthlyPayment)}
+                </td>
+                <td className="border px-6 py-4 text-center">
+                  {formatNumber(row.loanAmountPortion)}
+                </td>
+                <td className="border px-6 py-4 text-center">
+                  {formatNumber(row.interest)}
+                </td>
+                <td className="border px-6 py-4 text-center">
+                  {formatNumber(row.remainingLoanAmount)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
-       
       </div>
+
       <div className="mt-5 mb-6 flex justify-center">
           <Pagination
             totalPages={totalPages}
@@ -220,6 +246,14 @@ const DatasetDetails = () => {
             onPageChange={handlePageChange}
           />
         </div>
+
+
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
+      </div>
     </div>
   );
 };
