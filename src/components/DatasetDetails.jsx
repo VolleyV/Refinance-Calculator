@@ -150,7 +150,7 @@ const DatasetDetails = () => {
         <h2 className="text-2xl font-bold">ตารางการคำนวณ</h2>
         <button
           onClick={printPDF}
-          className="flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+          className="flex items-center gap-2 rounded-full bg-[#30A572] px-4 py-2 font-bold text-white hover:bg-blue-700"
         >
           <FaFileDownload />
           <span>Download PDF</span>
@@ -213,7 +213,7 @@ const DatasetDetails = () => {
         </table>
        
       </div>
-      <div className="mt-5 flex justify-center">
+      <div className="mt-5 mb-6 flex justify-center">
           <Pagination
             totalPages={totalPages}
             currentPage={currentPage}
