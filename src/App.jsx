@@ -267,12 +267,12 @@ function App() {
                 {!isLoading && advanceFormData && (
                   <>
                     <ShowBankAdvance advanceCalculateSummary={advanceSummary} />
-                    <div className="bg-gray-200 p-4 text-center mt-4 w-full">
-                      <div className="flex justify-center items-center space-x-2">
-                        <p className="inline">
+                    <div className="bg-gray-200 p-4 text-center mt-4 w-full sm:h-[80px]">
+                      <div className="flex justify-center items-center space-x-2 sm:mt-2">
+                        <p className="inline text-lg text-center">
                           หากต้องการเปรียบเทียบผลการคำนวณ{" "}
                           <button
-                            className="font-bold text-xl text-[#30A572] cursor-pointer underline inline whitespace-nowrap"
+                            className="font-bold text-lg text-[#30A572] cursor-pointer underline inline whitespace-nowrap"
                             onClick={() => saveToTable({ advanceSummary })}
                           >
                             คลิกที่นี่

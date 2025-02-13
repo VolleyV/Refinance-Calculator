@@ -329,7 +329,7 @@ const AdvanceForm = ({
               <input
                 type="text"
                 name="Loan-Amount"
-                className="w-full border-b-2 border-gray-300 focus:border-[#082044] text-2xl font-[600] text-gray-900 focus:outline-none px-2 h-[48px]"
+                className="w-full border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] focus:outline-none px-2 h-[48px]"
                 onChange={handleLoanAmountChange}
                 value={loanAmount}
               />
@@ -356,7 +356,7 @@ const AdvanceForm = ({
                 type="date"
                 name="start-date-advance"
                 id="start-date-advance"
-                className="w-full border-b-2 border-gray-300 focus:border-[#082044] text-2xl font-[600] text-gray-900 focus:outline-none px-2 h-[48px]"
+                className="w-full border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] focus:outline-none px-2 h-[48px]"
                 value={startDate}
                 ref={startDateRef}
                 onChange={handleStartDateChange}
@@ -379,7 +379,7 @@ const AdvanceForm = ({
               >
                 {/* สำหรับ Mobile */}
                 <div className="flex items-center sm:hidden">
-                  <div className="bg-[#082044] text-white font-medium py-1 px-4 rounded-md relative">
+                  <div className="bg-[#082044] text-white font-medium py-1 px-4 rounded-t-md relative">
                     อัตราที่ {index + 1}
                     <hr
                       style={{ width: `${titleWidth}px` }}
@@ -418,7 +418,7 @@ const AdvanceForm = ({
                       onChange={(e) =>
                         handleInterestRateChange(index, e.target.value)
                       }
-                      className="w-full border-b-2 border-gray-300 focus:border-[#082044] text-2xl font-[600] text-gray-900 focus:outline-none px-2 h-[48px] appearance-none pr-8"
+                      className="w-full border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] focus:outline-none px-2 h-[48px] appearance-none pr-8"
                     />
                     <span className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                       %
@@ -445,7 +445,7 @@ const AdvanceForm = ({
                       updatedStartTerm[index] = e.target.value;
                       setStartTerm(updatedStartTerm);
                     }}
-                    className="w-full border-b-2 border-gray-300 focus:border-[#082044] text-2xl font-[600] text-gray-900 focus:outline-none px-2 h-[48px]"
+                    className="w-full border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] focus:outline-none px-2 h-[48px]"
                   />
                 </div>
 
@@ -467,7 +467,7 @@ const AdvanceForm = ({
                       onChange={(e) =>
                         handleMonthlyPaymentChange(index, e.target.value)
                       }
-                      className="w-full border-b-2 border-gray-300 focus:border-[#082044] text-2xl font-[600] text-gray-900 focus:outline-none px-2 h-[48px]"
+                      className="w-full border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] focus:outline-none px-2 h-[48px]"
                     />
                     <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                       บาท
@@ -501,7 +501,7 @@ const AdvanceForm = ({
             {/* ปุ่มสำหรับ Mobile */}
             <div className="grid grid-cols-1 gap-6 mt-6">
               {/* ปุ่ม +/- สำหรับ Mobile */}
-              <div className="relative sm:hidden mt-4">
+              <div className="relative sm:hidden">
                 <div className="absolute inset-x-0 bottom-[-32px] flex justify-center">
                   {visibleRows < 5 && (
                     <div className="relative">
@@ -550,7 +550,7 @@ const AdvanceForm = ({
                 id="insurance-input"
                 value={insurance}
                 onChange={handleInsuranceChange}
-                className="w-full border-b-2 border-gray-300 focus:border-[#082044] text-2xl font-[600] text-gray-900 focus:outline-none px-2 h-[48px]"
+                className="w-full border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] focus:outline-none px-2 h-[48px]"
               />
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                 บาท
@@ -570,7 +570,7 @@ const AdvanceForm = ({
                 id="additional-input2"
                 value={mortgageFee}
                 onChange={handleMorgageFeeChange}
-                className="w-full border-b-2 border-gray-300 focus:border-[#082044] text-2xl font-[600] text-gray-900 focus:outline-none px-2 h-[48px]"
+                className="w-full border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] focus:outline-none px-2 h-[48px]"
               />
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                 บาท
@@ -593,12 +593,12 @@ const AdvanceForm = ({
           </div>
 
           {/* ปุ่มคำนวณ */}
-          <div className="order-1 sm:order-2 w-full sm:w-auto flex justify-center sm:justify-end sm:ml-auto">
+          <div className="order-1 sm:order-2 w-full sm:w-auto flex justify-center sm:justify-end sm:ml-auto h-[60px]">
             <button
               type="submit"
               className="inline-block w-full sm:w-[250px] rounded-full bg-[#30A572] px-8 py-3 text-base font-bold text-white hover:bg-green-600"
             >
-              คำนวณ
+              <span className="text-lg">คำนวณ</span>
             </button>
           </div>
         </div>

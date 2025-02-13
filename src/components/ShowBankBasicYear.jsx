@@ -150,7 +150,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               <div className="text-lg flex flex-col justify-between">
                 {/* ผ่อนดอกเบี้ยไป (เส้นกรอบประ) */}
                 <div className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md">
-                  <p className="text-start">
+                  <p className="text-start text-[#082044]">
                     ผ่อนดอกเบี้ยไป <br />
                     <span className="font-bold text-[#30A572] text-2xl">
                       {totalInterestThreeYears.toLocaleString()}
@@ -170,7 +170,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
                   </div>
                 ) : (
                   <div className="text-start p-4 mt-4">
-                    <p>เหลือเงินต้นต้องผ่อนอีก</p>
+                    <p className="text-[#082044]">เหลือเงินต้นต้องผ่อนอีก</p>
                     <span className="font-bold text-[#30A572] text-2xl">
                       {principalAfterThreeYears.toLocaleString()}
                     </span>{" "}
@@ -183,7 +183,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               <div className="text-lg flex flex-col justify-between">
                 {/* ผ่อนเงินต้นไป */}
                 <div className="p-4 text-start">
-                  ผ่อนเงินต้นไป <br />
+                  <p className="text-[#082044]">ผ่อนเงินต้นไป </p>
                   <span className="font-bold text-[#30A572] text-2xl">
                     {principalPortionAfterThreeYears.toLocaleString()}
                   </span>{" "}
@@ -193,7 +193,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
                 {/* เหลือเงินต้นต้องผ่อน */}
                 {totalInsuranceMortgage !== 0 && (
                   <div className="text-start p-4">
-                    <p>เหลือเงินต้นต้องผ่อนอีก</p>
+                    <p className="text-[#082044]">เหลือเงินต้นต้องผ่อนอีก</p>
                     <span className="font-bold text-[#30A572] text-2xl">
                       {principalAfterThreeYears.toLocaleString()}
                     </span>{" "}
@@ -244,7 +244,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
               <div className="text-lg flex flex-col justify-between col-span-1">
                 {/* ค่าดอกเบี้ยตลอดการผ่อน (เส้นกรอบประ) */}
                 <div className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md text-start">
-                  <p>
+                  <p className="text-[#082044]">
                     ค่าดอกเบี้ยตลอดการผ่อน <br />
                     <span className="font-bold text-[#30A572] text-2xl">
                       {remainingInterestText.toLocaleString()}
@@ -253,8 +253,8 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
                   </p>
                 </div>
                 {/* จะผ่อนเสร็จวันที่ */}
-                <p className="text-[#35373F] text-start p-4 sm:block inline">
-                  จะผ่อนเสร็จวันที่
+                <p className="text-[#082044] text-start p-4 sm:block inline">
+                  จะผ่อนเสร็จวันที่ <br/>
                   <span className="inline sm:hidden">&nbsp;</span>
                   <span className="font-bold text-[#30A572] text-2xl sm:block inline">
                     {lastPaymentText}
@@ -272,7 +272,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
       <div className="mt-5 text-center">
         <button
           onClick={handleOpenTableInNewTab}
-          className="inline-block rounded-full bg-[#30A572] w-full sm:w-[250px] px-8 py-2 text-lg font-bold text-white hover:bg-[#28a062]"
+          className="inline-block rounded-full bg-[#30A572] w-full h-[60px] sm:w-[250px] px-8 py-2 text-lg font-bold text-white hover:bg-[#28a062]"
         >
           ดูรายละเอียด
         </button>

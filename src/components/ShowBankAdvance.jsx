@@ -251,7 +251,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
 
                 {/* จะผ่อนเสร็จวันที่ */}
                 <p className="text-[#35373F] text-start p-4 sm:block inline">
-                  จะผ่อนเสร็จวันที่
+                  จะผ่อนเสร็จวันที่ <br />
                   <span className="inline sm:hidden">&nbsp;</span>
                   <span className="font-bold text-[#30A572] text-2xl sm:block inline">
                     {lastPaymentText}
@@ -267,7 +267,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
             <div className="mt-5 text-center">
               <button
                 onClick={handleOpenTableInNewTab}
-                className="inline-block rounded-full bg-[#30A572] w-full sm:w-[250px] px-8 py-2 text-lg font-bold text-white hover:bg-[#28a062]"
+                className="inline-block rounded-full bg-[#30A572] w-full sm:w-[250px] px-8 py-2 text-lg font-bold text-white hover:bg-[#28a062] h-[60px]"
               >
                 ดูรายละเอียด
               </button>
