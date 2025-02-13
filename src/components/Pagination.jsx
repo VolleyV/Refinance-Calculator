@@ -50,7 +50,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
           key={index}
           onClick={() => typeof page === "number" && onPageChange(page)}
           className={`px-3 py-1 rounded hover:bg-gray-200 ${
-            currentPage === page ? "bg-blue-900 text-white" : ""
+            currentPage === page ? "bg-[#082044] text-white" : ""
           }`}
           disabled={page === "..."}
         >

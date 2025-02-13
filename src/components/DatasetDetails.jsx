@@ -142,12 +142,12 @@ const DatasetDetails = () => {
 
       const imgData = canvas.toDataURL("image/png");
 
-      const imgWidth = 210; // Width in PDF
+      const imgWidth = 200; // Width in PDF
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-      pdf.addImage(imgData, "PNG", 0, 10, imgWidth, imgHeight);
+      pdf.addImage(imgData, "PNG", 5, 10, imgWidth, imgHeight);
     }
-
+    
     const pdfBlob = pdf.output("blob");
     const blobURL = URL.createObjectURL(pdfBlob);
     window.open(blobURL, "_blank");
@@ -168,7 +168,7 @@ const DatasetDetails = () => {
         <h2 className="text-2xl font-bold">ตารางการคำนวณ</h2>
         <button
           onClick={printPDF}
-          className="flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+          className="flex items-center gap-2 rounded-full bg-[#30A572] px-4 py-2 font-bold text-white hover:bg-blue-700"
           disabled={isLoading}
         >
           <FaFileDownload />
