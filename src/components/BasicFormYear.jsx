@@ -317,7 +317,7 @@ const BasicFormYear = ({
           <div className="order-1 sm:order-2 w-full sm:w-auto flex justify-center sm:justify-end sm:ml-auto">
             <button
               type="submit"
-              className="inline-block w-full h-[60px] sm:w-[250px] rounded-full bg-[#30A572] px-8 py-3 text-base font-bold text-white hover:bg-green-600"
+              className="inline-block w-full h-[60px] sm:w-[250px] rounded-full bg-[#30A572] px-8 py-3 text-lg font-bold text-white hover:bg-green-600"
             >
               คำนวณ
             </button>

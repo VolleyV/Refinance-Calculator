@@ -281,13 +281,13 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
                 </span>
               </label>
 
-              <div className="relative mb-2">
+              <div className="relative -mb-2">
                 <input
                   type="text"
                   id="insurance-input"
                   value={insurance}
                   onChange={handleInsuranceChange}
-                  className="w-full -mb-2 border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] !text-[#082044] focus:outline-none px-2 h-[48px]"
+                  className="w-full mb-2 border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] !text-[#082044] focus:outline-none px-2 h-[48px]"
                 />
                 <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 text-lg font-medium">
                   บาท
@@ -296,7 +296,7 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
             </div>
 
             {/* ค่าจดจำนอง */}
-            <div className="flex flex-col space-y-2 mt-4">
+            <div className="flex flex-col space-y-2">
               <label className="text-[#35373F] font-[400] text-lg -mb-2">
                 ค่าจดจำนอง&nbsp;
                 <span className="text-[#82828E] text-lg font-[300]">
@@ -309,7 +309,7 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
                   id="additional-input2"
                   value={mortgageFee}
                   onChange={handleMorgageFeeChange}
-                  className="w-full border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] !text-[#082044] focus:outline-none px-2 h-[48px]"
+                  className="w-full mb-2 border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] !text-[#082044] focus:outline-none px-2 h-[48px]"
                 />
                 <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium text-lg">
                   บาท
