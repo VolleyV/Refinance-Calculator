@@ -158,7 +158,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
               <div className="text-lg flex flex-col justify-between">
                 {/* ผ่อนดอกเบี้ยไป (เส้นกรอบประ) */}
                 <div className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md">
-                  <p className="text-start">
+                  <p className="text-start text-[#082044]">
                     ผ่อนดอกเบี้ยไป <br />
                     <span className="font-bold text-[#30A572] text-2xl">
                       {totalInterestThreeYears.toLocaleString()}
@@ -178,7 +178,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
                   </div>
                 ) : (
                   <div className="text-start p-4 mt-4">
-                    <p>เหลือเงินต้นต้องผ่อนอีก</p>
+                    <p className="text-[#082044]">เหลือเงินต้นต้องผ่อนอีก</p>
                     <span className="font-bold text-[#30A572] text-2xl">
                       {principalAfterThreeYears.toLocaleString()}
                     </span>{" "}
@@ -191,7 +191,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
               <div className="text-lg flex flex-col justify-between">
                 {/* ผ่อนเงินต้นไป */}
                 <div className="p-4 text-start">
-                  ผ่อนเงินต้นไป <br />
+                  <p className="text-[#082044]">ผ่อนเงินต้นไป </p>
                   <span className="font-bold text-[#30A572] text-2xl">
                     {principalPortionAfterThreeYears.toLocaleString()}
                   </span>{" "}
@@ -201,7 +201,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
                 {/* เหลือเงินต้นต้องผ่อน */}
                 {totalInsuranceMortgage !== 0 && (
                   <div className="text-start p-4 ">
-                    <p>เหลือเงินต้นต้องผ่อนอีก</p>
+                    <p className="text-[#082044]">เหลือเงินต้นต้องผ่อนอีก</p>
                     <div className="font-bold text-[#30A572]"> </div>
                     <span className="font-bold text-[#30A572] text-2xl">
                       {principalAfterThreeYears.toLocaleString()}
@@ -253,7 +253,7 @@ const ShowBank = ({ basicCalculateSummary }) => {
               <div className="text-lg flex flex-col justify-between col-span-1">
                 {/* ค่าดอกเบี้ยตลอดการผ่อน (เส้นกรอบประ) */}
                 <div className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md text-start">
-                  <p>
+                  <p className="text-[#082044]">
                     ค่าดอกเบี้ยตลอดการผ่อน <br />
                     <span className="font-bold text-[#30A572] text-2xl">
                       {remainingInterestText.toLocaleString()}
@@ -262,8 +262,8 @@ const ShowBank = ({ basicCalculateSummary }) => {
                   </p>
                 </div>
                 {/* จะผ่อนเสร็จวันที่ */}
-                <p className="text-[#35373F] text-start p-4 sm:block inline">
-                  จะผ่อนเสร็จวันที่
+                <p className="text-[#082044] text-start p-4 sm:block inline">
+                  จะผ่อนเสร็จวันที่ <br />
                   <span className="inline sm:hidden">&nbsp;</span>
                   <span className="font-bold text-[#30A572] text-2xl sm:block inline">
                     {lastPaymentText}

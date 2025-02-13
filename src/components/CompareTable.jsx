@@ -56,21 +56,98 @@ const CompareTable = ({ compareData, deleteCompareData }) => {
   };
 
   return (
-    <div className="overflow-x-auto p-4 justify-center items-center">
+    // <div className="overflow-x-auto  p-4 justify-center items-center">
+    //   <h1 className="text-3xl font-bold text-[#082044] text-center my-5">
+    //     เปรียบเทียบผลการคำนวณ
+    //   </h1>
+    //   <div className="border-2 border-[#082044] rounded-lg overflow-hidden text-center max-w-4xl mx-auto">
+    //     <table className="table-auto w-full bg-white text-sm border-collapse">
+    //       <thead>
+    //         <tr className="bg-[#082044] text-white">
+    //           <th className="p-3"></th>
+    //           <th className="p-3">เฉลี่ยเงินผ่อนต่อเดือน</th>
+    //           <th className="p-3">ระยะเวลาผ่อน</th>
+    //           <th className="p-3">ค่าดอกเบี้ย 3 ปีแรก</th>
+    //           <th className="p-3">ค่าดอกเบี้ยทั้งหมด</th>
+    //           <th className="p-3">รายละเอียด</th>
+    //           <th className="p-3">ลบ</th>
+    //         </tr>
+    //       </thead>
+    //       <tbody>
+    //         {compareData.map((item, index) => (
+    //           <tr
+    //             key={index}
+    //             className={`${index % 2 === 0 ? "bg-white" : "bg-gray-100"}`}
+    //           >
+    //             <td className="border-r border-[#082044] px-4 py-2 text-center align-middle text-lg">
+    //               {editIndex === index ? (
+    //                 <input
+    //                   type="text"
+    //                   value={planNames[index]}
+    //                   onChange={(e) => handleNameChange(index, e.target.value)}
+    //                   onBlur={() => setEditIndex(null)}
+    //                   autoFocus
+    //                   className="border border-gray-300 rounded text-sm w-full max-w-[100px]"
+    //                 />
+    //               ) : (
+    //                 <div className="flex items-center justify-center">
+    //                   <div className="text-sm">{planNames[index]}</div>
+    //                   <HiPencilSquare
+    //                     className="ml-2 text-[#82828E] cursor-pointer"
+    //                     onClick={() => setEditIndex(index)}
+    //                   />
+    //                 </div>
+    //               )}
+    //             </td>
+    //             <td className="border-r border-[#082044] px-4 py-2">
+    //               {item.advanceSummary.averageMonthlyPayment.toLocaleString()}
+    //             </td>
+    //             <td className="border-r border-[#082044] px-4 py-2">
+    //               {item.advanceSummary.totalYears} ปี{" "}
+    //               {item.advanceSummary.totalMonths} เดือน
+    //             </td>
+    //             <td className="border-r border-[#082044] px-4 py-2">
+    //               {item.advanceSummary.totalInterestThreeYears.toLocaleString()}
+    //             </td>
+    //             <td className="border-r border-[#082044] px-4 py-2">
+    //               {item.advanceSummary.totalInterestPaid.toLocaleString()}
+    //             </td>
+    //             <td className="border-r border-[#082044] px-4 py-2">
+    //               <button
+    //                 className="text-green-500 cursor-pointer"
+    //                 onClick={() => handleDetailClick(item)}
+    //               >
+    //                 อ่านรายละเอียด
+    //               </button>
+    //             </td>
+
+    //             <td className="px-4 py-2">
+    //               <RiDeleteBinFill
+    //                 className="text-red-500 cursor-pointer"
+    //                 onClick={() => handleDelete(index)}
+    //               />
+    //             </td>
+    //           </tr>
+    //         ))}
+    //       </tbody>
+    //     </table>
+    //   </div>
+    // </div>
+    <div className="w-full max-w-full p-4">
       <h1 className="text-3xl font-bold text-[#082044] text-center my-5">
         เปรียบเทียบผลการคำนวณ
       </h1>
-      <div className="border-2 border-[#082044] rounded-lg overflow-hidden text-center max-w-4xl mx-auto">
-        <table className="table-auto w-full bg-white text-sm border-collapse">
+      <div className="overflow-x-auto border-2 border-[#082044] rounded-lg text-center max-w-4xl mx-auto">
+        <table className="table-auto w-full min-w-max bg-white text-sm border-collapse">
           <thead>
             <tr className="bg-[#082044] text-white">
-              <th className="p-3"></th>
-              <th className="p-3">เฉลี่ยเงินผ่อนต่อเดือน</th>
-              <th className="p-3">ระยะเวลาผ่อน</th>
-              <th className="p-3">ค่าดอกเบี้ย 3 ปีแรก</th>
-              <th className="p-3">ค่าดอกเบี้ยทั้งหมด</th>
-              <th className="p-3">รายละเอียด</th>
-              <th className="p-3">ลบ</th>
+              <th className="p-3 whitespace-nowrap"></th>
+              <th className="p-3 whitespace-nowrap">เฉลี่ยเงินผ่อนต่อเดือน</th>
+              <th className="p-3 whitespace-nowrap">ระยะเวลาผ่อน</th>
+              <th className="p-3 whitespace-nowrap">ค่าดอกเบี้ย 3 ปีแรก</th>
+              <th className="p-3 whitespace-nowrap">ค่าดอกเบี้ยทั้งหมด</th>
+              <th className="p-3 whitespace-nowrap">รายละเอียด</th>
+              <th className="p-3 whitespace-nowrap">ลบ</th>
             </tr>
           </thead>
           <tbody>
@@ -79,7 +156,7 @@ const CompareTable = ({ compareData, deleteCompareData }) => {
                 key={index}
                 className={`${index % 2 === 0 ? "bg-white" : "bg-gray-100"}`}
               >
-                <td className="border-r border-[#082044] px-4 py-2 text-center align-middle text-lg">
+                <td className="border-r border-[#082044] px-4 py-2 text-center align-middle text-lg whitespace-nowrap">
                   {editIndex === index ? (
                     <input
                       type="text"
@@ -99,20 +176,20 @@ const CompareTable = ({ compareData, deleteCompareData }) => {
                     </div>
                   )}
                 </td>
-                <td className="border-r border-[#082044] px-4 py-2">
+                <td className="border-r border-[#082044] px-4 py-2 whitespace-nowrap">
                   {item.advanceSummary.averageMonthlyPayment.toLocaleString()}
                 </td>
-                <td className="border-r border-[#082044] px-4 py-2">
+                <td className="border-r border-[#082044] px-4 py-2 whitespace-nowrap">
                   {item.advanceSummary.totalYears} ปี{" "}
                   {item.advanceSummary.totalMonths} เดือน
                 </td>
-                <td className="border-r border-[#082044] px-4 py-2">
+                <td className="border-r border-[#082044] px-4 py-2 whitespace-nowrap">
                   {item.advanceSummary.totalInterestThreeYears.toLocaleString()}
                 </td>
-                <td className="border-r border-[#082044] px-4 py-2">
+                <td className="border-r border-[#082044] px-4 py-2 whitespace-nowrap">
                   {item.advanceSummary.totalInterestPaid.toLocaleString()}
                 </td>
-                <td className="border-r border-[#082044] px-4 py-2">
+                <td className="border-r border-[#082044] px-4 py-2 whitespace-nowrap">
                   <button
                     className="text-green-500 cursor-pointer"
                     onClick={() => handleDetailClick(item)}
@@ -120,8 +197,7 @@ const CompareTable = ({ compareData, deleteCompareData }) => {
                     อ่านรายละเอียด
                   </button>
                 </td>
-
-                <td className="px-4 py-2">
+                <td className="px-4 py-2 whitespace-nowrap">
                   <RiDeleteBinFill
                     className="text-red-500 cursor-pointer"
                     onClick={() => handleDelete(index)}
@@ -135,6 +211,7 @@ const CompareTable = ({ compareData, deleteCompareData }) => {
     </div>
   );
 };
+
 
 CompareTable.propTypes = {
   compareData: PropTypes.arrayOf(
