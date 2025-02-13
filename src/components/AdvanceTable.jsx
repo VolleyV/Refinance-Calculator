@@ -159,7 +159,7 @@ const AdvanceTable = ({ advanceData }) => {
         <p>ไม่มีข้อมูลการคำนวณ</p>
       )}
 
-      <div className="mt-5 flex justify-center">
+      <div className="mt-5 mb-6 flex justify-center">
         <Pagination
           totalPages={totalPages}
           currentPage={currentPage}
