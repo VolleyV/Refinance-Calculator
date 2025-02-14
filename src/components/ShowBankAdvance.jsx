@@ -146,7 +146,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
               <div className="text-lg flex flex-col justify-between">
                 {/* ผ่อนดอกเบี้ยไป (เส้นกรอบประ) */}
                 <div className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md">
-                  <p className="text-start">
+                  <p className="text-start text-[#082044]">
                     ผ่อนดอกเบี้ยไป <br />
                     <span className="font-bold text-[#30A572] text-2xl">
                       {totalInterestThreeYears.toLocaleString()}
@@ -157,7 +157,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
 
                 {/* ดอกเบี้ยรวมค่าใช้จ่าย */}
                 {totalInsuranceMortgage !== 0 ? (
-                  <div className="text-start p-4">
+                  <div className="text-start p-4 text-[#082044]">
                     {insuranceOrMortgageText}
                     <span className="font-bold text-[#30A572] text-2xl">
                       {totalInsuranceMortgage.toLocaleString()}
@@ -166,7 +166,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                   </div>
                 ) : (
                   <div className="text-start p-4 mt-4">
-                    <p>เหลือเงินต้นต้องผ่อนอีก</p>
+                    <p className="text-[#082044]">เหลือเงินต้นต้องผ่อนอีก</p>
                     <span className="font-bold text-[#30A572] text-2xl">
                       {totalLoanRemaining.toLocaleString()}
                     </span>{" "}
@@ -176,9 +176,9 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
               </div>
 
               {/* คอลัมน์ที่ 3 */}
-              <div className="text-lg flex flex-col justify-between">
+              <div className="text-lg flex flex-col justify-between ">
                 {/* ผ่อนเงินต้นไป */}
-                <div className="p-4 text-start">
+                <div className="p-4 text-start text-[#082044]">
                   ผ่อนเงินต้นไป <br />
                   <span className="font-bold text-[#30A572] text-2xl">
                     {principalPortionAfterThreeYears.toLocaleString()}
@@ -189,7 +189,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                 {/* เหลือเงินต้นต้องผ่อน */}
                 {totalInsuranceMortgage !== 0 && (
                   <div className="text-start p-4">
-                    <p>เหลือเงินต้นต้องผ่อนอีก</p>
+                    <p className="text-[#082044]">เหลือเงินต้นต้องผ่อนอีก</p>
                     <span className="font-bold text-[#30A572] text-2xl">
                       {totalLoanRemaining.toLocaleString()}
                     </span>{" "}
@@ -205,7 +205,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
 
           {/* ส่วนข้อมูลจนถึงสิ้นสุดการชำระ */}
           <div>
-            <h2 className="text-3xl font-bold text-[#082044] text-center">
+            <h2 className="text-3xl font-bold text-[#082044] text-center text-[#082044]">
               จะผ่อนหมดต้องใช้เวลา {remainingDateText}
             </h2>
             <p className="text-[#082044] text-xl text-center mt-2">
@@ -240,7 +240,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
               <div className="text-lg flex flex-col justify-between col-span-1">
                 {/* ค่าดอกเบี้ยตลอดการผ่อน (เส้นกรอบประ) */}
                 <div className="border-2 border-dashed border-[#bbbbbb] p-4 rounded-md text-start">
-                  <p>
+                  <p className="text-[#082044]">
                     ค่าดอกเบี้ยตลอดการผ่อน <br />
                     <span className="font-bold text-[#30A572] text-2xl">
                       {remainingInterestText.toLocaleString()}
@@ -250,7 +250,7 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                 </div>
 
                 {/* จะผ่อนเสร็จวันที่ */}
-                <p className="text-[#35373F] text-start p-4 sm:block inline">
+                <p className="text-[#082044] text-start p-4 sm:block inline">
                   จะผ่อนเสร็จวันที่ <br />
                   <span className="inline sm:hidden">&nbsp;</span>
                   <span className="font-bold text-[#30A572] text-2xl sm:block inline">
