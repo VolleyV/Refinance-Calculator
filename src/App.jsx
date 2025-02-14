@@ -328,7 +328,7 @@ function App() {
             path="/advanceTable"
             element={<AdvanceTable advanceData={advanceFormData || []} />}
           />
-          <Route path="/dataset" element={<DatasetDetails />} />
+          <Route path="/details" element={<DatasetDetails />} />
 
           {/* Add other routes as necessary */}
         </Routes>

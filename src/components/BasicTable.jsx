@@ -14,7 +14,7 @@ const BasicTable = ({ data }) => {
           ไม่มีข้อมูลในตาราง หากผู้ใช้เปิดเว็บนี้ใน Line กรุณาเปิดใน Brownser
           เพื่อดูตาราง{" "}
           <a
-            href="https://example.com"
+            href="https://refinance-calculator-navy.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 underline"

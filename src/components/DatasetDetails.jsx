@@ -14,6 +14,9 @@ const DatasetDetails = () => {
   //const startIndex = (currentPage - 1) * itemsPerPage;
 
   useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }, 50);
     const urlParams = new URLSearchParams(location.search);
     const dataParam = urlParams.get("data");
 
@@ -212,7 +215,7 @@ const DatasetDetails = () => {
                 className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}
               >
                 <td className="border px-6 py-4 text-center">{row.month}</td>
-                <td className="border px-6 py-4 text-center">
+                <td className="border px-6 py-4 text-center text-nowrap">
                   {formatDate(row.date)}
                 </td>
                 <td className="border px-6 py-4 text-center">

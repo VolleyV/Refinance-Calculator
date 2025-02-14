@@ -8,7 +8,22 @@ import { advanceLoanCalculateDetail } from "../utils/advanceLoanCalculateDetail"
 
 const AdvanceTable = ({ advanceData }) => {
   if (!advanceData || advanceData.length === 0) {
-    return <p>ไม่มีข้อมูล กรุณากลับไปกรอกแบบฟอร์มก่อน</p>;
+    return (
+      <div>
+        <p className="text-center mt-4 text-sm text-gray-600">
+          ไม่มีข้อมูลในตาราง หากผู้ใช้เปิดเว็บนี้ใน Line กรุณาเปิดใน Brownser
+          เพื่อดูตาราง{" "}
+          <a
+            href="https://refinance-calculator-navy.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 underline"
+          >
+            กดที่นี่เพื่อเปิดในเบราว์เซอร์
+          </a>
+        </p>
+      </div>
+    );
   }
 
   useEffect(() => {

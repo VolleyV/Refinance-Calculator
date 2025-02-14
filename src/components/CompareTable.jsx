@@ -15,10 +15,10 @@ const CompareTable = ({ compareData, deleteCompareData }) => {
     if (encodedData.length > 2048) {
       console.log("Using localStorage for data");
       localStorage.setItem("datasetDetail", JSON.stringify(data));
-      window.open(`/dataset`, "_blank");
+      window.open(`/details`, "_blank");
     } else {
       console.log("Using URL for data");
-      window.open(`/dataset?data=${encodedData}`, "_blank");
+      window.open(`/details?data=${encodedData}`, "_blank");
     }
   };
 
