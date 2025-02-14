@@ -53,10 +53,10 @@ const AdvanceTable = ({ advanceData }) => {
 
       const canvas = await html2canvas(tableElement, { scale: 1 });
       const imgData = canvas.toDataURL("image/png");
-      const imgWidth = 210;
+      const imgWidth = 200;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-      pdf.addImage(imgData, "PNG", 0, 10, imgWidth, imgHeight);
+      pdf.addImage(imgData, "PNG", 5, 10, imgWidth, imgHeight);
     }
 
     const pdfBlob = pdf.output("blob");
@@ -81,7 +81,7 @@ const AdvanceTable = ({ advanceData }) => {
         <h2 className="text-2xl font-bold">ตารางการคำนวณ</h2>
         <button
           onClick={printPDF}
-          className="flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+          className="flex items-center gap-2 rounded-full bg-[#30A572] px-4 py-2 font-bold text-white hover:bg-blue-700"
           disabled={isLoading}
         >
           <FaFileDownload />
@@ -159,7 +159,7 @@ const AdvanceTable = ({ advanceData }) => {
         <p>ไม่มีข้อมูลการคำนวณ</p>
       )}
 
-      <div className="mt-5 flex justify-center">
+      <div className="mt-5 mb-6 flex justify-center">
         <Pagination
           totalPages={totalPages}
           currentPage={currentPage}
