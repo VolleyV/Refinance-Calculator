@@ -160,7 +160,9 @@ const ShowBankAdvance = ({ advanceCalculateSummary }) => {
                   <div className="text-start p-4 text-[#082044]">
                     {insuranceOrMortgageText}
                     <span className="font-bold text-[#30A572] text-2xl">
-                      {totalInsuranceMortgage.toLocaleString()}
+                      {(
+                        totalInterestThreeYears + totalInsuranceMortgage
+                      ).toLocaleString()}
                     </span>{" "}
                     <span className="font-bold">บาท</span>
                   </div>

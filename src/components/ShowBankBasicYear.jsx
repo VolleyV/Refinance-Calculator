@@ -164,7 +164,9 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
                   <div className="text-start p-4">
                     {insuranceOrMortgageText}
                     <span className="font-bold text-[#30A572] text-2xl">
-                      {totalInsuranceMortgage.toLocaleString()}
+                      {(
+                        totalInterestThreeYears + totalInsuranceMortgage
+                      ).toLocaleString()}
                     </span>{" "}
                     <span className="font-bold">บาท</span>
                   </div>
@@ -254,7 +256,7 @@ const ShowBankBasicYear = ({ basicYearCalculateSummary }) => {
                 </div>
                 {/* จะผ่อนเสร็จวันที่ */}
                 <p className="text-[#082044] text-start p-4 sm:block inline">
-                  จะผ่อนเสร็จวันที่ <br/>
+                  จะผ่อนเสร็จวันที่ <br />
                   <span className="inline sm:hidden">&nbsp;</span>
                   <span className="font-bold text-[#30A572] text-2xl sm:block inline">
                     {lastPaymentText}
