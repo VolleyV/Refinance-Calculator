@@ -10,9 +10,6 @@ const DatasetDetails = () => {
   const location = useLocation();
   const [advanceFormData, setAdvanceFormData] = useState([]);
 
-  // คำนวณรายการที่ต้องแสดงในหน้าปัจจุบัน
-  //const startIndex = (currentPage - 1) * itemsPerPage;
-
   useEffect(() => {
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "instant" });
@@ -150,7 +147,7 @@ const DatasetDetails = () => {
 
       pdf.addImage(imgData, "PNG", 5, 10, imgWidth, imgHeight);
     }
-    
+
     const pdfBlob = pdf.output("blob");
     const blobURL = URL.createObjectURL(pdfBlob);
     window.open(blobURL, "_blank");
