@@ -91,6 +91,13 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
     }
   };
 
+  const handleAutoCalculate = () => {
+    const loanAmountNum = parseFloat(loanAmount.replace(/,/g, "")) || 0;
+    const autoCalculateInsurance = loanAmountNum * 0.01;
+
+    setInsurance(autoCalculateInsurance.toLocaleString());
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!loanAmount || !interestRate || !monthlyPayment) {
@@ -280,18 +287,26 @@ const BasicForm = ({ onSubmit, onReset, initialInput }) => {
                   (ถ้ามี)
                 </span>
               </label>
-
-              <div className="relative -mb-2">
+              <div className="relative flex items-center">
                 <input
                   type="text"
                   id="insurance-input"
                   value={insurance}
                   onChange={handleInsuranceChange}
-                  className="w-full mb-2 border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] !text-[#082044] focus:outline-none px-2 h-[48px]"
+                  className="w-full border-b-[1px] border-[#D3D8E2] focus:border-[#082044] text-2xl font-[600] text-[#082044] focus:outline-none px-2 h-[48px]"
                 />
                 <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 text-lg font-medium">
                   บาท
                 </span>
+              </div>
+              <div className="flex justify-end mt-1">
+                <button
+                  type="button"
+                  className="text-green-500 text-lg"
+                  onClick={handleAutoCalculate}
+                >
+                  คำนวณอัตโนมัติ(1%)
+                </button>
               </div>
             </div>
 

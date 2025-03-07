@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { HiPencilSquare } from "react-icons/hi2";
 import PropTypes from "prop-types";
 import { RiDeleteBinFill } from "react-icons/ri";
@@ -55,15 +55,17 @@ const CompareTable = ({ compareData, deleteCompareData }) => {
     setPlanNames(newPlanNames);
   };
 
+  const hasScrolledRef = useRef(false);
+
   useEffect(() => {
-    if (compareData.length > 0) {
+    if (compareData.length > 0 && !hasScrolledRef.current) {
       window.scrollTo({
         top: document.documentElement.scrollHeight,
         behavior: "smooth",
       });
+      hasScrolledRef.current = true;
     }
-  }, []);
-
+  }, [compareData]);
   return (
     <div className="w-full max-w-full p-4">
       <h1 className="text-3xl font-bold text-[#082044] text-center my-5">

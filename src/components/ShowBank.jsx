@@ -172,7 +172,9 @@ const ShowBank = ({ basicCalculateSummary }) => {
                   <div className="text-start p-4">
                     {insuranceOrMortgageText}
                     <span className="font-bold text-[#30A572] text-2xl">
-                      {totalInsuranceMortgage.toLocaleString()}
+                      {(
+                        totalInterestThreeYears + totalInsuranceMortgage
+                      ).toLocaleString()}
                     </span>{" "}
                     <span className="font-bold">บาท</span>
                   </div>
