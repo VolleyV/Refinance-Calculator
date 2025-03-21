@@ -114,7 +114,7 @@ const InputForm = ({
                     : "bg-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >
-                ผ่อนต่อกี่ปี
+                ผ่อนกี่ปี
               </button>
               <button
                 onClick={() => switchTab("basicYear")}
